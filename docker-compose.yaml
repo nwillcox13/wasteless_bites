@@ -1,10 +1,10 @@
 volumes:
-  fastapi-example-data:
+  wasteless-bites-data:
     external: true
 services:
-  api:
+  wasteless-bites-api:
     build:
-      context: ./api
+      context: ./wasteless-bites-api
       dockerfile: Dockerfile.dev
     environment:
       DATABASE_URL: postgresql://example_user:secret@db/example
@@ -13,7 +13,9 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./api:/app
+      - ./wasteless-bites-api:/app
+    depends_on:
+      - db
   db:
     image: postgres:14.5-bullseye
     environment:
@@ -23,7 +25,7 @@ services:
     ports:
       - "15432:5432"
     volumes:
-      - fastapi-example-data:/var/lib/postgresql/data
+      - wasteless-bites-data:/var/lib/postgresql/data
   ghi:
     image: node:lts-bullseye
     command: /bin/bash run.sh
@@ -36,5 +38,6 @@ services:
       HOST_OS: ${OS}
       NODE_ENV: development
       HOST: "0.0.0.0"
+
       # PUBLIC_URL: http://localhost:3000
       # REACT_APP_SAMPLE_SERVICE_API_HOST: ${REACT_APP_SAMPLE_SERVICE_API_HOST}
