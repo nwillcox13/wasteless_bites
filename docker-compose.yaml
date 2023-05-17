@@ -1,29 +1,34 @@
 volumes:
-  fastapi-example-data:
+  wasteless-data:
     external: true
 services:
-  api:
+  wasteless-bites-api:
     build:
-      context: ./api
+      context: ./wasteless-bites-api
       dockerfile: Dockerfile.dev
     environment:
-      DATABASE_URL: postgresql://example_user:secret@db/example
+      SIGNING_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6InRlYW1fZHVtcHMiLCJpYXQiOjE1MTYyMzkwMjJ9.UIUia9MyJnBWYjullXvkoVdOrURx0m57MU4zQAdsj4M
+      DATABASE_URL: postgresql://wasteless_user:secret@db/wasteless
       WAIT_HOSTS: db:5432
+      WAIT_BEFORE: 5
+      WAIT_TIMEOUT: 60
       PORT: 8000
     ports:
       - 8000:8000
     volumes:
-      - ./api:/app
+      - ./wasteless-bites-api:/app
+    # depends_on:
+    #   - db
   db:
     image: postgres:14.5-bullseye
     environment:
       POSTGRES_PASSWORD: secret
-      POSTGRES_USER: example_user
-      POSTGRES_DB: example
+      POSTGRES_USER: wasteless_user
+      POSTGRES_DB: wasteless
     ports:
       - "15432:5432"
     volumes:
-      - fastapi-example-data:/var/lib/postgresql/data
+      - wasteless-data:/var/lib/postgresql/data
   ghi:
     image: node:lts-bullseye
     command: /bin/bash run.sh
@@ -36,5 +41,3 @@ services:
       HOST_OS: ${OS}
       NODE_ENV: development
       HOST: "0.0.0.0"
-      # PUBLIC_URL: http://localhost:3000
-      # REACT_APP_SAMPLE_SERVICE_API_HOST: ${REACT_APP_SAMPLE_SERVICE_API_HOST}
