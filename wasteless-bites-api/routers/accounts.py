@@ -1,41 +1,52 @@
-from fastapi import APIRouter, Depends
-from queries.accounts import AccountIn, AccountRepository, AccountOut, Error
-from typing import List, Union
-depend = Depends()
+from fastapi import (
+    Depends,
+    HTTPException,
+    status,
+    Response,
+    APIRouter,
+    Request,
+)
+from jwtdown_fastapi.authentication import Token
+from authenticator import authenticator
+
+from pydantic import BaseModel
+
+from queries.accounts import (
+    AccountIn,
+    AccountOut,
+    AccountRepository,
+    AccountOutWithPassword,
+    DuplicateAccountError,
+)
+
+class AccountForm(BaseModel):
+    username: str
+    password: str
+
+class AccountToken(Token):
+    account: AccountOut
+
+class HttpError(BaseModel):
+    detail: str
+
 router = APIRouter()
 
-@router.post("/account", response_model=AccountOut)
-def create_account(
-    account: AccountIn,
-    repo: AccountRepository = depend
-    ):
-    # print(repo)
-    # print("ACCT", account.email)
-        return repo.create(account)
 
-@router.get("/account", response_model= Union[List[AccountOut], Error])
-def list_accounts(repo:AccountRepository= depend):
-        # repo.create(AccountOut)
-        return repo.get_all()
-
-@router.put("/accounts/{account_id}", response_model= Union[AccountOut, Error])
-def update_account(
-        account_id: int,
-        account: AccountIn,
-        repo: AccountRepository = depend,
-        )-> Union[Error, AccountOut]:
-        return repo.update_account(account_id, account)
-
-@router.delete("/accounts/{account_id}", response_model= bool)
-def delete_account(
-        account_id: int,
-        repo: AccountRepository = depend
-)-> bool:
-    return repo.delete_account(account_id)
-
-@router.get("/accounts/{account_id}", response_model= AccountOut)
-def get_account(
-        account_id: int,
-        repo: AccountRepository = depend
-)-> bool:
-    return repo.get_one(account_id)
+@router.post("/api/accounts", response_model=AccountToken | HttpError)
+async def create_account(
+    info: AccountIn,
+    request: Request,
+    response: Response,
+    accounts: AccountRepository = Depends(),
+):
+    hashed_password = authenticator.hash_password(info.password)
+    try:
+        account = accounts.create(info, hashed_password) #Could be problem
+    except DuplicateAccountError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot create an account with those credentials",
+        )
+    form = AccountForm(username=info.email, password=info.password)
+    token = await authenticator.login(response, request, form, accounts)
+    return AccountToken(account=account, **token.dict())
