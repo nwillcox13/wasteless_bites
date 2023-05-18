@@ -5,3 +5,5 @@ Since we were put in groups, most of our work has been conceptual and non-coding
 We are expecting to begin the starting rounds of coding during this week. We are hoping to get our databases spun up and our end goal for the week is to have our login/logout/create user functionality under full steam. I think we are anxious to take the first step as a group but the deadline looms, so we are trying out a few "beginning steps" today so we can get the ball rolling. Sorting out and defining different aspects of the project is the final transitional step.
 
 ## 17 MAY 2023
+
+We worked as a group on cleaning up the YAML and setting up the database. We spent the rest of the afternoon working on auth. It was slow-going troubleshooting and bug-fixing but we are getting close to functionality and will either finish tonight before we wrap or first thing tomorrow. Overall good day for the group, definitely learning how to groupcode and felt like we made good progress.
