@@ -14,10 +14,10 @@ tasks for this week.
 
 ## Deliverables
 
-- [ ] Wire-frame diagrams
+- [X] Wire-frame diagrams
 - [ ] API documentation
 - [ ] Project is deployed to Caprover (BE, DB) & GitLab-pages (FE)
-- [ ] GitLab issue board is setup and in use (or project management tool of choice)
+- [X] GitLab issue board is setup and in use (or project management tool of choice)
 - [ ] Journals
 
 ## Project layout
