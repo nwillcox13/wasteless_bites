@@ -42,8 +42,20 @@ def create_item(
     return items.create(item)
 
 
-@router.get("/items", response_model=List[ItemOut])
+@router.get("/items", response_model=List[Union[ItemOut, Error]])
 def get_all(
     items: ItemRepository = depends
 ):
     return items.get_all()
+
+@router.get("/items/{item_id}", response_model=Optional[ItemOut])
+def get_one(
+    item_id: int,
+    response: Response,
+    repo: ItemRepository = depends
+
+    )-> ItemOut:
+    item= repo.get_one(item_id)
+    if item is None:
+        response.status_code= 404
+    return item

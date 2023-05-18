@@ -43,7 +43,7 @@ class ItemRepository:
                             dietary_restriction,
                             description,
                             pickup_instructions)
-                            VALUES
+                        VALUES
                             (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING id;
                         """,
@@ -66,7 +66,7 @@ class ItemRepository:
             print(f"Original error: {e}")
             return Error(message="Could not create item")
 
-    def get_all(self) -> Union[List[ItemOut], Error]:
+    def get_all(self) -> List[Union[ItemOut, Error]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -160,8 +160,15 @@ class ItemRepository:
 
     def record_to_ItemOut(self, record):
         return ItemOut(
-            id=record[0]
-            # name=record[1],
-            # quantity=record[2],
-            # expiration=record[3],
+            id=record[0],
+            name=record[1],
+            item_type=record[2],
+            quantity=record[3],
+            purchased_or_prepared=record[4],
+            time_of_post=record[5],
+            expiration=record[6],
+            location=record[7],
+            dietary_restriction=record[8],
+            description=record[9],
+            pickup_instructions=record[10],
         )
