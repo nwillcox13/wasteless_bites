@@ -4,33 +4,35 @@ from typing import List, Union
 
 
 class AccountIn(BaseModel):
-    first_name : str
-    last_name : str
-    email : str
-    password : str
+    first_name: str
+    last_name: str
+    email: str
+    password: str
 
 
 class AccountOut(BaseModel):
-    id : int
-    first_name : str
-    last_name : str
-    email : str
+    id: int
+    first_name: str
+    last_name: str
+    email: str
 
 
 class AccountOutWithPassword(AccountOut):
     hashed_password: str
 
+
 class DuplicateAccountError(ValueError):
     pass
 
+
 class AccountRepository:
-    def create(self, account:AccountIn, hashed_password:str) -> AccountOutWithPassword:
-    ##connect to db
+    def create(self, account :AccountIn, hashed_password : str) -> AccountOutWithPassword:
+        # connect to db
         with pool.connection() as conn:
-            ##get cursor(something to run sql with)
+            # get cursor(something to run sql with)
             with conn.cursor() as db:
-            ##run insert statement
-                result = db.execute( #could be problem
+                # run insert statement
+                result = db.execute(
                     """
                     INSERT INTO account
                         (first_name, last_name, email,
@@ -45,8 +47,8 @@ class AccountRepository:
                         account.email,
                         hashed_password,
                     ]
-                );
-                id= result.fetchone()[0]
+                )
+                id = result.fetchone()[0]
                 old_account = account.dict()
                 return AccountOutWithPassword(
                         id=id,
@@ -56,17 +58,17 @@ class AccountRepository:
                         hashed_password=account.password,
                     )
 
-    def get(self, email:str)->AccountOutWithPassword:
+    def get(self, email: str) ->AccountOutWithPassword:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result= db.execute(
+                    result = db.execute(
                         """
-                        SELECT id
-                        , first_name
-                        , last_name
-                        , email
-                        , password
+                        SELECT id,
+                        first_name,
+                        last_name,
+                        email,
+                        password,
                         FROM account
                         WHERE email= %s
                         """,
@@ -81,6 +83,7 @@ class AccountRepository:
     def account_in_to_out(self, id:int, account:AccountIn):
         old_data= account.dict()
         return AccountOut(id=id, **old_data)
+
     def  record_to_account(self, record)->AccountOutWithPassword:
         account_dict={
             "id": record[0],
