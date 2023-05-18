@@ -1,36 +1,31 @@
-import { useEffect, useState } from "react";
-import Construct from "./Construct.js";
-import ErrorNotification from "./ErrorNotification";
 import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AccountList from "./AccountList";
+import React from "react";
+import Login from "./Login";
+import Profile from "./Profile";
+import { RequireToken } from "./Auth";
 
 function App() {
-  const [launchInfo, setLaunchInfo] = useState([]);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    async function getData() {
-      let url = `${process.env.REACT_APP_SAMPLE_SERVICE_API_HOST}/api/launch-details`;
-      console.log("fastapi url: ", url);
-      let response = await fetch(url);
-      console.log("------- hello? -------");
-      let data = await response.json();
-
-      if (response.ok) {
-        console.log("got launch data!");
-        setLaunchInfo(data.launch_details);
-      } else {
-        console.log("drat! something happened");
-        setError(data.message);
-      }
-    }
-    getData();
-  }, []);
-
+  console.log("HELLO WORLD");
   return (
-    <div>
-      <ErrorNotification error={error} />
-      <Construct info={launchInfo} />
-    </div>
+    <Router>
+      <div className="container">
+        <Routes>
+          <Route path="/accounts" element={<AccountList />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/Profile" element={<Profile />} />
+          <Route
+            path="/profile"
+            element={
+              <RequireToken>
+                <Profile />
+              </RequireToken>
+            }
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
