@@ -8,5 +8,7 @@ need to check the yml and make sure everything is labeled correctly but is
 currently functioning. Today we will be working on setting up our database
 connecting and creating sign up, login, and logout api endpoints, with
 authentication.
-5/17/25
+5/17/23
 Today we created and migrated tables, solidified our yml, created an routers account.py, queries accounts.py, pool.py, authenticator.py. All py files are required to authenticate user account. Got it to work in the end. Will finalize tomorrow.
+5/18/23
+Implemented Backend auth. Accounts.py and Items.py Backend CRUD functionality complete.

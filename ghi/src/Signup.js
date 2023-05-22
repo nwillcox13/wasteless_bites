@@ -2,7 +2,9 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function LoginForm() {
+function SignUpForm() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -10,14 +12,17 @@ function LoginForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const login = {
+    const newAccount = {
+      first_name: firstName,
+      last_name: lastName,
       email: email,
       password: password,
     };
-    const url = "http://localhost:8000/token";
+
+    const url = "http://localhost:8000/api/accounts";
     const config = {
       method: "post",
-      body: JSON.stringify(login),
+      body: JSON.stringify(newAccount),
       headers: { "Content-Type": "application/json" },
     };
     fetch(url, config)
@@ -28,7 +33,7 @@ function LoginForm() {
           setSuccessAlert(false);
         }, 3000);
         const navigateTime = setTimeout(() => {
-          navigate("/accounts");
+          navigate("/login");
         }, 1000);
         return () => {
           clearTimeout(alertTimeout);
@@ -36,12 +41,23 @@ function LoginForm() {
         };
       });
   };
+
+  const handleFirstName = (event) => {
+    setFirstName(event.target.value);
+  };
+
+  const handleLastName = (event) => {
+    setLastName(event.target.value);
+  };
+
   const handleEmail = (event) => {
     setEmail(event.target.value);
   };
+
   const handlePassword = (event) => {
     setPassword(event.target.value);
   };
+
   return (
     <div
       style={{
@@ -70,7 +86,7 @@ function LoginForm() {
             padding: "0.75rem 1.25rem",
           }}
         >
-          Logged in!
+          Account created, please log in!
         </div>
       )}
       <div
@@ -84,7 +100,7 @@ function LoginForm() {
             "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
         }}
       >
-        <h1 style={{ textAlign: "center" }}>Login</h1>
+        <h1 style={{ textAlign: "center" }}>Create an account</h1>
         <form
           style={{ marginTop: "2rem" }}
           onSubmit={handleSubmit}
@@ -97,6 +113,56 @@ function LoginForm() {
               boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
             }}
           >
+            <div>
+              <input
+                id="grid-first-name"
+                name="First Name"
+                type="text"
+                required
+                style={{
+                  display: "block",
+                  width: "100%",
+                  padding: "0.75rem 1rem",
+                  fontSize: "1rem",
+                  lineHeight: "1.5",
+                  color: "#495057",
+                  backgroundColor: "#fff",
+                  backgroundClip: "padding-box",
+                  border: "1px solid #ced4da",
+                  borderRadius: "0.25rem",
+                  transition:
+                    "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
+                }}
+                placeholder="First name"
+                value={firstName}
+                onChange={handleFirstName}
+              />
+            </div>
+            <div>
+              <input
+                id="Last-name"
+                name="Last-name"
+                type="text"
+                required
+                style={{
+                  display: "block",
+                  width: "100%",
+                  padding: "0.75rem 1rem",
+                  fontSize: "1rem",
+                  lineHeight: "1.5",
+                  color: "#495057",
+                  backgroundColor: "#fff",
+                  backgroundClip: "padding-box",
+                  border: "1px solid #ced4da",
+                  borderRadius: "0.25rem",
+                  transition:
+                    "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
+                }}
+                placeholder="Last name"
+                value={lastName}
+                onChange={handleLastName}
+              />
+            </div>
             <div>
               <input
                 id="email"
@@ -156,17 +222,17 @@ function LoginForm() {
                 display: "flex",
                 justifyContent: "center",
                 width: "100%",
-                padding: "0.5rem 1rem",
+                padding: "0.75rem 1rem",
                 fontSize: "1rem",
                 lineHeight: "1.5",
                 color: "#fff",
-                backgroundColor: "#4F46E5",
+                backgroundColor: "#007bff",
                 border: "1px solid transparent",
-                borderRadius: "0.5rem",
+                borderRadius: "0.25rem",
                 cursor: "pointer",
               }}
             >
-              Login
+              Sign Up
             </button>
           </div>
         </form>
@@ -174,4 +240,4 @@ function LoginForm() {
     </div>
   );
 }
-export default LoginForm;
+export default SignUpForm;

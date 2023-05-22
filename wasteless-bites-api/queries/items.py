@@ -21,8 +21,19 @@ class ItemIn(BaseModel):
     pickup_instructions: str
 
 
-class ItemOut(ItemIn):
+class ItemOut(BaseModel):
     id: int
+    name: str
+    item_type: str
+    quantity: int
+    purchased_or_prepared: datetime
+    time_of_post: datetime
+    expiration: datetime
+    location: int
+    dietary_restriction: str
+    description: Optional[str]
+    pickup_instructions: str
+
 
 
 class ItemRepository:
@@ -122,7 +133,7 @@ class ItemRepository:
                             pickup_instructions = %s
                         WHERE id = %s;
                         """,
-                        [item_id,
+                        [
                             item.name,
                             item.item_type,
                             item.quantity,
@@ -132,9 +143,11 @@ class ItemRepository:
                             item.location,
                             item.dietary_restriction,
                             item.description,
-                            item.pickup_instructions]
+                            item.pickup_instructions,
+                            item_id
+                            ]
                     )
-                    return self.record_to_ItemOut(item_id, item)
+                    return self.item_in_to_out(item_id, item)
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not update item")
@@ -143,13 +156,15 @@ class ItemRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    db.execute(
+                    result= db.execute(
                         """
                         DELETE FROM item
                         WHERE id = %s;
                         """,
                         [item_id]
                     )
+                    print("OUR result", result)
+                    return result.rowcount >= 1
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not delete item")

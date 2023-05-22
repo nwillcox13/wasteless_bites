@@ -37,9 +37,9 @@ depends = Depends()
 @router.post("/items", response_model=Union[ItemOut, Error])
 def create_item(
     item: ItemIn,
-    items: ItemRepository = depends,
+    repo: ItemRepository = depends,
 ):
-    return items.create(item)
+    return repo.create(item)
 
 
 @router.get("/items", response_model=List[Union[ItemOut, Error]])
@@ -59,3 +59,18 @@ def get_one(
     if item is None:
         response.status_code= 404
     return item
+
+@router.put("/items/{item_id}", response_model= Union[ItemOut, Error])
+def update(
+    item_id: int,
+    item: ItemIn,
+    repo: ItemRepository = depends
+    )-> Union[ItemOut, Error]:
+    return repo.update_item(item_id, item)
+
+@router.delete("/items/{item_id}", response_model= bool)
+def delete(
+    item_id: int,
+    repo: ItemRepository = depends
+    )-> bool:
+    return repo.delete_item(item_id)
