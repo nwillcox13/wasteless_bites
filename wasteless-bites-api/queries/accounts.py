@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from queries.pool import pool
-from typing import List, Union
+# from typing import List, Union
 
 
 class AccountIn(BaseModel):
@@ -26,9 +26,11 @@ class DuplicateAccountError(ValueError):
 
 
 class AccountRepository:
-    def create(self,
-                account: AccountIn,
-                hashed_password: str) -> AccountOutWithPassword:
+    def create(
+        self,
+        account: AccountIn,
+        hashed_password: str
+    ) -> AccountOutWithPassword:
         # connect to db
         with pool.connection() as conn:
             # get cursor(something to run sql with)
@@ -51,7 +53,7 @@ class AccountRepository:
                     ]
                 )
                 id = result.fetchone()[0]
-                old_account = account.dict()
+                # old_account = account.dict()
                 return AccountOutWithPassword(
                         id=id,
                         first_name=account.first_name,
