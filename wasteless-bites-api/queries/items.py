@@ -35,7 +35,6 @@ class ItemOut(BaseModel):
     pickup_instructions: str
 
 
-
 class ItemRepository:
     def create(self, item: ItemIn) -> Union[ItemOut, Error]:
         try:
@@ -156,7 +155,7 @@ class ItemRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result= db.execute(
+                    result = db.execute(
                         """
                         DELETE FROM item
                         WHERE id = %s;

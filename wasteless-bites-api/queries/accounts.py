@@ -26,7 +26,9 @@ class DuplicateAccountError(ValueError):
 
 
 class AccountRepository:
-    def create(self, account :AccountIn, hashed_password : str) -> AccountOutWithPassword:
+    def create(self,
+                account: AccountIn,
+                hashed_password: str) -> AccountOutWithPassword:
         # connect to db
         with pool.connection() as conn:
             # get cursor(something to run sql with)
@@ -53,12 +55,12 @@ class AccountRepository:
                 return AccountOutWithPassword(
                         id=id,
                         first_name=account.first_name,
-                        last_name= account.last_name,
+                        last_name=account.last_name,
                         email=account.email,
                         hashed_password=account.password,
                     )
 
-    def get(self, email: str) ->AccountOutWithPassword:
+    def get(self, email: str) -> AccountOutWithPassword:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -73,19 +75,20 @@ class AccountRepository:
                         WHERE email= %s
                         """,
                         [email]
-                    );
-                    record= result.fetchone()
+                    )
+                    record = result.fetchone()
                     return self.record_to_account(record)
         except Exception as e:
             print(f"Original error: {e}")
             raise ValueError("Could not get account") from e
-                ##return data
-    def account_in_to_out(self, id:int, account:AccountIn):
-        old_data= account.dict()
+            # return data
+
+    def account_in_to_out(self, id: int, account: AccountIn):
+        old_data = account.dict()
         return AccountOut(id=id, **old_data)
 
-    def  record_to_account(self, record)->AccountOutWithPassword:
-        account_dict={
+    def record_to_account(self, record) -> AccountOutWithPassword:
+        account_dict = {
             "id": record[0],
             "first_name": record[1],
             "last_name": record[2],
