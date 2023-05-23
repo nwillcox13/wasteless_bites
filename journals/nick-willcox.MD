@@ -14,4 +14,4 @@ We worked on the item form today. River drove and we all took turns navigating. 
 
 ## 23 MAY 2023
 
-River came in with a way to clean up the JSX so we began with that. Harim was having a docker issue at first so we spent some time away from the scheduled task to
+Harim had a docker issue so we spent a little bit of time just chatting (River's wife pointed out that we only ever talk shop) and that was a nice change of pace. In the afternoon we cleared some things off our checklist and planned for the rest of the week.

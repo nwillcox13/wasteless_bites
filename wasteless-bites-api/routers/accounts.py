@@ -45,7 +45,7 @@ async def create_account(
 ):
     hashed_password = authenticator.hash_password(info.password)
     try:
-        account = accounts.create(info, hashed_password)  # Could be problem
+        account = accounts.create(info, hashed_password)
     except DuplicateAccountError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

@@ -48,29 +48,31 @@ def get_all(
 ):
     return items.get_all()
 
+
 @router.get("/items/{item_id}", response_model=Optional[ItemOut])
 def get_one(
     item_id: int,
     response: Response,
     repo: ItemRepository = depends
-
-    )-> ItemOut:
-    item= repo.get_one(item_id)
+        ) -> ItemOut:
+    item = repo.get_one(item_id)
     if item is None:
-        response.status_code= 404
+        response.status_code = 404
     return item
 
-@router.put("/items/{item_id}", response_model= Union[ItemOut, Error])
+
+@router.put("/items/{item_id}", response_model=Union[ItemOut, Error])
 def update(
     item_id: int,
     item: ItemIn,
     repo: ItemRepository = depends
-    )-> Union[ItemOut, Error]:
+        ) -> Union[ItemOut, Error]:
     return repo.update_item(item_id, item)
 
-@router.delete("/items/{item_id}", response_model= bool)
+
+@router.delete("/items/{item_id}", response_model=bool)
 def delete(
     item_id: int,
     repo: ItemRepository = depends
-    )-> bool:
+        ) -> bool:
     return repo.delete_item(item_id)
