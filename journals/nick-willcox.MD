@@ -14,4 +14,4 @@ We worked on the item form today. River drove and we all took turns navigating. 
 
 ## 23 MAY 2023
 
-Harim had a docker issue so we spent a little bit of time just chatting (River's wife pointed out that we only ever talk shop) and that was a nice change of pace. In the afternoon we cleared some things off our checklist and planned for the rest of the week.
+Harim had a docker issue right of the bat so River showed us some things he had been working on.
