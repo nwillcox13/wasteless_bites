@@ -8,6 +8,7 @@ import Profile from "./Profile";
 import SignUpForm from "./Signup";
 import ItemForm from "./ItemForm";
 import ListItems from "./ListItems";
+import ItemDetail from "./ItemDetail";
 // import { RequireToken } from "./Auth";
 
 function App() {
@@ -17,8 +18,9 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/item/new" element={<ItemForm />} />
-          <Route path="/item/list" element={<ListItems />} />
+          <Route path="/items/new" element={<ItemForm />} />
+          <Route path="/items/list" element={<ListItems />} />
+          <Route path="/items/:itemId" element={<ItemDetail />} />
         </Routes>
       </div>
     </Router>
