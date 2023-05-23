@@ -8,4 +8,10 @@ We are expecting to begin the starting rounds of coding during this week. We are
 
 We worked as a group on cleaning up the YAML and setting up the database. We spent the rest of the afternoon working on auth. It was slow-going troubleshooting and bug-fixing but we are getting close to functionality and will either finish tonight before we wrap or first thing tomorrow. Overall good day for the group, definitely learning how to groupcode and felt like we made good progress.
 
-## 18 MAY 2023
+## 22 MAY 2023
+
+We worked on the item form today. River drove and we all took turns navigating. Nothing too crazy, just building up the form and troubleshooting. Morale is still pretty high and everyone is settling in with the dynamic, and we discussed that we felt like we were moving at an acceptable pace and are able to adjust accordingly if we feel we are running behind. Our stated goal is to have MVP done 1 week prior to deadline for stretch goals at the moment.
+
+## 23 MAY 2023
+
+Harim had a docker issue right of the bat so River showed us some things he had been working on.

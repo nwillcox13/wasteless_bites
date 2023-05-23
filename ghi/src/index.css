@@ -11,3 +11,56 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+body {
+    margin-bottom: 200px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #6ba304;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}
+
+
+footer {
+    position: fixed;
+    background-color: rgba(33,37,41,255);
+    color: rgba(136,146,146,255);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px;
+    text-align: center;
+}
+
+hr.break {
+    background-color: rgba(132,76,51,255);
+    height: 2px
+}
+
+.btn-primary {
+background-color: #91684d; /* Change to your desired color */
+padding: 15px 25px; /* Adjust the padding as per your needs */
+border-radius: 10px;
+color: #fafafa;
+font-size: 16px;
+border: none;
+margin-top: 20px;
+}
+
+.btn-primary:hover {
+  background-color: #676329; /* Change to your desired hover color */
+}
