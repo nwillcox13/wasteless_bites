@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from queries.pool import pool
 from typing import List, Union, Optional
 from datetime import datetime
+import json
 
 
 class Error(BaseModel):
@@ -16,7 +17,7 @@ class ItemIn(BaseModel):
     time_of_post: datetime
     expiration: datetime
     location: int
-    dietary_restriction: str
+    dietary_restriction: List[str]
     description: Optional[str]
     pickup_instructions: str
 
@@ -30,7 +31,7 @@ class ItemOut(BaseModel):
     time_of_post: datetime
     expiration: datetime
     location: int
-    dietary_restriction: str
+    dietary_restriction: List[str]
     description: Optional[str]
     pickup_instructions: str
 
@@ -65,7 +66,7 @@ class ItemRepository:
                             item.time_of_post,
                             item.expiration,
                             item.location,
-                            item.dietary_restriction,
+                            json.dumps(item.dietary_restriction),
                             item.description,
                             item.pickup_instructions
                         ]
@@ -182,7 +183,7 @@ class ItemRepository:
             time_of_post=record[5],
             expiration=record[6],
             location=record[7],
-            dietary_restriction=record[8],
+            dietary_restriction=json.loads(record[8]),
             description=record[9],
             pickup_instructions=record[10],
         )

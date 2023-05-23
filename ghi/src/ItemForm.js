@@ -67,6 +67,53 @@ function CondensedInput(props) {
   );
 }
 
+function CondensedCheckboxInput(props) {
+  const { onChange, value, name, id, label, options } = props;
+  const handleChange = (event) => {
+    const checked = event.target.checked;
+    const checkedValue = event.target.value;
+    let newValue = [...value];
+    if (checked) {
+      newValue.push(checkedValue);
+    } else {
+      newValue = newValue.filter((val) => val !== checkedValue);
+    }
+    onChange({ target: { name, value: newValue } });
+  };
+  return (
+    <div className="col-md-6">
+      {" "}
+      <label htmlFor={id} className="form-label">
+        {label}
+      </label>{" "}
+      <div
+        className="form-control"
+        style={{ backgroundColor: "rgb(228, 230, 240)" }}
+      >
+        {" "}
+        {options.map((option, index) => (
+          <div className="form-check" key={index}>
+            {" "}
+            <input
+              className="form-check-input"
+              type="checkbox"
+              name={name}
+              id={`${id}_${index}`}
+              value={option}
+              onChange={handleChange}
+              checked={value.includes(option)}
+            />{" "}
+            <label className="form-check-label" htmlFor={`${id}_${index}`}>
+              {" "}
+              {option}{" "}
+            </label>{" "}
+          </div>
+        ))}{" "}
+      </div>{" "}
+    </div>
+  );
+}
+
 function ItemForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -76,17 +123,35 @@ function ItemForm() {
     time_of_post: "",
     expiration: "",
     location: "",
-    dietary_restriction: "",
+    dietary_restriction: [],
     description: "",
     pickup_instructions: "",
   });
 
   const handleFormChange = (event) => {
     const { value, name } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    const type = event.target.type;
+    if (type === "checkbox") {
+      const isChecked = event.target.checked;
+      const checkboxValue = event.target.value;
+      let updatedValue = [...formData.dietary_restriction];
+
+      if (isChecked) {
+        updatedValue.push(checkboxValue);
+      } else {
+        updatedValue = updatedValue.filter((val) => val !== checkboxValue);
+      }
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: updatedValue,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -111,7 +176,7 @@ function ItemForm() {
         time_of_post: "",
         expiration: "",
         location: "",
-        dietary_restriction: "",
+        dietary_restriction: [],
         description: "",
         pickup_instructions: "",
       });
@@ -144,17 +209,17 @@ function ItemForm() {
                   id="item_type"
                   label="Item Type"
                   options={[
-                    "pantry",
-                    "fresh produce",
-                    "meat",
-                    "seafood",
-                    "dairy & eggs",
-                    "frozen",
-                    "deli",
-                    "baked Goods",
-                    "coffee",
-                    "baby food",
-                    "ready-to-eat",
+                    "Baked Goods",
+                    "Baby Food/Formula",
+                    "Coffee",
+                    "Dairy & Eggs",
+                    "Deli",
+                    "Frozen",
+                    "Meat",
+                    "Pantry",
+                    "Produce",
+                    "Ready-to-eat",
+                    "Seafood",
                   ]}
                 />
                 <CondensedInput
@@ -202,14 +267,27 @@ function ItemForm() {
                   id="location"
                   label="Location"
                 />
-                <CondensedInput
+                <CondensedCheckboxInput
                   onChange={handleFormChange}
                   value={formData.dietary_restriction}
-                  placeholder="Dietary restrictions"
-                  type="text"
                   name="dietary_restriction"
                   id="dietary_restriction"
                   label="Dietary restrictions"
+                  options={[
+                    "Gluten-Free",
+                    "Dairy-Free",
+                    "Vegetarian",
+                    "Vegan",
+                    "Organic",
+                    "Contains Egg",
+                    "Contains Nuts",
+                    "Contains Shellfish",
+                    "Contains Soy",
+                    "Contains Wheat",
+                    "Kosher",
+                    "Halal",
+                    "Other",
+                  ]}
                 />
                 <CondensedInput
                   onChange={handleFormChange}
