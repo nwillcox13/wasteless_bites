@@ -14,4 +14,10 @@ We worked on the item form today. River drove and we all took turns navigating. 
 
 ## 23 MAY 2023
 
-Harim had a docker issue right of the bat so River showed us some things he had been working on.
+Harim had a docker issue right of the bat so River showed us some things he had been working on. I drove for a while while we finished up the ItemList and ItemDetail views. After break and final attendance, Chris and I had some time to fix up a dropdown and checkbox system on the ItemForm.
+
+## 24 MAY 2023
+
+Today was split off and work on small things. I was able to add the get all accounts to the backend UI and begin showing ItemList and ItemDetail specific to a logged-in user (still incomplete). Everyone is currently plugging away at their own chores and we plan on circling back and plugging things in together once we've all gotten as far as we can go.
+
+## 25 MAY 2023

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+// import userId ?
 
-export default function ListItems() {
+export default function UserListItems() {
   const [items, setItems] = useState([]);
+  //  const userId =  this is where the imported user id will be
+  //  this might also come through like const { userID } = useParams?
 
   const fetchData = async () => {
-    const url = "http://localhost:8000/items";
+    const url = `http://localhost:8000/items?userId=${userId}`;
     const response = await fetch(url);
     console.log(response);
     if (response.ok) {
@@ -18,11 +21,19 @@ export default function ListItems() {
     fetchData();
   }, []);
 
+  const deleteItem = async (id) => {
+    const url = `http://localhost:8000/items/${id}`;
+    const response = await fetch(url, { method: "DELETE" });
+    if (response.ok) {
+      setItems(items.filter((item) => item.id !== id));
+    }
+  };
+
   return (
     <div className="container my-4">
       <div className="row">
         <div className="col-12">
-          <h1 className="text-center mb-4">Item List</h1>
+          <h1 className="text-center mb-4">Your Item List</h1>
           <table className="table table-dark table-striped table-bordered">
             <thead>
               <tr>
@@ -34,8 +45,9 @@ export default function ListItems() {
                 <th>Expiration</th>
                 <th>Location</th>
                 {/* <th>Dietary restriction</th>
-                <th>Description</th>
-                <th>Pick-up instructions</th> */}
+                    <th>Description</th>
+                    <th>Pick-up instructions</th> */}
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -52,16 +64,16 @@ export default function ListItems() {
                     <td>{item.expiration}</td>
                     <td>{item.location}</td>
                     {/* <td>{item.dietary_restriction}</td>
-                    <td>{item.description}</td>
-                    <td>{item.pickup_instructions}</td> */}
-                    {/* <td> */}
-                    {/* <button
+                        <td>{item.description}</td>
+                        <td>{item.pickup_instructions}</td> */}
+                    <td>
+                      <button
                         className="btn btn-secondary"
                         onClick={() => deleteItem(item.id)}
                       >
                         Remove
-                      </button> */}
-                    {/* </td> */}
+                      </button>
+                    </td>
                   </tr>
                 );
               })}
@@ -70,12 +82,12 @@ export default function ListItems() {
         </div>
       </div>
       {/* {items.length === 0 && (
-        <div className="row">
-            <div className="col-12 text-center">
-                <p className="lead">Loading...</p>
-            </div>
-        </div>
-    )} */}
+                <div className="row">
+                    <div className="col-12 text-center">
+                        <p className="lead">Loading...</p>
+                    </div>
+                </div>
+            )} */}
     </div>
   );
 }
