@@ -27,10 +27,10 @@ class MyAuthenticator(Authenticator):
         # print(account)
         return account["password"]
 
-    # def get_account_data_for_cookie(self, account: AccountOut):
-    #     # Return the username and the data for the cookie.
-    #     # You must return TWO values from this method.
-    #     return account.email, AccountOut(**account.dict())
+    def get_account_data_for_cookie(self, account: AccountOut):
+        # Return the username and the data for the cookie.
+        # You must return TWO values from this method.
+        return account['email'], AccountOut(**account)
 
 
 authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])

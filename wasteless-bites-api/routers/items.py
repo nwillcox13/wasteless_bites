@@ -15,7 +15,7 @@ from queries.items import (
     Error
 )
 from typing import List, Union, Optional
-
+from authenticator import authenticator
 
 class ItemForm(BaseModel):
     name: str
@@ -48,18 +48,41 @@ def get_all(
 ):
     return items.get_all()
 
+def get_item_repo() -> ItemRepository:
+    return ItemRepository()
+
+# @router.get("/items/{item_id}", response_model=Optional[ItemOut])
+# def get_one(
+#     item_id: int,
+#     response: Response,
+#     repo: ItemRepository = Depends(get_item_repo),
+# ) -> ItemOut:
+#     item = repo.get_one(item_id)
+#     if item is None:
+#         response.status_code = 404
+#     return item
+# @router.get("/items/{item_id}", response_model=Optional[ItemOut])
+# def get_one(
+#     item_id: int,
+#     response: Response,
+#     repo: ItemRepository = depends
+#         ) -> ItemOut:
+#     item = repo.get_one(item_id)
+#     if item is None:
+#         response.status_code = 404
+#     return item
 
 @router.get("/items/{item_id}", response_model=Optional[ItemOut])
 def get_one(
     item_id: int,
     response: Response,
-    repo: ItemRepository = depends
-        ) -> ItemOut:
+    repo: ItemRepository = Depends(get_item_repo),
+    account_data: dict = Depends(authenticator.get_current_account_data),
+) -> ItemOut:
     item = repo.get_one(item_id)
     if item is None:
         response.status_code = 404
     return item
-
 
 @router.put("/items/{item_id}", response_model=Union[ItemOut, Error])
 def update(

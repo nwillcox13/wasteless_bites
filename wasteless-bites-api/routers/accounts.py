@@ -18,7 +18,7 @@ from queries.accounts import (
     AccountOutWithPassword,
     DuplicateAccountError,
 )
-
+# from queries.items import ItemRepository
 
 class AccountForm(BaseModel):
     username: str
@@ -54,3 +54,15 @@ async def create_account(
     form = AccountForm(username=info.email, password=info.password)
     token = await authenticator.login(response, request, form, accounts)
     return AccountToken(account=account, **token.dict())
+
+@router.get("/token", response_model=AccountToken | None)
+async def get_token(
+    request: Request,
+    account: AccountOut = Depends(authenticator.try_get_current_account_data)
+) -> AccountToken | None:
+    if account and authenticator.cookie_name in request.cookies:
+        return {
+            "access_token": request.cookies[authenticator.cookie_name],
+            "type": "Bearer",
+            "account": account,
+        }
