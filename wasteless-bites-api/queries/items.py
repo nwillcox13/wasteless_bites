@@ -35,6 +35,8 @@ class ItemOut(BaseModel):
     description: Optional[str]
     pickup_instructions: str
 
+class Message(BaseModel):
+    detail: str
 
 class ItemRepository:
     def create(self, item: ItemIn) -> Union[ItemOut, Error]:
@@ -77,7 +79,7 @@ class ItemRepository:
             print(f"Original error: {e}")
             return Error(message="Could not create item")
 
-    def get_all(self) -> List[Union[ItemOut, Error]]:
+    def get_all(self) -> Union[Error,List[ItemOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -173,7 +175,28 @@ class ItemRepository:
         old_data = item.dict()
         return ItemOut(id=id, **old_data)
 
+    # def record_to_ItemOut(self, record):
+    #     return ItemOut(
+    #         id=record[0],
+    #         name=record[1],
+    #         item_type=record[2],
+    #         quantity=record[3],
+    #         purchased_or_prepared=record[4],
+    #         time_of_post=record[5],
+    #         expiration=record[6],
+    #         location=record[7],
+    #         dietary_restriction=json.loads(record[8]),
+    #         description=record[9],
+    #         pickup_instructions=record[10],
+    #     )
     def record_to_ItemOut(self, record):
+        try:
+            dietary_restriction = json.loads(record[8])
+        except json.JSONDecodeError as e:
+            print(f"Error parsing JSON: {e}")
+            print(f"Original JSON string: {record[8]}")
+            dietary_restriction = []
+
         return ItemOut(
             id=record[0],
             name=record[1],
@@ -183,7 +206,7 @@ class ItemRepository:
             time_of_post=record[5],
             expiration=record[6],
             location=record[7],
-            dietary_restriction=json.loads(record[8]),
+            dietary_restriction=dietary_restriction,
             description=record[9],
             pickup_instructions=record[10],
         )
