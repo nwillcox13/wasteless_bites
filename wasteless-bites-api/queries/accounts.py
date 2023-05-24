@@ -72,7 +72,7 @@ class AccountRepository:
                         first_name,
                         last_name,
                         email,
-                        password,
+                        password
                         FROM account
                         WHERE email= %s
                         """,

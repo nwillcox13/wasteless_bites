@@ -21,6 +21,14 @@ function App() {
           <Route path="/items/new" element={<ItemForm />} />
           <Route path="/items/list" element={<ListItems />} />
           <Route path="/items/:itemId" element={<ItemDetail />} />
+          <Route path="Signup">
+            <Route path="" element={<SignUpForm />} />
+          </Route>
+          <Route path="Login">
+            <Route path="" element={<LoginForm />} />
+          </Route>
+          <Route path="/accounts" element={<AccountList />} />
+          <Route path="/profile" element={<Profile />} /> */
         </Routes>
       </div>
     </Router>
