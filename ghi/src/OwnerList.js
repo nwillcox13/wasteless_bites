@@ -49,9 +49,7 @@ export default function ListItems() {
               {items?.map((item) => {
                 return (
                   <tr key={item.id}>
-                    <td>
-                      <a href={`/items/${item.id}`}>{item.name}</a>
-                    </td>
+                    <td>{item.name}</td>
                     <td>{item.item_type}</td>
                     <td>{item.quantity}</td>
                     {/* <td>{item.purchased_or_prepared}</td> */}
