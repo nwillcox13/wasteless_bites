@@ -68,6 +68,7 @@ def get_all(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ) -> Union[Error,List[ItemOut]]:
     items = repo.get_all()
+
     return items
 
 @router.get("/items/{item_id}", response_model=Optional[ItemOut])

@@ -2,9 +2,9 @@ volumes:
   wasteless-data:
     external: true
 services:
-  wasteless-bites-api:
+  api:
     build:
-      context: ./wasteless-bites-api
+      context: ./api
       dockerfile: Dockerfile.dev
     environment:
       SIGNING_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6InRlYW1fZHVtcHMiLCJpYXQiOjE1MTYyMzkwMjJ9.UIUia9MyJnBWYjullXvkoVdOrURx0m57MU4zQAdsj4M
@@ -16,7 +16,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./wasteless-bites-api:/app
+      - ./api:/app
     # depends_on:
     #   - db
   db:
