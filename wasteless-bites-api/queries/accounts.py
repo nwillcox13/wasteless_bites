@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from queries.pool import pool
-# from typing import List, Union
+from typing import List, Union
 
 
 class AccountIn(BaseModel):
@@ -23,6 +23,10 @@ class AccountOutWithPassword(AccountOut):
 
 class DuplicateAccountError(ValueError):
     pass
+
+
+class Error(BaseModel):
+    message: str
 
 
 class AccountRepository:
@@ -62,6 +66,23 @@ class AccountRepository:
                         hashed_password=account.password,
                     )
 
+    def get_all(self) -> List[Union[AccountOut, Error]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT *
+                        FROM account
+                        ORDER BY id;
+                        """
+                    )
+                    return [self.record_to_account_out(record)
+                            for record in result]
+        except Exception as e:
+            print(f"Original error: {e}")
+            return Error(message="Could not list accounts")
+
     def get(self, email: str) -> AccountOutWithPassword:
         try:
             with pool.connection() as conn:
@@ -98,3 +119,12 @@ class AccountRepository:
             "password": record[4],
         }
         return account_dict
+
+    def record_to_account_out(self, record) -> AccountOut:
+        account_dict = {
+            "id": record[0],
+            "first_name": record[1],
+            "last_name": record[2],
+            "email": record[3],
+        }
+        return AccountOut(**account_dict)
