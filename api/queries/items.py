@@ -34,21 +34,21 @@ class ItemOut(BaseModel):
     dietary_restriction: List[str]
     description: Optional[str]
     pickup_instructions: str
-
+    account_id: int
 
 class Message(BaseModel):
     detail: str
 
-
 class ItemRepository:
-    def create(self, item: ItemIn) -> Union[ItemOut, Error]:
+    def create(self, item: ItemIn, account_id: int) -> Union[ItemOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
                         INSERT INTO item
-                            (name,
+                            (account_id,
+                            name,
                             item_type,
                             quantity,
                             purchased_or_prepared,
@@ -59,10 +59,11 @@ class ItemRepository:
                             description,
                             pickup_instructions)
                         VALUES
-                            (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING id;
                         """,
                         [
+                            account_id,
                             item.name,
                             item.item_type,
                             item.quantity,
@@ -76,12 +77,12 @@ class ItemRepository:
                         ]
                     )
                     id = result.fetchone()[0]
-                    return self.item_in_to_out(id, item)
+                    return self.item_in_to_out(id, item, account_id)
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not create item")
 
-    def get_all(self) -> Union[Error, List[ItemOut]]:
+    def get_all(self, account_id: int) -> Union[Error,List[ItemOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -92,13 +93,13 @@ class ItemRepository:
                         ORDER BY id;
                         """
                     )
-                    return [self.record_to_ItemOut(record)
+                    return [self.record_to_ItemOut(record, account_id)
                             for record in result]
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not list items")
 
-    def get_one(self, item_id: int) -> Optional[ItemOut]:
+    def get_one(self, item_id: int, account_id: int) -> Optional[ItemOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -113,12 +114,12 @@ class ItemRepository:
                     record = result.fetchone()
                     if record is None:
                         return None
-                    return self.record_to_ItemOut(record)
+                    return self.record_to_ItemOut(record, account_id)
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not list items")
 
-    def update_item(self, item_id: int, item: ItemIn) -> Union[ItemOut, Error]:
+    def update_item(self, item_id: int, item: ItemIn, account_id: int) -> Union[ItemOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -151,10 +152,11 @@ class ItemRepository:
                             item_id
                             ]
                     )
-                    return self.item_in_to_out(item_id, item)
+                    return self.item_in_to_out(item_id, item, account_id)
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not update item")
+
 
     def delete(self, item_id: int) -> Union[Message, Error]:
         try:
@@ -169,60 +171,18 @@ class ItemRepository:
                     )
                     print("OUR result", result)
                 if result.rowcount >= 1:
-                    return Message(
-                        detail=f"Item with id {item_id} deleted successfully."
-                    )
+                    return Message(detail=f"Item with id {item_id} deleted successfully.")
                 else:
-                    return Error(
-                        message="Could not delete item, item not found."
-                        )
+                        return Error(message="Could not delete item, item not found.")
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not delete item")
 
-    # def delete(self, item_id: int) -> bool:
-    #     try:
-    #         with pool.connection() as conn:
-    #             with conn.cursor() as db:
-    #                 result = db.execute(
-    #                     """
-    #                     DELETE FROM item
-    #                     WHERE id = %s;
-    #                     """,
-    #                     [item_id]
-    #                 )
-    #                 print("OUR result", result)
-    #             if result.rowcount >= 1:
-    #                 return Message(
-    #                   detail=f"Item with id {item_id} deleted successfully."
-    #                 )
-    #             else:
-    #                     return Error(
-    #                       message="Could not delete item, item not found."
-    #                     )
-    #     except Exception as e:
-    #         print(f"Original error: {e}")
-    #         return Error(message="Could not delete item")
-
-    def item_in_to_out(self, id: int, item: ItemIn):
+    def item_in_to_out(self, id: int, item: ItemIn, account_id: int):
         old_data = item.dict()
-        return ItemOut(id=id, **old_data)
+        return ItemOut(id=id, account_id=account_id, **old_data)
 
-    # def record_to_ItemOut(self, record):
-    #     return ItemOut(
-    #         id=record[0],
-    #         name=record[1],
-    #         item_type=record[2],
-    #         quantity=record[3],
-    #         purchased_or_prepared=record[4],
-    #         time_of_post=record[5],
-    #         expiration=record[6],
-    #         location=record[7],
-    #         dietary_restriction=json.loads(record[8]),
-    #         description=record[9],
-    #         pickup_instructions=record[10],
-    #     )
-    def record_to_ItemOut(self, record):
+    def record_to_ItemOut(self, record, account_id):
         try:
             dietary_restriction = json.loads(record[8])
         except json.JSONDecodeError as e:
@@ -242,4 +202,5 @@ class ItemRepository:
             dietary_restriction=dietary_restriction,
             description=record[9],
             pickup_instructions=record[10],
+            account_id=record[11]
         )
