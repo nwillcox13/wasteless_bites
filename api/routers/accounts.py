@@ -20,7 +20,6 @@ from queries.accounts import (
 )
 
 
-
 class AccountForm(BaseModel):
     email: str
     password: str
@@ -70,6 +69,7 @@ async def get_token(
             "account": account,
         }
 
+
 @router.get("/api/accounts/me", response_model=AccountOut | HttpError)
 async def get_account_info(
     account: AccountOut = Depends(authenticator.get_current_account_data)
@@ -81,6 +81,7 @@ async def get_account_info(
         )
     else:
         return account
+
 
 @router.put("/api/accounts/me", response_model=AccountOut | HttpError)
 async def update_my_account(
@@ -101,6 +102,7 @@ async def update_my_account(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=str(ve),
             )
+
 
 @router.delete("/api/accounts/me", response_model=AccountOut | HttpError)
 async def delete_my_account(

@@ -18,6 +18,7 @@ from queries.items import (
 from typing import List, Union, Optional
 from authenticator import authenticator
 
+
 class ItemForm(BaseModel):
     name: str
     item_type: str
@@ -38,6 +39,7 @@ depends = Depends()
 def get_item_repo() -> ItemRepository:
     return ItemRepository()
 
+
 @router.post("/items")
 def create_item(
     item: ItemIn,
@@ -46,6 +48,7 @@ def create_item(
 ):
     account_id = account_data["id"]
     return repo.create(item, account_id)
+
 
 @router.get("/items", response_model=Union[Error, List[ItemOut]])
 def get_all(
@@ -56,6 +59,7 @@ def get_all(
     account_id = account_data["id"]
     items = repo.get_all(account_id)
     return items
+
 
 @router.get("/items/{item_id}", response_model=Optional[ItemOut])
 def get_one(
@@ -69,6 +73,7 @@ def get_one(
     if item is None:
         response.status_code = 404
     return item
+
 
 @router.put("/items/{item_id}", response_model=Optional[ItemOut])
 def update(
