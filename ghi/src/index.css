@@ -62,3 +62,128 @@ hr.break {
 .btn-primary:hover {
   background-color: #676329; /* Change to your desired hover color */
 }
+
+.btn-secondary {
+  background-color: #91684d; /* Change to your desired color */
+  padding: 5px 25px; /* Adjust the padding as per your needs */
+  border-radius: 40px;
+  color: #fdfdfd;
+  font-size: 20px;
+  border: none;
+  margin-top: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.btn-secondary:hover {
+  background-color: #676329; /* Change to your desired hover color */
+}
+
+a.nav-link {
+  color:#fafafa;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  padding: 5px 15px; /* Adjust the padding as per your needs */
+  border-radius: 40px;
+  /* color: #fdfdfd; */
+  font-size: 20px;
+  border: none;
+  margin-top: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.navbar {
+    background-color: #91684d;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+a.navbar-brand {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: larger;
+  color: #fafafa;
+}
+
+a.nav-link:hover {
+  background-position: 0 -130px;
+
+}
+
+a.nav-link:active {
+    background-position: 0 -260px;
+
+}
+
+
+.container{
+  background-color: 91684d;
+  padding : 20px;
+  margin : 50px auto;
+  display : grid;
+  width : 70%;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-radius: 20px;
+}
+
+.splash{
+  cursor : pointer;
+  position: fixed;
+  top : 50%;
+  left : 50%;
+  height : 50%;
+  width : 50%;
+  transform : translate(-50%,-50%);
+  background-color: rgb(17, 95, 0);
+  transition: all linear 400ms;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 40px;
+}
+.hidden{
+  transition : 0.5s;
+  display : none;
+}
+.splash-header {
+  height: 90%;
+  color: white;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  background-color: #6ba304;
+}
+
+.splash-container {
+  background-color: white;
+  padding : 20px;
+  margin : 50px auto;
+  display : grid;
+  width : 70%;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-radius: 20px;
+}
+
+.navbar-toggler {
+    padding: 0.25rem 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1;
+    background-color: #6ba304;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    transition: box-shadow .15s ease-in-out;
+}
+
+
+a.navbar-brand-active {
+  color: #fafafa;
+}
