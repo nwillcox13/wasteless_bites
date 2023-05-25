@@ -95,6 +95,7 @@ def update(
         response.status_code = 404
     return item
 
+
 @router.delete("/items/{item_id}", response_model=Optional[Message])
 def delete(
     item_id: int,
@@ -105,7 +106,19 @@ def delete(
     result = repo.delete(item_id)
     if not result:
         response.status_code = 404
-    return {"message": f"Deleted item {item_id}"}
+    return {"detail": f"Deleted item {item_id}"}
+
+# @router.delete("/items/{item_id}", response_model=Optional[Message])
+# def delete(
+#     item_id: int,
+#     response: Response,
+#     repo: ItemRepository = Depends(get_item_repo),
+#     account_data: dict = Depends(authenticator.get_current_account_data),
+# ):
+#     result = repo.delete(item_id)
+#     if not result:
+#         response.status_code = 404
+#     return {"message": f"Deleted item {item_id}"}
 # @router.put("/items/{item_id}", response_model=Union[ItemOut, Error])
 # def update(
 #     item_id: int,

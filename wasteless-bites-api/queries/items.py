@@ -154,7 +154,8 @@ class ItemRepository:
             print(f"Original error: {e}")
             return Error(message="Could not update item")
 
-    def delete_item(self, item_id: int) -> bool:
+
+    def delete(self, item_id: int) -> Union[Message, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -166,10 +167,34 @@ class ItemRepository:
                         [item_id]
                     )
                     print("OUR result", result)
-                    return result.rowcount >= 1
+                if result.rowcount >= 1:
+                    return Message(detail=f"Item with id {item_id} deleted successfully.")
+                else:
+                        return Error(message="Could not delete item, item not found.")
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not delete item")
+
+
+    # def delete(self, item_id: int) -> bool:
+    #     try:
+    #         with pool.connection() as conn:
+    #             with conn.cursor() as db:
+    #                 result = db.execute(
+    #                     """
+    #                     DELETE FROM item
+    #                     WHERE id = %s;
+    #                     """,
+    #                     [item_id]
+    #                 )
+    #                 print("OUR result", result)
+    #             if result.rowcount >= 1:
+    #                 return Message(detail=f"Item with id {item_id} deleted successfully.")
+    #             else:
+    #                     return Error(message="Could not delete item, item not found.")
+    #     except Exception as e:
+    #         print(f"Original error: {e}")
+    #         return Error(message="Could not delete item")
 
     def item_in_to_out(self, id: int, item: ItemIn):
         old_data = item.dict()
