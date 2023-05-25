@@ -67,3 +67,54 @@ async def get_token(
             "type": "Bearer",
             "account": account,
         }
+
+@router.get("/api/accounts/me", response_model=AccountOut | HttpError)
+async def get_account_info(
+    account: AccountOut = Depends(authenticator.get_current_account_data)
+) -> AccountOut:
+    if not account:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authenticated",
+        )
+    else:
+        return account
+
+@router.put("/api/accounts/me", response_model=AccountOut | HttpError)
+async def update_my_account(
+    info: AccountIn,
+    accounts: AccountRepository = Depends(),
+    account: AccountOut = Depends(authenticator.get_current_account_data),
+):
+    if not account:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authenticated",
+        )
+    else:
+        try:
+            return accounts.update(account['email'], info)
+        except ValueError as ve:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(ve),
+            )
+
+@router.delete("/api/accounts/me", response_model=AccountOut | HttpError)
+async def delete_my_account(
+    accounts: AccountRepository = Depends(),
+    account: AccountOut = Depends(authenticator.get_current_account_data),
+):
+    if not account:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authenticated",
+        )
+    else:
+        try:
+            return accounts.delete(account['email'])
+        except ValueError as ve:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(ve),
+            )

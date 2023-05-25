@@ -17,9 +17,7 @@ from queries.items import (
 )
 from typing import List, Union, Optional
 from authenticator import authenticator
-from routers.accounts import get_token
-from queries.accounts import AccountOut
-#DO WE NEED THIS?
+
 class ItemForm(BaseModel):
     name: str
     item_type: str

@@ -1,7 +1,14 @@
 from pydantic import BaseModel
 from queries.pool import pool
-from typing import List, Union
+from typing import List, Union, Any
 
+authenticator: Any = None
+
+def get_authenticator():
+    global authenticator
+    if not authenticator:
+        from authenticator import authenticator
+    return authenticator
 
 class AccountIn(BaseModel):
     first_name: str
@@ -57,6 +64,7 @@ class AccountRepository:
                     ]
                 )
                 id = result.fetchone()[0]
+                # old_account = account.dict()
                 return AccountOutWithPassword(
                         id=id,
                         first_name=account.first_name,
@@ -103,6 +111,49 @@ class AccountRepository:
         except Exception as e:
             print(f"Original error: {e}")
             raise ValueError("Could not get account") from e
+
+    def update(self, email: str, updated_info: AccountIn) -> AccountOutWithPassword:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        UPDATE account
+                        SET first_name = %s, last_name = %s, password = %s
+                        WHERE email = %s
+                        RETURNING id, first_name, last_name, email, password
+                        """,
+                        [
+                            updated_info.first_name,
+                            updated_info.last_name,
+                            get_authenticator().hash_password(updated_info.password),
+                            email
+                        ]
+                    )
+                    record = result.fetchone()
+                    return self.record_to_account(record)
+        except Exception as e:
+            print(f"Original error: {e}")
+            raise ValueError("Could not update account") from e
+
+    def delete(self, email: str) -> AccountOut:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        DELETE FROM account
+                        WHERE email = %s
+                        RETURNING id, first_name, last_name, email
+                        """,
+                        [email]
+                    )
+                    record = result.fetchone()
+                    return self.record_to_account_out(record)
+        except Exception as e:
+            print(f"Original error: {e}")
+            raise ValueError("Could not delete account") from e
+            # return data
 
     def account_in_to_out(self, id: int, account: AccountIn):
         old_data = account.dict()
