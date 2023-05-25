@@ -15,8 +15,9 @@ from queries.items import (
     Error
 )
 from typing import List, Union, Optional
+from authenticator import authenticator
 
-
+#DO WE NEED THIS?
 class ItemForm(BaseModel):
     name: str
     item_type: str
@@ -38,14 +39,16 @@ depends = Depends()
 def create_item(
     item: ItemIn,
     repo: ItemRepository = depends,
+    account_id: authenticator.get_current_account_id = depends,
 ):
-    return repo.create(item)
+    return repo.create(item, account_id)
 
 
 @router.get("/items", response_model=List[Union[ItemOut, Error]])
 def get_all(
     items: ItemRepository = depends
 ):
+    print(authenticator.try_get_current_account_data)
     return items.get_all()
 
 

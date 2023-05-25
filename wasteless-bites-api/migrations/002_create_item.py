@@ -1,6 +1,6 @@
 steps = [
     [
-        # create table (also check timezone?)
+        # create table
         """
         CREATE TABLE item (
             id SERIAL PRIMARY KEY NOT NULL,
@@ -13,7 +13,8 @@ steps = [
             location INT,
             dietary_restriction VARCHAR(200),
             description TEXT,
-            pickup_instructions TEXT NOT NULL
+            pickup_instructions TEXT NOT NULL,
+            account_id SMALLINT REFERENCES account(id)
         );
         """,
         # drop table

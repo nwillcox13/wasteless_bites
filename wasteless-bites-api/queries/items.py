@@ -37,14 +37,15 @@ class ItemOut(BaseModel):
 
 
 class ItemRepository:
-    def create(self, item: ItemIn) -> Union[ItemOut, Error]:
+    def create(self, item: ItemIn, account_id: int) -> Union[ItemOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
                         INSERT INTO item
-                            (name,
+                            (account_id,
+                            name,
                             item_type,
                             quantity,
                             purchased_or_prepared,
@@ -55,10 +56,11 @@ class ItemRepository:
                             description,
                             pickup_instructions)
                         VALUES
-                            (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING id;
                         """,
                         [
+                            account_id,
                             item.name,
                             item.item_type,
                             item.quantity,
@@ -75,6 +77,7 @@ class ItemRepository:
                     return self.item_in_to_out(id, item)
         except Exception as e:
             print(f"Original error: {e}")
+            print("HELLOW")
             return Error(message="Could not create item")
 
     def get_all(self) -> List[Union[ItemOut, Error]]:

@@ -7,7 +7,7 @@ services:
       context: ./wasteless-bites-api
       dockerfile: Dockerfile.dev
     environment:
-      SIGNING_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6InRlYW1fZHVtcHMiLCJpYXQiOjE1MTYyMzkwMjJ9.UIUia9MyJnBWYjullXvkoVdOrURx0m57MU4zQAdsj4M
+      SIGNING_KEY: 6a5c6f4fcd5ef4e89afe0faf30f9e0ece29c0ef45196d7a06476b859fa9b1d41
       DATABASE_URL: postgresql://wasteless_user:secret@db/wasteless
       WAIT_HOSTS: db:5432
       WAIT_BEFORE: 5
