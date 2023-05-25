@@ -57,7 +57,6 @@ class AccountRepository:
                     ]
                 )
                 id = result.fetchone()[0]
-                # old_account = account.dict()
                 return AccountOutWithPassword(
                         id=id,
                         first_name=account.first_name,
@@ -104,7 +103,6 @@ class AccountRepository:
         except Exception as e:
             print(f"Original error: {e}")
             raise ValueError("Could not get account") from e
-            # return data
 
     def account_in_to_out(self, id: int, account: AccountIn):
         old_data = account.dict()

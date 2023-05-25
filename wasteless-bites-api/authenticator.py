@@ -28,28 +28,6 @@ class MyAuthenticator(Authenticator):
         # You must return TWO values from this method.
         return account['email'], AccountOut(**account)
 
-    def decode_jwt_token(self, token: str):
-        try:
-            decoded_token = jwt.decode(token, os.environ["SIGNING_KEY"], algorithms=['HS256'])
-            return decoded_token
-        except Exception:
-            raise HTTPException(status_code=401, detail="Invalid Token")
-
-    def get_current_account_id(self, authorization: Optional[str] = Header(None)) -> int:
-        if authorization is None:
-            print(authorization)
-            raise HTTPException(status_code=401, detail="HELLO")
-        try:
-            decoded_token = self.decode_jwt_token(authorization)
-            account_id = decoded_token.get("account_id")
-            if account_id is None:
-                raise HTTPException(status_code=401, detail="Invalid Token")
-            return account_id
-
-        except Exception:
-            raise HTTPException(status_code=401, detail="Invalid Token")
 
 
 authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
-
-#get_current_account_data
