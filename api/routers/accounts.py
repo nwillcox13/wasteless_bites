@@ -22,7 +22,7 @@ from queries.accounts import (
 
 
 class AccountForm(BaseModel):
-    email: str
+    username: str
     password: str
 
 
