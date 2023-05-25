@@ -12,9 +12,31 @@ function LoginForm() {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission
+
+    if (email && password) {
+      try {
+        const response = await fetch("https://localhost:8000/api/accounts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Authentication successful:", data);
+        } else {
+          console.log("Authentication failed");
+        }
+      } catch (error) {
+        console.log("Error occurred:", error);
+      }
+    } else {
+      console.log("Please fill in all the fields.");
+    }
   };
 
   return (
