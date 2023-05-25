@@ -32,3 +32,9 @@ debugged a little bit, but one of us was having technical difficulties,
 so i decided to take the time to condense some of the code and apply some CSS and BootStrap
 may have decided upon a general theme for the website and possibly a Favicon
 
+## 5-24-23
+Today was a very long lecture day. We didn't get any time to work together this morning but
+managed to get some good work done in the afternoon. Today we split up the tasks
+I went through and re-organized a lot of the code, worked on the front-end main-page'
+I also made sure all the forms were working which I ran into an issue with the create account
+

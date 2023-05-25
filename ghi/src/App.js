@@ -9,28 +9,33 @@ import SignUpForm from "./Signup";
 import ItemForm from "./ItemForm";
 import ListItems from "./ListItems";
 import ItemDetail from "./ItemDetail";
-// import { RequireToken } from "./Auth";
+import Nav from "./Nav";
+import FAQPage from "./Faq";
+
+// import{ RequireToken } from "./Auth";
 
 function App() {
   // console.log("HELLO WORLD");
   return (
     <Router>
-      <div className="container">
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/items/new" element={<ItemForm />} />
-          <Route path="/items/list" element={<ListItems />} />
-          <Route path="/items/:itemId" element={<ItemDetail />} />
-          <Route path="Signup">
-            <Route path="" element={<SignUpForm />} />
-          </Route>
-          <Route path="Login">
-            <Route path="" element={<LoginForm />} />
-          </Route>
-          <Route path="/accounts" element={<AccountList />} />
-          <Route path="/profile" element={<Profile />} /> */
-        </Routes>
-      </div>
+      <Nav />
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/items/new" element={<ItemForm />} />
+            <Route path="/items/list" element={<ListItems />} />
+            <Route path="/items/:itemId" element={<ItemDetail />} />
+            <Route path="signup">
+              <Route path="" element={<SignUpForm />} />
+            </Route>
+            <Route path="login">
+              <Route path="" element={<LoginForm />} />
+            </Route>
+            <Route path="/accounts" element={<AccountList />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/faq" element={< FAQPage />} />
+          </Routes>
+        </div>
     </Router>
   );
 }

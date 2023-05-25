@@ -10,6 +10,7 @@ from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 
 from pydantic import BaseModel
+from typing import List, Union, Optional
 
 from queries.accounts import (
     AccountIn,
@@ -17,6 +18,7 @@ from queries.accounts import (
     AccountRepository,
     AccountOutWithPassword,
     DuplicateAccountError,
+    Error
 )
 # from queries.items import ItemRepository
 
@@ -34,6 +36,7 @@ class HttpError(BaseModel):
 
 
 router = APIRouter()
+depends = Depends()
 
 
 @router.post("/api/accounts", response_model=AccountToken | HttpError)
