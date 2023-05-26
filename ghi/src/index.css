@@ -138,8 +138,6 @@ a.nav-link:active {
 
 .splash{
   cursor : pointer;
-.splash {
-  cursor: pointer;
   position: fixed;
   top: 50%;
   left: 50%;
