@@ -21,3 +21,5 @@ Harim had a docker issue right of the bat so River showed us some things he had 
 Today was 'split off and work on small things' day. I was able to add the get all accounts to the backend UI and begin showing ItemList and ItemDetail specific to a logged-in user (still incomplete). Everyone is currently plugging away at their own chores and we plan on circling back and plugging things in together once we've all gotten as far as we can go.
 
 ## 25 MAY 2023
+
+Paired programming again, River and I worked on the login handleSubmit and then cleaned up and refactored some existing code as well as put some effort in on the front end while Chris and Harim continued to work out the auth. We spent a lot of time pushing and pulling from git to get us all on the same page and also took a step back to discuss the roadmap for our remaining time before the due date. Everyone is happy with the pace so far and think we will be in a good spot to implement more intricate styling and strectch goals without sweating the deadline too much.

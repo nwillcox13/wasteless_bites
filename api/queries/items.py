@@ -36,8 +36,10 @@ class ItemOut(BaseModel):
     pickup_instructions: str
     account_id: int
 
+
 class Message(BaseModel):
     detail: str
+
 
 class ItemRepository:
     def create(self, item: ItemIn, account_id: int) -> Union[ItemOut, Error]:
@@ -82,7 +84,7 @@ class ItemRepository:
             print(f"Original error: {e}")
             return Error(message="Could not create item")
 
-    def get_all(self, account_id: int) -> Union[Error,List[ItemOut]]:
+    def get_all(self, account_id: int) -> Union[Error, List[ItemOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -119,7 +121,12 @@ class ItemRepository:
             print(f"Original error: {e}")
             return Error(message="Could not list items")
 
-    def update_item(self, item_id: int, item: ItemIn, account_id: int) -> Union[ItemOut, Error]:
+    def update_item(
+            self,
+            item_id: int,
+            item: ItemIn,
+            account_id: int
+            ) -> Union[ItemOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -157,7 +164,6 @@ class ItemRepository:
             print(f"Original error: {e}")
             return Error(message="Could not update item")
 
-
     def delete(self, item_id: int) -> Union[Message, Error]:
         try:
             with pool.connection() as conn:
@@ -171,9 +177,13 @@ class ItemRepository:
                     )
                     print("OUR result", result)
                 if result.rowcount >= 1:
-                    return Message(detail=f"Item with id {item_id} deleted successfully.")
+                    return Message(
+                        detail=f"Item with id {item_id} deleted successfully."
+                    )
                 else:
-                        return Error(message="Could not delete item, item not found.")
+                    return Error(
+                        message="Could not delete item, item not found."
+                    )
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not delete item")

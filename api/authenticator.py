@@ -29,5 +29,4 @@ class MyAuthenticator(Authenticator):
         return account['email'], AccountOut(**account)
 
 
-
 authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
