@@ -80,8 +80,8 @@ hr.break {
 }
 
 a.nav-link {
-  color:#fafafa;
-  font-family:Georgia, 'Times New Roman', Times, serif;
+  color: #fafafa;
+  font-family: Georgia, "Times New Roman", Times, serif;
   padding: 5px 15px; /* Adjust the padding as per your needs */
   border-radius: 40px;
   /* color: #fdfdfd; */
@@ -93,14 +93,14 @@ a.nav-link {
 }
 
 .navbar {
-    background-color: #91684d;
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+  background-color: #91684d;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 a.navbar-brand {
   font-family: Arial, Helvetica, sans-serif;
@@ -110,21 +110,18 @@ a.navbar-brand {
 
 a.nav-link:hover {
   background-position: 0 -130px;
-
 }
 
 a.nav-link:active {
-    background-position: 0 -260px;
-
+  background-position: 0 -260px;
 }
 
-
-.container{
+.container {
   background-color: 91684d;
-  padding : 20px;
-  margin : 50px auto;
-  display : grid;
-  width : 70%;
+  padding: 20px;
+  margin: 50px auto;
+  display: grid;
+  width: 70%;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   border-radius: 20px;
@@ -141,26 +138,28 @@ a.nav-link:active {
 
 .splash{
   cursor : pointer;
+.splash {
+  cursor: pointer;
   position: fixed;
-  top : 50%;
-  left : 50%;
-  height : 50%;
-  width : 50%;
-  transform : translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  height: 50%;
+  width: 50%;
+  transform: translate(-50%, -50%);
   background-color: rgb(17, 95, 0);
   transition: all linear 400ms;
   padding-top: 5px;
   padding-bottom: 5px;
   border-radius: 40px;
 }
-.hidden{
-  transition : 0.5s;
-  display : none;
+.hidden {
+  transition: 0.5s;
+  display: none;
 }
 .splash-header {
   height: 90%;
   color: white;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, "Times New Roman", Times, serif;
   font-size: 30px;
   display: flex;
   justify-content: center;
@@ -173,26 +172,38 @@ body {
 
 .splash-container {
   background-color: white;
-  padding : 20px;
-  margin : 50px auto;
-  display : grid;
-  width : 70%;
+  padding: 20px;
+  margin: 50px auto;
+  display: grid;
+  width: 70%;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   border-radius: 20px;
 }
 
 .navbar-toggler {
-    padding: 0.25rem 0.75rem;
-    font-size: 1.25rem;
-    line-height: 1;
-    background-color: #6ba304;
-    border: 1px solid transparent;
-    border-radius: 0.25rem;
-    transition: box-shadow .15s ease-in-out;
+  padding: 0.25rem 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  background-color: #6ba304;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  transition: box-shadow 0.15s ease-in-out;
 }
-
 
 a.navbar-brand-active {
   color: #fafafa;
+}
+
+.glass-filter {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0)
+  );
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blue(20px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 32px;
 }

@@ -29,6 +29,31 @@ function LoginForm() {
     setError('');
     // Close the login modal after successful login
     setShowLogin(false);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (email && password) {
+      try {
+        const response = await fetch("https://localhost:8000/api/accounts", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Authentication successful:", data);
+        } else {
+          console.log("Authentication failed");
+        }
+      } catch (error) {
+        console.log("Error occurred:", error);
+      }
+    } else {
+      console.log("Please fill in all the fields.");
+    }
   };
 
   return (
@@ -73,6 +98,7 @@ function LoginForm() {
       </Modal>
     </>
   );
+}
 }
 
 export default LoginForm;
