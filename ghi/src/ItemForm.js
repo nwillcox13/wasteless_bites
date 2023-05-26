@@ -1,41 +1,15 @@
 import React, { useState } from "react";
 
-// function CondensedInput(props) {
-//   const { onChange, value, placeholder, type, name, id, label } = props;
-
-//   return (
-//     <div className="col-md-6">
-//       <label htmlFor={id} className="form-label">
-//         {label}
-//       </label>
-//       <input
-//         style={{ backgroundColor: "rgb(228, 230, 240)" }}
-//         onChange={onChange}
-//         value={value}
-//         placeholder={placeholder}
-//         required
-//         type={type}
-//         name={name}
-//         id={id}
-//         className="form-control"
-//       />
-//     </div>
-//   );
-// }
-
 function CondensedInput(props) {
 const { onChange, value, placeholder, type, name, id, label, options } =
 props;
 return (
-<div className="col-md-6">
-    {" "}
+<div className="col-md-6 mb-3">
     <label htmlFor={id} className="form-label">
-    {" "}
-    {label}{" "}
-    </label>{" "}
+    {label}
+    </label>
     {type !== "select" ? (
     <input
-        style={{ backgroundColor: "rgb(228, 230, 240)" }}
         onChange={onChange}
         value={value}
         placeholder={placeholder}
@@ -47,22 +21,19 @@ return (
     />
     ) : (
     <select
-        style={{ backgroundColor: "rgb(228, 230, 240)" }}
         onChange={onChange}
         value={value}
         name={name}
         id={id}
         className="form-control"
     >
-        {" "}
         {options.map((option, index) => (
         <option key={index} value={option}>
-            {" "}
-            {option}{" "}
+            {option}
         </option>
-        ))}{" "}
+        ))}
     </select>
-    )}{" "}
+    )}
 </div>
 );
 }
@@ -82,18 +53,12 @@ onChange({ target: { name, value: newValue } });
 };
 return (
 <div className="col-md-6">
-    {" "}
     <label htmlFor={id} className="form-label">
     {label}
-    </label>{" "}
-    <div
-    className="form-control"
-    style={{ backgroundColor: "rgb(228, 230, 240)" }}
-    >
-    {" "}
+    </label>
+    <div className="form-control">
     {options.map((option, index) => (
         <div className="form-check" key={index}>
-        {" "}
         <input
             className="form-check-input"
             type="checkbox"
@@ -102,14 +67,13 @@ return (
             value={option}
             onChange={handleChange}
             checked={value.includes(option)}
-        />{" "}
+        />
         <label className="form-check-label" htmlFor={`${id}_${index}`}>
-            {" "}
-            {option}{" "}
-        </label>{" "}
+            {option}
+        </label>
         </div>
-    ))}{" "}
-    </div>{" "}
+    ))}
+    </div>
 </div>
 );
 }
@@ -185,30 +149,30 @@ if (response.ok) {
 
 return (
 <div className="row">
-<div className="col-md-6 offset-md-3">
+    <div className="col-md-6 offset-md-3">
     <div className="card shadow mt-4">
-    <div className="card-body">
-        <h1>Add an Item</h1>
+        <div className="card-body">
+        <h1 className="text-center mb-4">Create a New Item</h1>
         <form onSubmit={handleSubmit} id="create-item-form">
-        <div className="row g-3">
+            <div className="row g-3">
             <CondensedInput
-            onChange={handleFormChange}
-            value={formData.name}
-            placeholder="Name"
-            type="text"
-            name="name"
-            id="name"
-            label="Name"
+                label="Name"
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Name"
+                value={formData.name}
+                onChange={handleFormChange}
             />
             <CondensedInput
-            onChange={handleFormChange}
-            value={formData.item_type}
-            placeholder="Item type"
-            type="select"
-            name="item_type"
-            id="item_type"
-            label="Item Type"
-            options={[
+                label="Item Type"
+                type="select"
+                name="item_type"
+                id="item_type"
+                placeholder="Enter item type"
+                value={formData.item_type}
+                onChange={handleFormChange}
+                options={[
                 "Baked Goods",
                 "Baby Food/Formula",
                 "Coffee",
@@ -220,78 +184,77 @@ return (
                 "Produce",
                 "Ready-to-eat",
                 "Seafood",
-            ]}
+                ]}
             />
             <CondensedInput
-            onChange={handleFormChange}
-            value={formData.quantity}
-            placeholder="Quantity"
-            type="number"
-            name="quantity"
-            id="quantity"
-            label="Quantity"
+                label="Quantity"
+                type="number"
+                name="quantity"
+                id="quantity"
+                placeholder="Quantity"
+                value={formData.quantity}
+                onChange={handleFormChange}
             />
             <CondensedInput
-            onChange={handleFormChange}
-            value={formData.purchased_or_prepared}
-            placeholder="Purchased or Prepared"
-            type="datetime-local"
-            name="purchased_or_prepared"
-            id="purchased_or_prepared"
-            label="Purchased or Prepared"
+                label="Purchased or Prepared"
+                type="datetime-local"
+                name="purchased_or_prepared"
+                id="purchased_or_prepared"
+                placeholder="Purchased or Prepared"
+                value={formData.purchased_or_prepared}
+                onChange={handleFormChange}
             />
             <CondensedInput
-            onChange={handleFormChange}
-            value={formData.time_of_post}
-            placeholder="Time of post"
-            type="datetime-local"
-            name="time_of_post"
-            id="time_of_post"
-            label="Time of post"
+                label="Time of Post"
+                type="datetime-local"
+                name="time_of_post"
+                id="time_of_post"
+                value={formData.time_of_post}
+                onChange={handleFormChange}
             />
             <CondensedInput
-            onChange={handleFormChange}
-            value={formData.expiration}
-            placeholder="Expiration"
-            type="datetime-local"
-            name="expiration"
-            id="expiration"
-            label="Expiration"
+                label="Expiration"
+                type="datetime-local"
+                name="expiration"
+                id="expiration"
+                value={formData.expiration}
+                onChange={handleFormChange}
             />
             <CondensedInput
-            onChange={handleFormChange}
-            value={formData.location}
-            placeholder="Location"
-            type="number"
-            name="location"
-            id="location"
-            label="Location"
+                label="Location"
+                type="text"
+                name="location"
+                id="location"
+                placeholder="Location"
+                value={formData.location}
+                onChange={handleFormChange}
             />
             <CondensedInput
-            onChange={handleFormChange}
-            value={formData.description}
-            placeholder="Item Description"
-            type="textarea"
-            name="description"
-            id="description"
-            label="Item Description"
+                label="Description"
+                type="textarea"
+                name="description"
+                id="description"
+                placeholder="Item Description"
+                value={formData.description}
+                onChange={handleFormChange}
             />
             <CondensedInput
-            onChange={handleFormChange}
-            value={formData.pickup_instructions}
-            placeholder="Pick-up Instructions"
-            type="text"
-            name="pickup_instructions"
-            id="pickup_instructions"
-            label="Pick-up Instructions"
+                label="Pick-up Instructions"
+                type="text"
+                name="pickup_instructions"
+                id="pickup_instructions"
+                placeholder="Enter pickup instructions"
+                value={formData.pickup_instructions}
+                onChange={handleFormChange}
             />
             <CondensedCheckboxInput
-            onChange={handleFormChange}
-            value={formData.dietary_restriction}
-            name="dietary_restriction"
-            id="dietary_restriction"
-            label="Dietary restrictions"
-            options={[
+                label="Dietary Restriction"
+                name="dietary_restriction"
+                id="dietary_restriction"
+                options={["Vegetarian", "Vegan", "Gluten-Free", "Nut-Free"]}
+                value={formData.dietary_restriction}
+                onChange={handleFormChange}
+                options={[
                 "Gluten-Free",
                 "Dairy-Free",
                 "Vegetarian",
@@ -305,18 +268,18 @@ return (
                 "Kosher",
                 "Halal",
                 "Other",
-            ]}
+                ]}
             />
-        </div>
-        <div className="col-12">
+            </div>
+            <div className="col-12">
             <button type="submit" className="btn btn-primary">
-            Add
+                Submit
             </button>
-        </div>
+            </div>
         </form>
+        </div>
     </div>
     </div>
-</div>
 </div>
 );
 }

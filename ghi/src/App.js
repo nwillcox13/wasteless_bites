@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AccountList from "./AccountList";
 import React from "react";
 import MainPage from "./Main";
-import LoginForm from "./Login";
 import Profile from "./Profile";
 import SignUpForm from "./Signup";
 import ItemForm from "./ItemForm";
@@ -11,6 +10,7 @@ import ListItems from "./ListItems";
 import ItemDetail from "./ItemDetail";
 import Nav from "./Nav";
 import FAQPage from "./Faq";
+import LoginForm from "./Login";
 
 // import{ RequireToken } from "./Auth";
 
@@ -41,14 +41,4 @@ function App() {
 }
 
 export default App;
-{
-  /* <Route path="Signup">
-            <Route path="" element={<SignUpForm />} />
-          </Route>
-          <Route path="Login">
-            <Route path="" element={<LoginForm />} />
-          </Route>
 
-          <Route path="/accounts" element={<AccountList />} />
-          <Route path="/profile" element={<Profile />} /> */
-}
