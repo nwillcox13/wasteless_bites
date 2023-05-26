@@ -11,14 +11,15 @@ import ListItems from "./ListItems";
 import ItemDetail from "./ItemDetail";
 import Nav from "./Nav";
 import FAQPage from "./Faq";
-
+import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 // import{ RequireToken } from "./Auth";
 
 function App() {
   // console.log("HELLO WORLD");
   return (
-    <Router>
-      <Nav />
+    <AuthProvider>
+      <Router>
+        <Nav />
         <div className="container">
           <Routes>
             <Route path="/" element={<MainPage />} />
@@ -33,22 +34,12 @@ function App() {
             </Route>
             <Route path="/accounts" element={<AccountList />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/faq" element={< FAQPage />} />
+            <Route path="/faq" element={<FAQPage />} />
           </Routes>
         </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 }
 
 export default App;
-{
-  /* <Route path="Signup">
-            <Route path="" element={<SignUpForm />} />
-          </Route>
-          <Route path="Login">
-            <Route path="" element={<LoginForm />} />
-          </Route>
-
-          <Route path="/accounts" element={<AccountList />} />
-          <Route path="/profile" element={<Profile />} /> */
-}

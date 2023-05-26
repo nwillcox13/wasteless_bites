@@ -17,17 +17,22 @@ function LoginForm() {
 
     if (email && password) {
       try {
-        const response = await fetch("https://localhost:8000/api/accounts", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        });
+        const response = await fetch(
+          "http://localhost:8000/api/accounts/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
           console.log("Authentication successful:", data);
+          const { token } = data;
+          localStorage.setItem("authToken", token);
         } else {
           console.log("Authentication failed");
         }

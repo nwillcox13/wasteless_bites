@@ -16,9 +16,8 @@ from queries.accounts import (
     AccountRepository,
     AccountOutWithPassword,
     DuplicateAccountError,
-    Error
+    Error,
 )
-
 
 
 class AccountForm(BaseModel):
@@ -58,10 +57,46 @@ async def create_account(
     return AccountToken(account=account, **token.dict())
 
 
+@router.post("/api/accounts/login", response_model=AccountToken | HttpError)
+async def login_account(
+    form: AccountForm,
+    request: Request,
+    response: Response,
+    accounts: AccountRepository = Depends(),
+):
+    try:
+        account = accounts.get(form.username)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials",
+        )
+    token = await authenticator.login(response, request, form, accounts)
+    return AccountToken(account=account, **token.dict())
+
+
+@router.post("/api/accounts/logout")
+async def logout_account(
+    request: Request,
+    response: Response,
+    accounts: AccountRepository = Depends(),
+    account: AccountOut = Depends(authenticator.get_current_account_data),
+):
+    if not account:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authenticated",
+        )
+    else:
+        # Delete the token from client side (browser)
+        response.delete_cookie(key=authenticator.cookie_name)
+        return {"detail": "Logged out"}
+
+
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,
-    account: AccountOut = Depends(authenticator.try_get_current_account_data)
+    account: AccountOut = Depends(authenticator.try_get_current_account_data),
 ) -> AccountToken | None:
     if account and authenticator.cookie_name in request.cookies:
         return {
@@ -70,9 +105,10 @@ async def get_token(
             "account": account,
         }
 
+
 @router.get("/api/accounts/me", response_model=AccountOut | HttpError)
 async def get_account_info(
-    account: AccountOut = Depends(authenticator.get_current_account_data)
+    account: AccountOut = Depends(authenticator.get_current_account_data),
 ) -> AccountOut:
     if not account:
         raise HTTPException(
@@ -81,6 +117,7 @@ async def get_account_info(
         )
     else:
         return account
+
 
 @router.put("/api/accounts/me", response_model=AccountOut | HttpError)
 async def update_my_account(
@@ -95,12 +132,13 @@ async def update_my_account(
         )
     else:
         try:
-            return accounts.update(account['email'], info)
+            return accounts.update(account["email"], info)
         except ValueError as ve:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=str(ve),
             )
+
 
 @router.delete("/api/accounts/me", response_model=AccountOut | HttpError)
 async def delete_my_account(
@@ -114,7 +152,7 @@ async def delete_my_account(
         )
     else:
         try:
-            return accounts.delete(account['email'])
+            return accounts.delete(account["email"])
         except ValueError as ve:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
