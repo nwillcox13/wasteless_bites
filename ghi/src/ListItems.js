@@ -87,7 +87,7 @@ return (
               </tr>
             </thead>
             <tbody>
-              {items?.map((item) => {
+              {sortedItems?.map((item) => {
                 return (
                   <tr key={item.id}>
                     <td>
