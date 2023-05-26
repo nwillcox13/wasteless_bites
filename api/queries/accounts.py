@@ -75,7 +75,7 @@ class AccountRepository:
                         hashed_password=account.password,
                     )
 
-    def get_all(self) -> List[Union[AccountOut, Error]]:
+    def get_all_accounts(self) -> List[Union[AccountOut, Error]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
