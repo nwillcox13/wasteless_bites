@@ -1,5 +1,25 @@
 import React, { useState } from "react";
-
+// function CondensedInput(props) {
+//   const { onChange, value, placeholder, type, name, id, label } = props;
+//   return (
+//     <div className="col-md-6">
+//       <label htmlFor={id} className="form-label">
+//         {label}
+//       </label>
+//       <input
+//         style={{ backgroundColor: "rgb(228, 230, 240)" }}
+//         onChange={onChange}
+//         value={value}
+//         placeholder={placeholder}
+//         required
+//         type={type}
+//         name={name}
+//         id={id}
+//         className="form-control"
+//       />
+//     </div>
+//   );
+// }
 function CondensedInput(props) {
   const { onChange, value, placeholder, type, name, id, label, options } =
     props;
@@ -43,7 +63,6 @@ function CondensedInput(props) {
     </div>
   );
 }
-
 function CondensedCheckboxInput(props) {
   const { onChange, value, name, id, label, options } = props;
   const handleChange = (event) => {
@@ -90,7 +109,6 @@ function CondensedCheckboxInput(props) {
     </div>
   );
 }
-
 function ItemForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -104,7 +122,6 @@ function ItemForm() {
     description: "",
     pickup_instructions: "",
   });
-
   const handleFormChange = (event) => {
     const { value, name } = event.target;
     const type = event.target.type;
@@ -112,13 +129,11 @@ function ItemForm() {
       const isChecked = event.target.checked;
       const checkboxValue = event.target.value;
       let updatedValue = [...formData.dietary_restriction];
-
       if (isChecked) {
         updatedValue.push(checkboxValue);
       } else {
         updatedValue = updatedValue.filter((val) => val !== checkboxValue);
       }
-
       setFormData((prevData) => ({
         ...prevData,
         [name]: updatedValue,
@@ -130,18 +145,15 @@ function ItemForm() {
       }));
     }
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const newItemUrl = "http://localhost:8000/items";
     const itemData = { ...formData };
-    const token = localStorage.getItem("authToken");
     const fetchConfig = {
       method: "POST",
       body: JSON.stringify(itemData),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     };
     console.log(itemData);
@@ -161,7 +173,6 @@ function ItemForm() {
       });
     }
   };
-
   return (
     <div className="row">
       <div className="col-md-6 offset-md-3">
@@ -299,5 +310,4 @@ function ItemForm() {
     </div>
   );
 }
-
 export default ItemForm;

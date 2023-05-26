@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import logoImage from "./HiResTransparentLogo.png";
+import LoginButton from "./LoginButton";
+
 
 function Nav() {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -105,5 +107,7 @@ function Nav() {
     </div>
   );
 }
+
+
 
 export default Nav;
