@@ -5,12 +5,19 @@ export default function ListItems() {
 
   const fetchData = async () => {
     const url = "http://localhost:8000/items";
-    const response = await fetch(url);
-    console.log(response);
+    const authToken = localStorage.getItem("authToken");
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
     if (response.ok) {
       const data = await response.json();
       setItems(data);
-      console.log(items);
+    } else {
+      console.error("Failed to fetch items:", await response.text());
     }
   };
 
@@ -29,13 +36,13 @@ export default function ListItems() {
                 <th>Item Name</th>
                 <th>Item Type</th>
                 <th>Quantity</th>
-                {/* <th>Purchased or Prepared</th> */}
+                <th>Purchased or Prepared</th>
                 <th>Time of post</th>
                 <th>Expiration</th>
                 <th>Location</th>
-                {/* <th>Dietary restriction</th>
+                <th>Dietary restriction</th>
                 <th>Description</th>
-                <th>Pick-up instructions</th> */}
+                <th>Pick-up instructions</th>
               </tr>
             </thead>
             <tbody>
@@ -47,21 +54,21 @@ export default function ListItems() {
                     </td>
                     <td>{item.item_type}</td>
                     <td>{item.quantity}</td>
-                    {/* <td>{item.purchased_or_prepared}</td> */}
+                    <td>{item.purchased_or_prepared}</td>
                     <td>{item.time_of_post}</td>
                     <td>{item.expiration}</td>
                     <td>{item.location}</td>
-                    {/* <td>{item.dietary_restriction}</td>
+                    <td>{item.dietary_restriction}</td>
                     <td>{item.description}</td>
-                    <td>{item.pickup_instructions}</td> */}
-                    {/* <td> */}
-                    {/* <button
+                    <td>{item.pickup_instructions}</td>
+                    <td>
+                      {/* <button
                         className="btn btn-secondary"
                         onClick={() => deleteItem(item.id)}
                       >
                         Remove
                       </button> */}
-                    {/* </td> */}
+                    </td>
                   </tr>
                 );
               })}

@@ -8,6 +8,7 @@ import SignUpForm from "./Signup";
 import ItemForm from "./ItemForm";
 import ListItems from "./ListItems";
 import ItemDetail from "./ItemDetail";
+import LoginForm from "./Login";
 import Nav from "./Nav";
 import FAQPage from "./Faq";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";

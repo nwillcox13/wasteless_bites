@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Button, Modal, Form } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Button, Modal, Form } from "react-bootstrap";
 
 function LoginForm() {
   const [showLogin, setShowLogin] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -15,23 +15,23 @@ function LoginForm() {
     setPassword(event.target.value);
   };
 
-  const handleLogin = (event) => {
-    event.preventDefault();
-    if (email.trim() === '' || password.trim() === '') {
-      setError('Please enter both email and password.');
-      return;
-    }
-    // Perform login logic here (e.g., API request to FastAPI backend)
-    // Handle authentication and update application state accordingly
-    // You can display error messages on failure or redirect on success
-    setEmail('');
-    setPassword('');
-    setError('');
-    // Close the login modal after successful login
-    setShowLogin(false);
+  // const handleLogin = (event) => {
+  //   event.preventDefault();
+  //   if (email.trim() === "" || password.trim() === "") {
+  //     setError("Please enter both email and password.");
+  //     return;
+  //   }
+  //   // Perform login logic here (e.g., API request to FastAPI backend)
+  //   // Handle authentication and update application state accordingly
+  //   // You can display error messages on failure or redirect on success
+  //   setEmail("");
+  //   setPassword("");
+  //   setError("");
+  //   // Close the login modal after successful login
+  // setShowLogin(false);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (email && password) {
       try {
         const response = await fetch(
@@ -41,17 +41,22 @@ function LoginForm() {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ username: email, password }),
           }
         );
 
         if (response.ok) {
           const data = await response.json();
           console.log("Authentication successful:", data);
-          const { token } = data;
-          localStorage.setItem("authToken", token);
+          const { access_token } = data;
+          localStorage.setItem("authToken", access_token);
+          setEmail("");
+          setPassword("");
         } else {
           console.log("Authentication failed");
+          const data = await response.json();
+          console.error(data.detail);
+          setError(data.detail || "Authentication failed");
         }
       } catch (error) {
         console.log("Error occurred:", error);
@@ -72,7 +77,7 @@ function LoginForm() {
           <Modal.Title>Login</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleLogin}>
+          <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
@@ -103,7 +108,6 @@ function LoginForm() {
       </Modal>
     </>
   );
-}
 }
 
 export default LoginForm;
