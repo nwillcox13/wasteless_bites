@@ -12,6 +12,7 @@ import Nav from "./Nav";
 import FAQPage from "./Faq";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import Login from "./Login";
+import LoginForm from "./Login";
 // import{ RequireToken } from "./Auth";
 
 function App() {
