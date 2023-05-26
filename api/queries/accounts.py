@@ -4,11 +4,13 @@ from typing import List, Union, Any
 
 authenticator: Any = None
 
+
 def get_authenticator():
     global authenticator
     if not authenticator:
         from authenticator import authenticator
     return authenticator
+
 
 class AccountIn(BaseModel):
     first_name: str
@@ -73,7 +75,7 @@ class AccountRepository:
                         hashed_password=account.password,
                     )
 
-    def get_all(self) -> List[Union[AccountOut, Error]]:
+    def get_all_accounts(self) -> List[Union[AccountOut, Error]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -110,9 +112,15 @@ class AccountRepository:
                     return self.record_to_account(record)
         except Exception as e:
             print(f"Original error: {e}")
-            raise ValueError("Could not get account") from e
+            raise ValueError(
+                "Could not get account"
+                ) from e
 
-    def update(self, email: str, updated_info: AccountIn) -> AccountOutWithPassword:
+    def update(
+            self,
+            email: str,
+            updated_info: AccountIn
+            ) -> AccountOutWithPassword:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -126,7 +134,9 @@ class AccountRepository:
                         [
                             updated_info.first_name,
                             updated_info.last_name,
-                            get_authenticator().hash_password(updated_info.password),
+                            get_authenticator().hash_password(
+                                updated_info.password
+                            ),
                             email
                         ]
                     )
