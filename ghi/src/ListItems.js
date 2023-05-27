@@ -49,11 +49,9 @@ export default function ListItems() {
     return sortedItems;
   };
 
-  const sortedItems = sortItems(items)
+  const sortedItems = sortItems(items);
 
-
-
-return (
+  return (
     <div className="container my-4">
       <div className="row">
         <div className="col-12">
@@ -106,7 +104,7 @@ return (
                     <td>{item.time_of_post}</td>
                     <td>{item.expiration}</td>
                     <td>{item.location}</td>
-                    <td>{item.dietary_restriction}</td>
+                    <td>{item.dietary_restriction.join(", ")}</td>
                     <td>{item.description}</td>
                     <td>{item.pickup_instructions}</td>
                     <td>

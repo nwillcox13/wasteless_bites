@@ -5,11 +5,9 @@ function CondensedInput(props) {
     props;
   return (
     <div className="col-md-6">
-      {" "}
       <label htmlFor={id} className="form-label">
-        {" "}
-        {label}{" "}
-      </label>{" "}
+        {label}
+      </label>
       {type !== "select" ? (
         <input
           style={{ backgroundColor: "rgb(228, 230, 240)" }}
@@ -30,47 +28,50 @@ function CondensedInput(props) {
           name={name}
           id={id}
           className="form-control"
+          required
         >
-          {" "}
+          <option value="" disabled>
+            Select an option
+          </option>
           {options.map((option, index) => (
             <option key={index} value={option}>
-              {" "}
-              {option}{" "}
+              {option}
             </option>
-          ))}{" "}
+          ))}
         </select>
-      )}{" "}
+      )}
     </div>
   );
 }
 
 function CondensedCheckboxInput(props) {
   const { onChange, value, name, id, label, options } = props;
+
   const handleChange = (event) => {
     const checked = event.target.checked;
     const checkedValue = event.target.value;
     let newValue = [...value];
+
     if (checked) {
       newValue.push(checkedValue);
     } else {
       newValue = newValue.filter((val) => val !== checkedValue);
     }
+
     onChange({ target: { name, value: newValue } });
   };
+
   return (
     <div className="col-md-6">
-      {" "}
       <label htmlFor={id} className="form-label">
         {label}
-      </label>{" "}
+      </label>
       <div
         className="form-control"
         style={{ backgroundColor: "rgb(228, 230, 240)" }}
       >
-        {" "}
         {options.map((option, index) => (
           <div className="form-check" key={index}>
-            {" "}
             <input
               className="form-check-input"
               type="checkbox"
@@ -79,14 +80,13 @@ function CondensedCheckboxInput(props) {
               value={option}
               onChange={handleChange}
               checked={value.includes(option)}
-            />{" "}
+            />
             <label className="form-check-label" htmlFor={`${id}_${index}`}>
-              {" "}
-              {option}{" "}
-            </label>{" "}
+              {option}
+            </label>
           </div>
-        ))}{" "}
-      </div>{" "}
+        ))}
+      </div>
     </div>
   );
 }
@@ -191,6 +191,7 @@ function ItemForm() {
                   name="item_type"
                   id="item_type"
                   label="Item Type"
+                  required
                   options={[
                     "Baked Goods",
                     "Baby Food/Formula",
