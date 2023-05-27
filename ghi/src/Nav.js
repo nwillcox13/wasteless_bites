@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import logoImage from "./HiResTransparentLogo.png";
 import LoginButton from "./LoginButton";
 
-
 function Nav() {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
@@ -100,6 +99,14 @@ function Nav() {
                   FAQ
                 </NavLink>
               </li>
+              <NavLink
+                className="nav-link"
+                aria-current="page"
+                to="/logout"
+                onClick={closeNav}
+              >
+                Logout
+              </NavLink>
             </ul>
           </div>
         </div>
@@ -107,7 +114,5 @@ function Nav() {
     </div>
   );
 }
-
-
 
 export default Nav;

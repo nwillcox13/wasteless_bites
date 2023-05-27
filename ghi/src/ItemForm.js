@@ -30,14 +30,14 @@ function CondensedInput(props) {
           name={name}
           id={id}
           className="form-control"
+          required // Add this line
         >
-          {" "}
+          <option value="">Select an option</option>
           {options.map((option, index) => (
             <option key={index} value={option}>
-              {" "}
-              {option}{" "}
+              {option}
             </option>
-          ))}{" "}
+          ))}
         </select>
       )}{" "}
     </div>

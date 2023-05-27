@@ -49,79 +49,86 @@ export default function ListItems() {
     return sortedItems;
   };
 
-  const sortedItems = sortItems(items)
+  const sortedItems = sortItems(items);
+  const authToken = localStorage.getItem("authToken");
 
-
-
-return (
+  return (
     <div className="container my-4">
       <div className="row">
         <div className="col-12">
           <h1 className="text-center mb-4">Item List</h1>
-          <div className="mb-4">
-            <label htmlFor="sortOption">Sort By:</label>
-            <select
-              id="sortOption"
-              value={sortOption}
-              onChange={handleSortOptionChange}
-            >
-              <option value="time_of_post">Time of Post</option>
-              <option value="expiration">Expiration</option>
-            </select>
-            <label htmlFor="sortOrder">Order:</label>
-            <select
-              id="sortOrder"
-              value={sortOrder}
-              onChange={handleSortOrderChange}
-            >
-              <option value="asc">Ascending</option>
-              <option value="desc">Descending</option>
-            </select>
-          </div>
-          <table className="table table-dark table-striped table-bordered">
-            <thead>
-              <tr>
-                <th>Item Name</th>
-                <th>Item Type</th>
-                <th>Quantity</th>
-                <th>Purchased or Prepared</th>
-                <th>Time of post</th>
-                <th>Expiration</th>
-                <th>Location</th>
-                <th>Dietary restriction</th>
-                <th>Description</th>
-                <th>Pick-up instructions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedItems?.map((item) => {
-                return (
-                  <tr key={item.id}>
-                    <td>
-                      <a href={`/items/${item.id}`}>{item.name}</a>
-                    </td>
-                    <td>{item.item_type}</td>
-                    <td>{item.quantity}</td>
-                    <td>{item.purchased_or_prepared}</td>
-                    <td>{item.time_of_post}</td>
-                    <td>{item.expiration}</td>
-                    <td>{item.location}</td>
-                    <td>{item.dietary_restriction}</td>
-                    <td>{item.description}</td>
-                    <td>{item.pickup_instructions}</td>
-                    <td>
-                      {/* <button
-                        className="btn btn-secondary"
-                        onClick={() => deleteItem(item.id)}
-                      >
-                        Remove
-                      </button> */}
-                    </td>
+          {authToken ? (
+            <>
+              <div className="mb-4">
+                <label htmlFor="sortOption">Sort By:</label>
+                <select
+                  id="sortOption"
+                  value={sortOption}
+                  onChange={handleSortOptionChange}
+                >
+                  <option value="time_of_post">Time of Post</option>
+                  <option value="expiration">Expiration</option>
+                </select>
+                <label htmlFor="sortOrder">Order:</label>
+                <select
+                  id="sortOrder"
+                  value={sortOrder}
+                  onChange={handleSortOrderChange}
+                >
+                  <option value="asc">Ascending</option>
+                  <option value="desc">Descending</option>
+                </select>
+              </div>
+              <table className="table table-dark table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Item Name</th>
+                    <th>Item Type</th>
+                    <th>Quantity</th>
+                    <th>Purchased or Prepared</th>
+                    <th>Time of post</th>
+                    <th>Expiration</th>
+                    <th>Location</th>
+                    <th>Dietary restriction</th>
+                    <th>Description</th>
+                    <th>Pick-up instructions</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {sortedItems?.map((item) => {
+                    return (
+                      <tr key={item.id}>
+                        <td>
+                          <a href={`/items/${item.id}`}>{item.name}</a>
+                        </td>
+                        <td>{item.item_type}</td>
+                        <td>{item.quantity}</td>
+                        <td>{item.purchased_or_prepared}</td>
+                        <td>{item.time_of_post}</td>
+                        <td>{item.expiration}</td>
+                        <td>{item.location}</td>
+                        <td>{item.dietary_restriction}</td>
+                        <td>{item.description}</td>
+                        <td>{item.pickup_instructions}</td>
+                        <td>
+                          {/* <button
+                            className="btn btn-secondary"
+                            onClick={() => deleteItem(item.id)}
+                          >
+                            Remove
+                          </button> */}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <div className="alert alert-warning">
+              Please <a href="/login">log in</a> to view items.
+            </div>
+          )}
         </div>
       </div>
     </div>
