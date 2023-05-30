@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import LoginForm from "./Login";
+import SignUpForm from "./SignupForm";
 
+function SignUpButton() {
+const [showModal, setShowModal] = useState(false);
 
-function LoginButton() {
-  const [showModal, setShowModal] = useState(false);
-
-  const openModal = () => {
-    setShowModal(true);
-  };
+const openModal = () => {
+setShowModal(true);
+};
 
 const closeModal = () => {
 setShowModal(false);
@@ -28,18 +27,18 @@ try {
 return (
   <>
     <Button variant="custom" className="custom-button" onClick={openModal}>
-      Login
+      Sign Up
     </Button>
     <Modal show={showModal} onHide={closeModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Login</Modal.Title>
+        <Modal.Title>Create Account</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <LoginForm onSubmit={handleFormSubmit} />
+        <SignUpForm onSubmit={handleFormSubmit} />
       </Modal.Body>
     </Modal>
   </>
 );
 }
 
-export default LoginButton;
+export default SignUpButton;

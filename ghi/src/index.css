@@ -25,7 +25,7 @@ body {
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: #6ba304;
+  background-color: #f5f0f0;
 }
 
 code {
@@ -49,20 +49,6 @@ hr.break {
   height: 2px;
 }
 
-.btn-primary {
-  background-color: #91684d; /* Change to your desired color */
-  padding: 15px 25px; /* Adjust the padding as per your needs */
-  border-radius: 10px;
-  color: #fafafa;
-  font-size: 16px;
-  border: none;
-  margin-top: 20px;
-}
-
-.btn-primary:hover {
-  background-color: #676329; /* Change to your desired hover color */
-}
-
 .btn-secondary {
   background-color: #91684d; /* Change to your desired color */
   padding: 5px 25px; /* Adjust the padding as per your needs */
@@ -75,25 +61,12 @@ hr.break {
   margin-left: 10px;
 }
 
-.btn-secondary:hover {
-  background-color: #676329; /* Change to your desired hover color */
-}
-
-a.nav-link {
-  color: #fafafa;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  padding: 5px 15px; /* Adjust the padding as per your needs */
-  border-radius: 40px;
-  /* color: #fdfdfd; */
-  font-size: 20px;
-  border: none;
-  margin-top: 20px;
-  margin-right: 10px;
-  margin-left: 10px;
+.nav-link:focus {
+color: none;
 }
 
 .navbar {
-  background-color: #91684d;
+  background-color: #6ba304;
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -108,17 +81,10 @@ a.navbar-brand {
   color: #fafafa;
 }
 
-a.nav-link:hover {
-  background-position: 0 -130px;
-}
-
-a.nav-link:active {
-  background-position: 0 -260px;
-}
-
 .container {
-  background-color: 91684d;
-  padding: 20px;
+  color: #6ba304;
+  box-shadow: none;
+  padding: 30px;
   margin: 50px auto;
   display: grid;
   width: 70%;
@@ -154,10 +120,12 @@ a.nav-link:active {
   padding-bottom: 5px;
   border-radius: 40px;
 }
+
 .hidden {
   transition: 0.5s;
   display: none;
 }
+
 .splash-header {
   height: 90%;
   color: white;
@@ -168,19 +136,18 @@ a.nav-link:active {
   align-items: center;
 }
 
-body {
-  background-color: #6ba304;
-}
-
 .splash-container {
   background-color: white;
-  padding: 20px;
   margin: 50px auto;
   display: grid;
   width: 70%;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   border-radius: 20px;
+  border: 4px solid #056e31;
+  color: #6ba304;
+  box-shadow: none;
+  padding: 30px;
 }
 
 .navbar-toggler {
@@ -193,19 +160,97 @@ body {
   transition: box-shadow 0.15s ease-in-out;
 }
 
-a.navbar-brand-active {
-  color: #fafafa;
+
+div.card-body {
+  border: 4px solid #056e31;
+  color: #6ba304;
+  box-shadow: none;
+  padding: 30px;
 }
 
-.glass-filter {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0)
-  );
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blue(20px);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 32px;
+div.card-shadow {
+  border: #91684d;
+  border-radius: 20px;
+  box-shadow: #6ba304;
+}
+
+
+.button-accordion-button {
+  background-color: #91684d; /* Change to your desired color */
+  padding: 15px 25px; /* Adjust the padding as per your needs */
+  border-radius: 10px;
+  color: #fafafa;
+  font-size: 16px;
+  border: none;
+  margin-top: 20px;
+  color:#056e31
+}
+
+
+.modal-body {
+  border: 4px solid #056e31;
+  color: #6ba304;
+  box-shadow: none;
+  padding: 30px;
+}
+.modal-header {
+  border: 4px solid #056e31;
+  color: #6ba304;
+  box-shadow: none;
+  padding: 10px;
+}
+
+.custom-button {
+  background-color: #6ba304; /* Change to your desired color */
+  padding: 15px 25px; /* Adjust the padding as per your needs */
+  border-radius: 10px;
+  color: #fafafa;
+  font-size: 16px;
+  border: none;
+  margin-top: 20px;
+}
+
+a.custom-button:hover {
+  color:#080808
+}
+a.custom-button:active {
+  color:#ffffff;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    size-adjust: auto;
+}
+
+
+.btn-primary:hover {
+    color: #000000;
+}
+
+a.custom-button:focus {
+  box-shadow: none;
+}
+
+button:active {
+  outline: none;
+}
+
+.btn-custom-button {
+  margin: 20, 0, 0;
+  padding: 15, 0;
+}
+
+.btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.nav-link:focus{
+  color: none !important;
+}
+
+.nav-link:visited {
+  color:none !important;
 }

@@ -28,11 +28,9 @@ function CondensedInput(props) {
           name={name}
           id={id}
           className="form-control"
-          required
+          required // Add this line
         >
-          <option value="" disabled>
-            Select an option
-          </option>
+          <option value="">Select an option</option>
           {options.map((option, index) => (
             <option key={index} value={option}>
               {option}

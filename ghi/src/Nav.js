@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import logoImage from "./HiResTransparentLogo.png";
 import LoginButton from "./LoginButton";
-
+import SignUpButton from "./SignupButton";
 
 function Nav() {
-  const [isNavOpen, setIsNavOpen] = useState(false);
+const [isNavOpen, setIsNavOpen] = useState(false);
 
-  const toggleNav = () => {
-    setIsNavOpen(!isNavOpen);
-  };
+const toggleNav = () => {
+setIsNavOpen(!isNavOpen);
+};
 
-  const closeNav = () => {
-    setIsNavOpen(false);
-  };
+const closeNav = () => {
+setIsNavOpen(false);
+};
 
   return (
     <div>
@@ -100,14 +100,22 @@ function Nav() {
                   FAQ
                 </NavLink>
               </li>
+              <NavLink
+                className="nav-link"
+                aria-current="page"
+                to="/logout"
+                onClick={closeNav}
+              >
+                Logout
+              </NavLink>
             </ul>
           </div>
         </div>
-      </nav>
     </div>
-  );
+    </div>
+</div>
+</nav>
+);
 }
-
-
 
 export default Nav;
