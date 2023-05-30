@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const [showLogin, setShowLogin] = useState(false);
