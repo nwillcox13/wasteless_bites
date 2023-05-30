@@ -129,6 +129,12 @@ function ItemForm() {
     }
   };
 
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  const [alertState, setAlertState] = useState("alert alert-success d-none");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const newItemUrl = "http://localhost:8000/items";
@@ -159,6 +165,9 @@ function ItemForm() {
         description: "",
         pickup_instructions: "",
       });
+      setAlertState("mt-3 alert alert-success");
+      await sleep(3000);
+      setAlertState("mt-3 alert alert-success d-none");
     } else {
       console.error("Failed to create item:", response.statusText);
     }
@@ -291,9 +300,25 @@ function ItemForm() {
                 />
               </div>
               <div className="col-12">
-                <button type="submit" className="btn btn-primary">
-                  Add
+                <button
+                  type="submit"
+                  className="btn btn-primary custom-button"
+                  style={{ backgroundColor: "#1E7016", borderColor: "#1E7016" }}
+                >
+                  Create Post
                 </button>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                }}
+                className={alertState}
+                role="alert"
+              >
+                Item Posted
               </div>
             </form>
           </div>

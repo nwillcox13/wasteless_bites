@@ -79,6 +79,15 @@ export default function ListItems() {
                   <option value="desc">Descending</option>
                 </select>
               </div>
+              <button
+                className="btn btn-primary"
+                style={{ backgroundColor: "#6BA304" }}
+                onClick={() =>
+                  (window.location.href = "http://localhost:3000/items/new")
+                }
+              >
+                Create New Item
+              </button>
               <table className="table table-dark table-striped table-bordered">
                 <thead>
                   <tr>
@@ -107,17 +116,17 @@ export default function ListItems() {
                         <td>{item.time_of_post}</td>
                         <td>{item.expiration}</td>
                         <td>{item.location}</td>
-                        <td>{item.dietary_restriction}</td>
+                        <td>{item.dietary_restriction.join(", ")}</td>
                         <td>{item.description}</td>
                         <td>{item.pickup_instructions}</td>
-                        <td>
-                          {/* <button
+                        {/* <td>
+                          <button
                             className="btn btn-secondary"
                             onClick={() => deleteItem(item.id)}
                           >
                             Remove
-                          </button> */}
-                        </td>
+                          </button>
+                        </td> */}
                       </tr>
                     );
                   })}

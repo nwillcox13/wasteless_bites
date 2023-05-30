@@ -56,6 +56,7 @@ function Nav() {
                   aria-current="page"
                   to="items/new"
                   onClick={closeNav}
+                  style={{ color: "#91684D" }}
                 >
                   New item
                 </NavLink>
@@ -66,6 +67,7 @@ function Nav() {
                   aria-current="page"
                   to="items/list"
                   onClick={closeNav}
+                  style={{ color: "#91684D" }}
                 >
                   List Items
                 </NavLink>
@@ -76,6 +78,7 @@ function Nav() {
                   aria-current="page"
                   to="login"
                   onClick={closeNav}
+                  style={{ color: "#91684D" }}
                 >
                   Login
                 </NavLink>
@@ -86,6 +89,7 @@ function Nav() {
                   aria-current="page"
                   to="signup"
                   onClick={closeNav}
+                  style={{ color: "#91684D" }}
                 >
                   Signup
                 </NavLink>
@@ -96,6 +100,7 @@ function Nav() {
                   aria-current="page"
                   to="/faq"
                   onClick={closeNav}
+                  style={{ color: "#91684D" }}
                 >
                   FAQ
                 </NavLink>
@@ -105,6 +110,7 @@ function Nav() {
                 aria-current="page"
                 to="/logout"
                 onClick={closeNav}
+                style={{ color: "#91684D" }}
               >
                 Logout
               </NavLink>

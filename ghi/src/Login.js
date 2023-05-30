@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -52,6 +54,12 @@ function LoginForm() {
           localStorage.setItem("authToken", access_token);
           setEmail("");
           setPassword("");
+          const navigateTime = setTimeout(() => {
+            navigate("/");
+          }, 1000);
+          return () => {
+            clearTimeout(navigateTime);
+          };
         } else {
           console.log("Authentication failed");
           const data = await response.json();
@@ -68,7 +76,12 @@ function LoginForm() {
 
   return (
     <>
-      <Button variant="primary" onClick={() => setShowLogin(true)}>
+      <Button
+        variant="custom"
+        className="custom-button"
+        style={{ backgroundColor: "#1E7016", borderColor: "#1E7016" }}
+        onClick={() => setShowLogin(true)}
+      >
         Login
       </Button>
 

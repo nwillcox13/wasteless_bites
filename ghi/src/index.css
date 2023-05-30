@@ -62,7 +62,7 @@ hr.break {
 }
 
 .nav-link:focus {
-color: none;
+  color: none;
 }
 
 .navbar {
@@ -160,7 +160,6 @@ a.navbar-brand {
   transition: box-shadow 0.15s ease-in-out;
 }
 
-
 div.card-body {
   border: 4px solid #056e31;
   color: #6ba304;
@@ -174,7 +173,6 @@ div.card-shadow {
   box-shadow: #6ba304;
 }
 
-
 .button-accordion-button {
   background-color: #91684d; /* Change to your desired color */
   padding: 15px 25px; /* Adjust the padding as per your needs */
@@ -183,9 +181,8 @@ div.card-shadow {
   font-size: 16px;
   border: none;
   margin-top: 20px;
-  color:#056e31
+  color: #056e31;
 }
-
 
 .modal-body {
   border: 4px solid #056e31;
@@ -201,7 +198,8 @@ div.card-shadow {
 }
 
 .custom-button {
-  background-color: #6ba304; /* Change to your desired color */
+  background-color: #1e7016;
+  border-color: #1e7016; /* Change to your desired color */
   padding: 15px 25px; /* Adjust the padding as per your needs */
   border-radius: 10px;
   color: #fafafa;
@@ -211,22 +209,26 @@ div.card-shadow {
 }
 
 a.custom-button:hover {
-  color:#080808
+  color: #080808;
 }
 a.custom-button:active {
-  color:#ffffff;
+  color: #ffffff;
 }
 
 .card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    size-adjust: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  size-adjust: auto;
 }
 
+.btn-primary {
+  background-color: #1e7016;
+  border-color: #1e7016;
+}
 
 .btn-primary:hover {
-    color: #000000;
+  color: #000000;
 }
 
 a.custom-button:focus {
@@ -247,10 +249,10 @@ button:active {
   box-shadow: none !important;
 }
 
-.nav-link:focus{
+.nav-link:focus {
   color: none !important;
 }
 
 .nav-link:visited {
-  color:none !important;
+  color: none !important;
 }

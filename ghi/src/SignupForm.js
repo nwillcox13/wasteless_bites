@@ -8,7 +8,6 @@ function SignUpForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
-  const [successAlert, setSuccessAlert] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -34,17 +33,29 @@ function SignUpForm() {
     fetch(url, config)
       .then((response) => response.json())
       .then(() => {
-        setSuccessAlert(true);
-        const alertTimeout = setTimeout(() => {
-          setSuccessAlert(false);
-        }, 3000);
-        const navigateTime = setTimeout(() => {
-          navigate("/login");
-        }, 1000);
-        return () => {
-          clearTimeout(alertTimeout);
-          clearTimeout(navigateTime);
+        const loginData = {
+          username: email,
+          password: password,
         };
+
+        const loginUrl = "http://localhost:8000/api/accounts/login";
+        const loginConfig = {
+          method: "post",
+          body: JSON.stringify(loginData),
+          headers: { "Content-Type": "application/json" },
+        };
+
+        fetch(loginUrl, loginConfig)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Authentication successful:", data);
+            const { access_token } = data;
+            localStorage.setItem("authToken", access_token);
+            navigate("/");
+          })
+          .catch((error) => {
+            console.error("Error logging in:", error);
+          });
       })
       .catch((error) => {
         console.error("Error creating account:", error);
@@ -153,7 +164,11 @@ function SignUpForm() {
                 />
               </div>
               <div className="col-12">
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="submit"
+                  className="btn btn-primary custom-button"
+                  style={{ backgroundColor: "#1E7016", borderColor: "#1E7016" }}
+                >
                   Sign Up
                 </button>
               </div>
