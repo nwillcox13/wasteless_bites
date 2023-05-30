@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { Button, Modal, Form } from "react-bootstrap";
 
-function LoginForm({ onSubmit }) {
+function LoginForm() {
+  const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -13,62 +15,98 @@ function LoginForm({ onSubmit }) {
     setPassword(event.target.value);
   };
 
-  const handleLogin = (event) => {
+  // const handleLogin = (event) => {
+  //   event.preventDefault();
+  //   if (email.trim() === "" || password.trim() === "") {
+  //     setError("Please enter both email and password.");
+  //     return;
+  //   }
+  //   // Perform login logic here (e.g., API request to FastAPI backend)
+  //   // Handle authentication and update application state accordingly
+  //   // You can display error messages on failure or redirect on success
+  //   setEmail("");
+  //   setPassword("");
+  //   setError("");
+  //   // Close the login modal after successful login
+  // setShowLogin(false);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (email.trim() === "" || password.trim() === "") {
-      setError("Please enter both email and password.");
-      return;
+    if (email && password) {
+      try {
+        const response = await fetch(
+          "http://localhost:8000/api/accounts/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username: email, password }),
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Authentication successful:", data);
+          const { access_token } = data;
+          localStorage.setItem("authToken", access_token);
+          setEmail("");
+          setPassword("");
+        } else {
+          console.log("Authentication failed");
+          const data = await response.json();
+          console.error(data.detail);
+          setError(data.detail || "Authentication failed");
+        }
+      } catch (error) {
+        console.log("Error occurred:", error);
+      }
+    } else {
+      console.log("Please fill in all the fields.");
     }
-    // Perform login logic here (e.g., API request to FastAPI backend)
-    // Handle authentication and update application state accordingly
-    // You can display error messages on failure or redirect on success
-    setEmail("");
-    setPassword("");
-    setError("");
-    // Call the onSubmit callback with the form data
-    onSubmit({ email, password });
   };
 
   return (
-    <div className="text-center">
-    <form onSubmit={handleLogin}>
-      <div className="mb-3">
-        <label htmlFor="email" className="form-label">
-          Email address
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          className="form-control"
-          placeholder="Email address"
-          value={email}
-          onChange={handleEmailChange}
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="password" className="form-label">
-          Password
-        </label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          required
-          className="form-control"
-          placeholder="Password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-      </div>
-      <div className="d-grid">
-        <button type="submit" className="btn btn-primary btn-block rounded-10 custom-button">
-          Login
-        </button>
-      </div>
-    </form>
-</div>
+    <>
+      <Button variant="primary" onClick={() => setShowLogin(true)}>
+        Login
+      </Button>
+
+      <Modal show={showLogin} onHide={() => setShowLogin(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Login</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={handleEmailChange}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+            </Form.Group>
+
+            {error && <div className="text-danger">{error}</div>}
+
+            <Button variant="primary" type="submit">
+              Login
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 }
 

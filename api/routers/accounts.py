@@ -158,3 +158,10 @@ async def delete_my_account(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=str(ve),
             )
+
+
+@router.get("/api/accounts", response_model=List[Union[AccountOut, Error]])
+def get_all_accounts(
+    accounts: AccountRepository = depends
+):
+    return accounts.get_all_accounts()

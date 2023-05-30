@@ -9,9 +9,11 @@ import ItemForm from "./ItemForm";
 import ListItems from "./ListItems";
 import ItemDetail from "./ItemDetail";
 import LoginForm from "./Login";
+import LogoutForm from "./Logout";
 import Nav from "./Nav";
 import FAQPage from "./Faq";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
+
 // import{ RequireToken } from "./Auth";
 
 function App() {
@@ -31,6 +33,9 @@ function App() {
             </Route>
             <Route path="login">
               <Route path="" element={<LoginForm />} />
+            </Route>
+            <Route path="logout">
+              <Route path="" element={<LogoutForm />} />
             </Route>
             <Route path="/accounts" element={<AccountList />} />
             <Route path="/profile" element={<Profile />} />

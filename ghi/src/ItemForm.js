@@ -30,14 +30,14 @@ function CondensedInput(props) {
           name={name}
           id={id}
           className="form-control"
+          required // Add this line
         >
-          {" "}
+          <option value="">Select an option</option>
           {options.map((option, index) => (
             <option key={index} value={option}>
-              {" "}
-              {option}{" "}
+              {option}
             </option>
-          ))}{" "}
+          ))}
         </select>
       )}{" "}
     </div>
@@ -135,18 +135,20 @@ function ItemForm() {
     event.preventDefault();
     const newItemUrl = "http://localhost:8000/items";
     const itemData = { ...formData };
-    const token = localStorage.getItem("authToken");
+    const access_token = localStorage.getItem("authToken");
     const fetchConfig = {
       method: "POST",
       body: JSON.stringify(itemData),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${access_token}`,
       },
     };
-    console.log(itemData);
+    console.log("Item data to be sent:", itemData);
+
     const response = await fetch(newItemUrl, fetchConfig);
     if (response.ok) {
+      console.log("Item successfully created.");
       setFormData({
         name: "",
         item_type: "",
@@ -159,6 +161,8 @@ function ItemForm() {
         description: "",
         pickup_instructions: "",
       });
+    } else {
+      console.error("Failed to create item:", response.statusText);
     }
   };
 
