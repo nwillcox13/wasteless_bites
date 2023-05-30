@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from "react";
-// import userId ?
 
 export default function UserListItems() {
   const [items, setItems] = useState([]);
-  //  const userId =  this is where the imported user id will be
-  //  this might also come through like const { userID } = useParams?
 
   const fetchData = async () => {
-    const url = `http://localhost:8000/items?userId=${userId}`;
-    const response = await fetch(url);
-    console.log(response);
+    const url = "http://localhost:8000/items";
+    const authToken = localStorage.getItem("authToken");
+    const parsedToken = JSON.parse(authToken);
+
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${parsedToken.access_token}`,
+      },
+    };
+
+    const response = await fetch(url, options);
     if (response.ok) {
       const data = await response.json();
-      setItems(data);
-      console.log(items);
+      setItems(data.filter((item) => item.userId === parsedToken.account.id));
     }
   };
 
@@ -23,7 +28,14 @@ export default function UserListItems() {
 
   const deleteItem = async (id) => {
     const url = `http://localhost:8000/items/${id}`;
-    const response = await fetch(url, { method: "DELETE" });
+    const authToken = localStorage.getItem("authToken");
+    const parsedToken = JSON.parse(authToken);
+
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${parsedToken.access_token}` },
+    });
+
     if (response.ok) {
       setItems(items.filter((item) => item.id !== id));
     }
@@ -40,13 +52,9 @@ export default function UserListItems() {
                 <th>Item Name</th>
                 <th>Item Type</th>
                 <th>Quantity</th>
-                {/* <th>Purchased or Prepared</th> */}
                 <th>Time of post</th>
                 <th>Expiration</th>
                 <th>Location</th>
-                {/* <th>Dietary restriction</th>
-                    <th>Description</th>
-                    <th>Pick-up instructions</th> */}
                 <th></th>
               </tr>
             </thead>
@@ -59,13 +67,9 @@ export default function UserListItems() {
                     </td>
                     <td>{item.item_type}</td>
                     <td>{item.quantity}</td>
-                    {/* <td>{item.purchased_or_prepared}</td> */}
                     <td>{item.time_of_post}</td>
                     <td>{item.expiration}</td>
                     <td>{item.location}</td>
-                    {/* <td>{item.dietary_restriction}</td>
-                        <td>{item.description}</td>
-                        <td>{item.pickup_instructions}</td> */}
                     <td>
                       <button
                         className="btn btn-secondary"
@@ -81,13 +85,6 @@ export default function UserListItems() {
           </table>
         </div>
       </div>
-      {/* {items.length === 0 && (
-                <div className="row">
-                    <div className="col-12 text-center">
-                        <p className="lead">Loading...</p>
-                    </div>
-                </div>
-            )} */}
     </div>
   );
 }

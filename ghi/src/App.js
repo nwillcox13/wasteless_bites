@@ -12,6 +12,8 @@ import LoginForm from "./Login";
 import LogoutForm from "./Logout";
 import Nav from "./Nav";
 import FAQPage from "./Faq";
+import UserListItems from "./UserListItems";
+import UserItemDetail from "./UserItemDetail";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 
 // import{ RequireToken } from "./Auth";
@@ -28,6 +30,8 @@ function App() {
             <Route path="/items/new" element={<ItemForm />} />
             <Route path="/items/list" element={<ListItems />} />
             <Route path="/items/:itemId" element={<ItemDetail />} />
+            <Route path="/user/items/list" element={<UserListItems />} />
+            <Route path="/user/items/:itemId" element={<UserItemDetail />} />
             <Route path="signup">
               <Route path="" element={<SignUpForm />} />
             </Route>

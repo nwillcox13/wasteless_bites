@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -50,8 +52,13 @@ function LoginForm() {
           console.log("Authentication successful:", data);
           const { access_token } = data;
           localStorage.setItem("authToken", access_token);
+          const event = new Event("login");
+          window.dispatchEvent(event);
+
           setEmail("");
           setPassword("");
+          setShowLogin(false);
+          navigate("/items/list");
         } else {
           console.log("Authentication failed");
           const data = await response.json();

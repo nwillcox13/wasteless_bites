@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-// import userId ?
+import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 export default function UserItemDetail() {
   const [item, setItem] = useState([]);
   const { itemId } = useParams();
-  //  const userId =  this is where the imported user id will be
-  //  this might also come through like const { userID } = useParams?
+  const { token } = useAuthContext();
 
   const fetchData = async () => {
-    const url = `http://localhost:8000/items?userId=${userId}/${itemId}`;
-    const response = await fetch(url);
-    console.log(url);
+    const url = `http://localhost:8000/items/${itemId}?userId=${token.account.id}`;
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${token.access_token}` },
+    });
     if (response.ok) {
       const data = await response.json();
       setItem(data);
-      console.log(item);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
-  console.log(item);
 
   return (
     <div className="container my-4">
