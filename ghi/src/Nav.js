@@ -5,15 +5,15 @@ import LoginButton from "./LoginButton";
 import SignUpButton from "./SignupButton";
 
 function Nav() {
-const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
-const toggleNav = () => {
-setIsNavOpen(!isNavOpen);
-};
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+  };
 
-const closeNav = () => {
-setIsNavOpen(false);
-};
+  const closeNav = () => {
+    setIsNavOpen(false);
+  };
 
   return (
     <div>
@@ -111,11 +111,9 @@ setIsNavOpen(false);
             </ul>
           </div>
         </div>
+      </nav>
     </div>
-    </div>
-</div>
-</nav>
-);
+  );
 }
 
 export default Nav;
