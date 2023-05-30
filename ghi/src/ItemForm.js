@@ -3,6 +3,26 @@ import React, { useState } from "react";
 function CondensedInput(props) {
   const { onChange, value, placeholder, type, name, id, label, options } =
     props;
+
+  if (type === "textarea") {
+    return (
+      <div className="col-md-12">
+        <label htmlFor={id} className="form-label">
+          {label}
+        </label>
+        <textarea
+          style={{ backgroundColor: "rgb(228, 230, 240)", width: "100%" }}
+          onChange={onChange}
+          value={value}
+          placeholder={placeholder}
+          required
+          name={name}
+          id={id}
+          className="form-control"
+        />
+      </div>
+    );
+  }
   return (
     <div className="col-md-6">
       <label htmlFor={id} className="form-label">
@@ -28,7 +48,7 @@ function CondensedInput(props) {
           name={name}
           id={id}
           className="form-control"
-          required // Add this line
+          required
         >
           <option value="">Select an option</option>
           {options.map((option, index) => (
@@ -44,6 +64,11 @@ function CondensedInput(props) {
 
 function CondensedCheckboxInput(props) {
   const { onChange, value, name, id, label, options } = props;
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleCollapse = () => {
+    setIsExpanded(!isExpanded);
+  };
 
   const handleChange = (event) => {
     const checked = event.target.checked;
@@ -65,25 +90,32 @@ function CondensedCheckboxInput(props) {
         {label}
       </label>
       <div
-        className="form-control"
+        className={`form-control ${isExpanded ? "expanded" : ""}`}
         style={{ backgroundColor: "rgb(228, 230, 240)" }}
       >
-        {options.map((option, index) => (
-          <div className="form-check" key={index}>
-            <input
-              className="form-check-input"
-              type="checkbox"
-              name={name}
-              id={`${id}_${index}`}
-              value={option}
-              onChange={handleChange}
-              checked={value.includes(option)}
-            />
-            <label className="form-check-label" htmlFor={`${id}_${index}`}>
-              {option}
-            </label>
+        {isExpanded && (
+          <div className="collapse-content">
+            {options.map((option, index) => (
+              <div className="form-check" key={index}>
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  name={name}
+                  id={`${id}_${index}`}
+                  value={option}
+                  onChange={handleChange}
+                  checked={value.includes(option)}
+                />
+                <label className="form-check-label" htmlFor={`${id}_${index}`}>
+                  {option}
+                </label>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
+        <div className="collapse-toggle" onClick={toggleCollapse}>
+          {isExpanded ? "Collapse" : "Click to Expand"}
+        </div>
       </div>
     </div>
   );
@@ -95,7 +127,6 @@ function ItemForm() {
     item_type: "",
     quantity: "",
     purchased_or_prepared: "",
-    time_of_post: "",
     expiration: "",
     location: "",
     dietary_restriction: [],
@@ -129,10 +160,16 @@ function ItemForm() {
     }
   };
 
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  const [alertState, setAlertState] = useState("alert alert-success d-none");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const newItemUrl = "http://localhost:8000/items";
-    const itemData = { ...formData };
+    const itemData = { ...formData, time_of_post: new Date() };
     const access_token = localStorage.getItem("authToken");
     const fetchConfig = {
       method: "POST",
@@ -152,13 +189,15 @@ function ItemForm() {
         item_type: "",
         quantity: "",
         purchased_or_prepared: "",
-        time_of_post: "",
         expiration: "",
         location: "",
         dietary_restriction: [],
         description: "",
         pickup_instructions: "",
       });
+      setAlertState("mt-3 alert alert-success");
+      await sleep(3000);
+      setAlertState("mt-3 alert alert-success d-none");
     } else {
       console.error("Failed to create item:", response.statusText);
     }
@@ -215,33 +254,6 @@ function ItemForm() {
                 />
                 <CondensedInput
                   onChange={handleFormChange}
-                  value={formData.purchased_or_prepared}
-                  placeholder="Purchased or Prepared"
-                  type="datetime-local"
-                  name="purchased_or_prepared"
-                  id="purchased_or_prepared"
-                  label="Purchased or Prepared"
-                />
-                <CondensedInput
-                  onChange={handleFormChange}
-                  value={formData.time_of_post}
-                  placeholder="Time of post"
-                  type="datetime-local"
-                  name="time_of_post"
-                  id="time_of_post"
-                  label="Time of post"
-                />
-                <CondensedInput
-                  onChange={handleFormChange}
-                  value={formData.expiration}
-                  placeholder="Expiration"
-                  type="datetime-local"
-                  name="expiration"
-                  id="expiration"
-                  label="Expiration"
-                />
-                <CondensedInput
-                  onChange={handleFormChange}
                   value={formData.location}
                   placeholder="Location"
                   type="number"
@@ -251,12 +263,21 @@ function ItemForm() {
                 />
                 <CondensedInput
                   onChange={handleFormChange}
-                  value={formData.description}
-                  placeholder="Item Description"
-                  type="textarea"
-                  name="description"
-                  id="description"
-                  label="Item Description"
+                  value={formData.purchased_or_prepared}
+                  placeholder="Purchased or Prepared"
+                  type="datetime-local"
+                  name="purchased_or_prepared"
+                  id="purchased_or_prepared"
+                  label="Purchased or Prepared"
+                />
+                <CondensedInput
+                  onChange={handleFormChange}
+                  value={formData.expiration}
+                  placeholder="Expiration"
+                  type="datetime-local"
+                  name="expiration"
+                  id="expiration"
+                  label="Expiration"
                 />
                 <CondensedInput
                   onChange={handleFormChange}
@@ -289,11 +310,36 @@ function ItemForm() {
                     "Other",
                   ]}
                 />
+                <CondensedInput
+                  onChange={handleFormChange}
+                  value={formData.description}
+                  placeholder="Item Description"
+                  type="textarea"
+                  name="description"
+                  id="description"
+                  label="Item Description"
+                />
               </div>
               <div className="col-12">
-                <button type="submit" className="btn btn-primary">
-                  Add
+                <button
+                  type="submit"
+                  className="btn btn-primary custom-button"
+                  style={{ backgroundColor: "#1E7016", borderColor: "#1E7016" }}
+                >
+                  Create Post
                 </button>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                }}
+                className={alertState}
+                role="alert"
+              >
+                Item Posted
               </div>
             </form>
           </div>

@@ -4,6 +4,8 @@ export default function ListItems() {
   const [items, setItems] = useState([]);
   const [sortOption, setSortOption] = useState("time_of_post");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [selectedRestrictions, setSelectedRestrictions] = useState([]);
 
   const fetchData = async () => {
     const url = "http://localhost:8000/items";
@@ -17,7 +19,15 @@ export default function ListItems() {
 
     if (response.ok) {
       const data = await response.json();
-      setItems(data);
+      const filteredItemsByType = selectedTypes.length
+        ? data.filter((item) => selectedTypes.includes(item.item_type))
+        : data;
+      const filteredItemsByRestriction = filteredItemsByType.filter((item) =>
+        selectedRestrictions.every((restriction) =>
+          item.dietary_restriction.includes(restriction)
+        )
+      );
+      setItems(filteredItemsByRestriction);
     } else {
       console.error("Failed to fetch items:", await response.text());
     }
@@ -25,7 +35,7 @@ export default function ListItems() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedTypes, selectedRestrictions]);
 
   const handleSortOptionChange = (event) => {
     setSortOption(event.target.value);
@@ -33,6 +43,31 @@ export default function ListItems() {
 
   const handleSortOrderChange = (event) => {
     setSortOrder(event.target.value);
+  };
+
+  const handleTypeChange = (event) => {
+    const type = event.target.value;
+    if (event.target.checked) {
+      setSelectedTypes((prevSelectedTypes) => [...prevSelectedTypes, type]);
+    } else {
+      setSelectedTypes((prevSelectedTypes) =>
+        prevSelectedTypes.filter((t) => t !== type)
+      );
+    }
+  };
+
+  const handleRestrictionChange = (event) => {
+    const restriction = event.target.value;
+    if (event.target.checked) {
+      setSelectedRestrictions((prevSelectedRestrictions) => [
+        ...prevSelectedRestrictions,
+        restriction,
+      ]);
+    } else {
+      setSelectedRestrictions((prevSelectedRestrictions) =>
+        prevSelectedRestrictions.filter((r) => r !== restriction)
+      );
+    }
   };
 
   const sortItems = (items) => {
@@ -79,6 +114,70 @@ export default function ListItems() {
                   <option value="desc">Descending</option>
                 </select>
               </div>
+              <div>
+                <label>Filter by Item Type:</label>
+                <br />
+                {[
+                  "Baked Goods",
+                  "Baby Food/Formula",
+                  "Coffee",
+                  "Dairy & Eggs",
+                  "Deli",
+                  "Frozen",
+                  "Meat",
+                  "Pantry",
+                  "Produce",
+                  "Ready-to-eat",
+                  "Seafood",
+                ].map((type) => (
+                  <label key={type}>
+                    <input
+                      type="checkbox"
+                      value={type}
+                      checked={selectedTypes.includes(type)}
+                      onChange={handleTypeChange}
+                    />
+                    {type}
+                  </label>
+                ))}
+              </div>
+              <div>
+                <label>Filter by Dietary Restrictions:</label>
+                <br />
+                {[
+                  "Gluten-Free",
+                  "Dairy-Free",
+                  "Vegetarian",
+                  "Vegan",
+                  "Organic",
+                  "Contains Egg",
+                  "Contains Nuts",
+                  "Contains Shellfish",
+                  "Contains Soy",
+                  "Contains Wheat",
+                  "Kosher",
+                  "Halal",
+                ].map((restriction) => (
+                  <label key={restriction}>
+                    <input
+                      type="checkbox"
+                      value={restriction}
+                      checked={selectedRestrictions.includes(restriction)}
+                      onChange={handleRestrictionChange}
+                    />
+                    {restriction}
+                  </label>
+                ))}
+              </div>
+              <h1 className="text-center mb-4">Item List</h1>
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  (window.location.href = "http://localhost:3000/items/new")
+                }
+              >
+                Create New Item
+              </button>
               <table className="table table-dark table-striped table-bordered">
                 <thead>
                   <tr>
@@ -107,17 +206,17 @@ export default function ListItems() {
                         <td>{item.time_of_post}</td>
                         <td>{item.expiration}</td>
                         <td>{item.location}</td>
-                        <td>{item.dietary_restriction}</td>
+                        <td>{item.dietary_restriction.join(", ")}</td>
                         <td>{item.description}</td>
                         <td>{item.pickup_instructions}</td>
-                        <td>
-                          {/* <button
+                        {/* <td>
+                          <button
                             className="btn btn-secondary"
                             onClick={() => deleteItem(item.id)}
                           >
                             Remove
-                          </button> */}
-                        </td>
+                          </button>
+                        </td> */}
                       </tr>
                     );
                   })}
