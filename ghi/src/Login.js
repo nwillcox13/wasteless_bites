@@ -9,7 +9,6 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
