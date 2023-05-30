@@ -169,6 +169,15 @@ export default function ListItems() {
                   </label>
                 ))}
               </div>
+              <h1 className="text-center mb-4">Item List</h1>
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  (window.location.href = "http://localhost:3000/items/new")
+                }
+              >
+                Create New Item
+              </button>
               <table className="table table-dark table-striped table-bordered">
                 <thead>
                   <tr>
