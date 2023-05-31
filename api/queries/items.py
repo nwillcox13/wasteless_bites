@@ -36,6 +36,11 @@ class ItemOut(BaseModel):
     pickup_instructions: str
     account_id: int
 
+    class Config:
+        json_encoders = {
+            datetime: lambda dt: dt.strftime("%m/%d/%Y")
+        }
+
 
 class Message(BaseModel):
     detail: str

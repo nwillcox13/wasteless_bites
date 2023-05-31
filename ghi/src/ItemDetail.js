@@ -39,7 +39,6 @@ export default function ItemDetail() {
                   <th>Item Type</th>
                   <th>Quantity</th>
                   <th>Purchased or Prepared</th>
-                  <th>Time of post</th>
                   <th>Expiration</th>
                   <th>Location</th>
                   <th>Dietary restriction</th>
@@ -53,7 +52,6 @@ export default function ItemDetail() {
                   <td>{item.item_type}</td>
                   <td>{item.quantity}</td>
                   <td>{item.purchased_or_prepared}</td>
-                  <td>{item.time_of_post}</td>
                   <td>{item.expiration}</td>
                   <td>{item.location}</td>
                   <td>{item.dietary_restriction}</td>
