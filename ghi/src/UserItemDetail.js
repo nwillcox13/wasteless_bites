@@ -17,21 +17,25 @@ export default function UserItemDetail() {
   });
   const { itemId } = useParams();
   const { token } = useAuthContext();
-
+  console.log(token);
   const fetchData = async () => {
-    const url = `http://localhost:8000/items/${itemId}?userId=${token.account.id}`;
-    const response = await fetch(url, {
-      headers: { Authorization: `Bearer ${token.access_token}` },
-    });
-    if (response.ok) {
-      const data = await response.json();
-      setItem(data);
+    if (token && token.account) {
+      const url = `http://localhost:8000/items/${itemId}?userId=${token.account.id}`;
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${token.access_token}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setItem(data);
+      }
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (token) {
+      fetchData();
+    }
+  }, [token]);
 
   // Update the item data in state as form inputs change
   const handleInputChange = (event) => {
