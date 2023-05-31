@@ -88,7 +88,7 @@ export default function ListItems() {
   const authToken = localStorage.getItem("authToken");
 
   return (
-    <div className="container my-4">
+    <div className="container my-4 d-flex justify-content-center align-items-center">
       <div className="row">
         <div className="col-12">
           <h1 className="text-center mb-4">Item List</h1>
@@ -209,14 +209,6 @@ export default function ListItems() {
                         <td>{item.dietary_restriction.join(", ")}</td>
                         <td>{item.description}</td>
                         <td>{item.pickup_instructions}</td>
-                        {/* <td>
-                          <button
-                            className="btn btn-secondary"
-                            onClick={() => deleteItem(item.id)}
-                          >
-                            Remove
-                          </button>
-                        </td> */}
                       </tr>
                     );
                   })}
