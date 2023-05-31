@@ -9,10 +9,11 @@ function SignUpForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (password !== confirmPassword) {
       console.log("Passwords do not match");
+      alert("Passwords do not match");
       return;
     }
 
@@ -30,36 +31,34 @@ function SignUpForm() {
       headers: { "Content-Type": "application/json" },
     };
 
-    fetch(url, config)
-      .then((response) => response.json())
-      .then(() => {
-        const loginData = {
-          username: email,
-          password: password,
-        };
+    try {
+      const response = await fetch(url, config);
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
 
-        const loginUrl = "http://localhost:8000/api/accounts/login";
-        const loginConfig = {
-          method: "post",
-          body: JSON.stringify(loginData),
-          headers: { "Content-Type": "application/json" },
-        };
+      const loginData = {
+        username: email,
+        password: password,
+      };
 
-        fetch(loginUrl, loginConfig)
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Authentication successful:", data);
-            const { access_token } = data;
-            localStorage.setItem("authToken", access_token);
-            navigate("/");
-          })
-          .catch((error) => {
-            console.error("Error logging in:", error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error creating account:", error);
-      });
+      const loginUrl = "http://localhost:8000/api/accounts/login";
+      const loginConfig = {
+        method: "post",
+        body: JSON.stringify(loginData),
+        headers: { "Content-Type": "application/json" },
+      };
+
+      const loginResponse = await fetch(loginUrl, loginConfig);
+      const loginJson = await loginResponse.json();
+      console.log("Authentication successful:", loginJson);
+      const { access_token } = loginJson;
+      localStorage.setItem("authToken", access_token);
+      navigate("/");
+    } catch (error) {
+      console.error("Error creating account or logging in:", error);
+      alert("An account with this email already exists");
+    }
   };
 
   const handleFirstName = (event) => {

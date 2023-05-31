@@ -27,12 +27,12 @@ export default function ItemDetail() {
   }, [itemId]);
 
   return (
-    <div className="container my-4">
+    <div className="container my-4 d-flex justify-content-center align-items-center">
       <div className="row">
         <div className="col-12">
           <h1 className="text-center mb-4">Item Detail</h1>
           {item ? (
-            <table className="table table-dark table-striped table-bordered">
+            <table className="table table-hover table-striped-columns table-bordered">
               <thead>
                 <tr>
                   <th>Item Name</th>
@@ -54,7 +54,7 @@ export default function ItemDetail() {
                   <td>{item.purchased_or_prepared}</td>
                   <td>{item.expiration}</td>
                   <td>{item.location}</td>
-                  <td>{item.dietary_restriction}</td>
+                  <td>{item.dietary_restriction.join(", ")}</td>
                   <td>{item.description}</td>
                   <td>{item.pickup_instructions}</td>
                 </tr>

@@ -8,13 +8,7 @@ from fastapi import (
 )
 from datetime import datetime
 from pydantic import BaseModel
-from queries.items import (
-    ItemIn,
-    ItemOut,
-    ItemRepository,
-    Message,
-    Error
-)
+from queries.items import ItemIn, ItemOut, ItemRepository, Message, Error
 from typing import List, Union, Optional
 from authenticator import authenticator
 
@@ -27,7 +21,7 @@ class ItemForm(BaseModel):
     time_of_post: datetime
     expiration: datetime
     location: int
-    dietary_restriction: str
+    dietary_restriction: List[str]
     description: Optional[str]
     pickup_instructions: str
 
@@ -101,3 +95,16 @@ def delete(
     if not result:
         response.status_code = 404
     return {"detail": f"Deleted item {item_id}"}
+
+
+@router.get("/user-items", response_model=Union[Error, List[ItemOut]])
+def get_user_items(
+    response: Response,
+    repo: ItemRepository = Depends(get_item_repo),
+    account_data: dict = Depends(authenticator.get_current_account_data),
+) -> Union[Error, List[ItemOut]]:
+    account_id = account_data["id"]
+    items = repo.get_user_items(account_id)
+    if items is None:
+        response.status_code = 404
+    return items

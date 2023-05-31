@@ -187,3 +187,22 @@ class AccountRepository:
             "email": record[3],
         }
         return AccountOut(**account_dict)
+
+    def exists(self, email: str) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT EXISTS (
+                        SELECT 1
+                        FROM account
+                        WHERE email = %s
+                        )
+                        """,
+                        [email]
+                    )
+                    return result.fetchone()[0]
+        except Exception as e:
+            print(f"Original error: {e}")
+            raise ValueError("Could not check if account exists") from e

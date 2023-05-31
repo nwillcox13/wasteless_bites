@@ -80,8 +80,8 @@ class ItemRepository:
                             item.location,
                             json.dumps(item.dietary_restriction),
                             item.description,
-                            item.pickup_instructions
-                        ]
+                            item.pickup_instructions,
+                        ],
                     )
                     id = result.fetchone()[0]
                     return self.item_in_to_out(id, item, account_id)
@@ -100,8 +100,10 @@ class ItemRepository:
                         ORDER BY id;
                         """
                     )
-                    return [self.record_to_ItemOut(record, account_id)
-                            for record in result]
+                    return [
+                        self.record_to_ItemOut(record, account_id)
+                        for record in result
+                    ]
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not list items")
@@ -116,7 +118,7 @@ class ItemRepository:
                         FROM item
                         WHERE id = %s;
                         """,
-                        [item_id]
+                        [item_id],
                     )
                     record = result.fetchone()
                     if record is None:
@@ -127,11 +129,8 @@ class ItemRepository:
             return Error(message="Could not list items")
 
     def update_item(
-            self,
-            item_id: int,
-            item: ItemIn,
-            account_id: int
-            ) -> Union[ItemOut, Error]:
+        self, item_id: int, item: ItemIn, account_id: int
+    ) -> Union[ItemOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -161,8 +160,8 @@ class ItemRepository:
                             item.dietary_restriction,
                             item.description,
                             item.pickup_instructions,
-                            item_id
-                            ]
+                            item_id,
+                        ],
                     )
                     return self.item_in_to_out(item_id, item, account_id)
         except Exception as e:
@@ -178,7 +177,7 @@ class ItemRepository:
                         DELETE FROM item
                         WHERE id = %s;
                         """,
-                        [item_id]
+                        [item_id],
                     )
                     print("OUR result", result)
                 if result.rowcount >= 1:
@@ -192,6 +191,27 @@ class ItemRepository:
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not delete item")
+
+    def get_user_items(self, account_id: int) -> Union[Error, List[ItemOut]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT *
+                        FROM item
+                        WHERE account_id = %s
+                        ORDER BY id;
+                        """,
+                        [account_id],
+                    )
+                    return [
+                        self.record_to_ItemOut(record, account_id)
+                        for record in result
+                    ]
+        except Exception as e:
+            print(f"Original error: {e}")
+            return Error(message="Could not list items")
 
     def item_in_to_out(self, id: int, item: ItemIn, account_id: int):
         old_data = item.dict()
@@ -217,5 +237,5 @@ class ItemRepository:
             dietary_restriction=dietary_restriction,
             description=record[9],
             pickup_instructions=record[10],
-            account_id=record[11]
+            account_id=record[11],
         )

@@ -8,7 +8,6 @@ function LogoutForm() {
     localStorage.removeItem("authToken");
     const event = new Event("logout");
     window.dispatchEvent(event);
-    // Navigate the user back to the homepage after logging out
     navigate("/");
   };
 
