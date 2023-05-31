@@ -3,7 +3,18 @@ import { useParams } from "react-router-dom";
 import { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 export default function UserItemDetail() {
-  const [item, setItem] = useState(null);
+  const [item, setItem] = useState({
+    name: "",
+    item_type: "",
+    quantity: 0,
+    purchased_or_prepared: "",
+    time_of_post: "",
+    expiration: "",
+    location: "",
+    dietary_restriction: "",
+    description: "",
+    pickup_instructions: "",
+  });
   const { itemId } = useParams();
   const { token } = useAuthContext();
 

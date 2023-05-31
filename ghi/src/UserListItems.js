@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function UserListItems() {
   const [items, setItems] = useState([]);
@@ -64,7 +65,7 @@ export default function UserListItems() {
                 return (
                   <tr key={item.id}>
                     <td>
-                      <a href={`/items/${item.id}`}>{item.name}</a>
+                      <Link to={`/user/items/${item.id}`}>{item.name}</Link>
                     </td>
                     <td>{item.item_type}</td>
                     <td>{item.quantity}</td>
