@@ -114,7 +114,7 @@ export default function ListItems() {
                   <option value="desc">Descending</option>
                 </select>
               </div>
-              <div>
+              <div className="item-filter">
                 <label>Filter by Item Type:</label>
                 <br />
                 {[
@@ -141,7 +141,7 @@ export default function ListItems() {
                   </label>
                 ))}
               </div>
-              <div>
+              <div className="item-filter">
                 <label>Filter by Dietary Restrictions:</label>
                 <br />
                 {[
@@ -171,14 +171,14 @@ export default function ListItems() {
               </div>
               <h1 className="text-center mb-4">Item List</h1>
               <button
-                className="btn btn-primary"
+                className="btn btn-primary new-item-button"
                 onClick={() =>
                   (window.location.href = "http://localhost:3000/items/new")
                 }
               >
                 Create New Item
               </button>
-              <table className="table table-dark table-striped table-bordered">
+              <table className="table table-hover table-striped-columns table-bordered">
                 <thead>
                   <tr>
                     <th>Item Name</th>

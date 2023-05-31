@@ -32,7 +32,7 @@ export default function ItemDetail() {
         <div className="col-12">
           <h1 className="text-center mb-4">Item Detail</h1>
           {item ? (
-            <table className="table table-dark table-striped table-bordered">
+            <table className="table table-hover table-striped-columns table-bordered">
               <thead>
                 <tr>
                   <th>Item Name</th>
