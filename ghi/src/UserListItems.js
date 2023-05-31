@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function UserListItems() {
   const [items, setItems] = useState([]);
 
   const fetchData = async () => {
-    const url = "http://localhost:8000/items";
+    const url = "http://localhost:8000/user-items";
     const authToken = localStorage.getItem("authToken");
-    const parsedToken = JSON.parse(authToken);
 
     const options = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${parsedToken.access_token}`,
+        Authorization: `Bearer ${authToken}`,
       },
     };
 
     const response = await fetch(url, options);
     if (response.ok) {
       const data = await response.json();
-      setItems(data.filter((item) => item.userId === parsedToken.account.id));
+      setItems(data);
     }
   };
 
@@ -29,11 +29,13 @@ export default function UserListItems() {
   const deleteItem = async (id) => {
     const url = `http://localhost:8000/items/${id}`;
     const authToken = localStorage.getItem("authToken");
-    const parsedToken = JSON.parse(authToken);
 
     const response = await fetch(url, {
       method: "DELETE",
-      headers: { Authorization: `Bearer ${parsedToken.access_token}` },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
     });
 
     if (response.ok) {
@@ -63,7 +65,7 @@ export default function UserListItems() {
                 return (
                   <tr key={item.id}>
                     <td>
-                      <a href={`/items/${item.id}`}>{item.name}</a>
+                      <Link to={`/user/items/${item.id}`}>{item.name}</Link>
                     </td>
                     <td>{item.item_type}</td>
                     <td>{item.quantity}</td>
