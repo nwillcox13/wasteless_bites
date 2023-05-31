@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import logoImage from "./HiResTransparentLogo.png";
 
 function Nav() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
+  const { itemId } = useParams();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -123,7 +124,7 @@ function Nav() {
                     <li>
                       <NavLink
                         className="dropdown-item"
-                        to="/useritemdetail"
+                        to={`/user/items/${itemId}`}
                         onClick={closeNav}
                       >
                         User Item Detail

@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
   const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
