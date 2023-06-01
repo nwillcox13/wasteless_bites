@@ -38,3 +38,6 @@ managed to get some good work done in the afternoon. Today we split up the tasks
 I went through and re-organized a lot of the code, worked on the front-end main-page'
 I also made sure all the forms were working which I ran into an issue with the create account
 
+## 5-30-2023
+Today we had a bunch of things to work through with authentication, we also made sure to re-do our
+splash page with a faux-table with faux-data. I fully did this solo. 

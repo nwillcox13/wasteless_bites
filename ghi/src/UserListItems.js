@@ -44,7 +44,7 @@ export default function UserListItems() {
   };
 
   return (
-    <div className="container my-4">
+    <div className="container my-4 d-flex justify-content-center align-items-center">
       <div className="row">
         <div className="col-12">
           <h1 className="text-center mb-4">Your Item List</h1>

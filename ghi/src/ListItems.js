@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from "react";
-
 export default function ListItems() {
   const [items, setItems] = useState([]);
   const [sortOption, setSortOption] = useState("time_of_post");
   const [sortOrder, setSortOrder] = useState("asc");
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedRestrictions, setSelectedRestrictions] = useState([]);
-
   const fetchData = async () => {
     const url = "http://localhost:8000/items";
     const authToken = localStorage.getItem("authToken");
-
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
     });
-
     if (response.ok) {
       const data = await response.json();
       const filteredItemsByType = selectedTypes.length
@@ -32,19 +28,15 @@ export default function ListItems() {
       console.error("Failed to fetch items:", await response.text());
     }
   };
-
   useEffect(() => {
     fetchData();
   }, [selectedTypes, selectedRestrictions]);
-
   const handleSortOptionChange = (event) => {
     setSortOption(event.target.value);
   };
-
   const handleSortOrderChange = (event) => {
     setSortOrder(event.target.value);
   };
-
   const handleTypeChange = (event) => {
     const type = event.target.value;
     if (event.target.checked) {
@@ -55,7 +47,6 @@ export default function ListItems() {
       );
     }
   };
-
   const handleRestrictionChange = (event) => {
     const restriction = event.target.value;
     if (event.target.checked) {
@@ -69,7 +60,6 @@ export default function ListItems() {
       );
     }
   };
-
   const sortItems = (items) => {
     const sortedItems = [...items];
     sortedItems.sort((a, b) => {
@@ -83,12 +73,10 @@ export default function ListItems() {
     });
     return sortedItems;
   };
-
   const sortedItems = sortItems(items);
   const authToken = localStorage.getItem("authToken");
-
   return (
-    <div className="container my-4">
+    <div className="container my-4 d-flex justify-content-center align-items-center">
       <div className="row">
         <div className="col-12">
           <h1 className="text-center mb-4">Item List</h1>
@@ -114,7 +102,7 @@ export default function ListItems() {
                   <option value="desc">Descending</option>
                 </select>
               </div>
-              <div>
+              <div className="item-filter">
                 <label>Filter by Item Type:</label>
                 <br />
                 {[
@@ -141,7 +129,7 @@ export default function ListItems() {
                   </label>
                 ))}
               </div>
-              <div>
+              <div className="item-filter">
                 <label>Filter by Dietary Restrictions:</label>
                 <br />
                 {[
@@ -169,16 +157,15 @@ export default function ListItems() {
                   </label>
                 ))}
               </div>
-              <h1 className="text-center mb-4">Item List</h1>
               <button
-                className="btn btn-primary"
+                className="btn btn-primary new-item-button"
                 onClick={() =>
                   (window.location.href = "http://localhost:3000/items/new")
                 }
               >
                 Create New Item
               </button>
-              <table className="table table-dark table-striped table-bordered">
+              <table className="table table-hover table-striped-columns table-bordered">
                 <thead>
                   <tr>
                     <th>Item Name</th>
@@ -209,14 +196,6 @@ export default function ListItems() {
                         <td>{item.dietary_restriction.join(", ")}</td>
                         <td>{item.description}</td>
                         <td>{item.pickup_instructions}</td>
-                        {/* <td>
-                          <button
-                            className="btn btn-secondary"
-                            onClick={() => deleteItem(item.id)}
-                          >
-                            Remove
-                          </button>
-                        </td> */}
                       </tr>
                     );
                   })}

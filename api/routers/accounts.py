@@ -44,6 +44,12 @@ async def create_account(
     response: Response,
     accounts: AccountRepository = Depends(),
 ):
+    if accounts.exists(info.email):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='Email address already exists',
+        )
+
     hashed_password = authenticator.hash_password(info.password)
     try:
         account = accounts.create(info, hashed_password)
