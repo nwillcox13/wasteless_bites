@@ -54,7 +54,7 @@ function SignUpForm() {
       console.log("Authentication successful:", loginJson);
       const { access_token } = loginJson;
       localStorage.setItem("authToken", access_token);
-      navigate("/");
+      navigate("/items/list");
     } catch (error) {
       console.error("Error creating account or logging in:", error);
       alert("An account with this email already exists");
