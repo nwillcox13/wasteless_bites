@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+// review for alternate use or delete? could be an admin view?
+
 export default function ListItems() {
   const [items, setItems] = useState([]);
   const fetchData = async () => {

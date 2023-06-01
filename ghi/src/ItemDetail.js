@@ -17,7 +17,7 @@ export default function ItemDetail() {
     if (response.ok) {
       const data = await response.json();
       console.log("Item data:", data);
-      const imageUrl = await fetchItemImage(data.name);
+      const imageUrl = await fetchItemImage(data.name, data.item_type);
       const itemWithImage = { ...data, imageUrl };
       setItem(itemWithImage);
     } else {
@@ -25,10 +25,10 @@ export default function ItemDetail() {
     }
   };
 
-  const fetchItemImage = async (itemName) => {
+  const fetchItemImage = async (itemName, itemType) => {
     const apiKey = PEXELS_API_KEY;
     const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(
-      itemName
+      itemName + " " + itemType
     )}&per_page=1`;
     const response = await fetch(searchUrl, {
       headers: {

@@ -28,7 +28,7 @@ export default function ListItems() {
       );
       const itemsWithImages = await Promise.all(
         filteredItemsByRestriction.map(async (item) => {
-          const imageUrl = await fetchItemImage(item.name);
+          const imageUrl = await fetchItemImage(item.name, item.item_type);
           return { ...item, imageUrl };
         })
       );
@@ -42,10 +42,10 @@ export default function ListItems() {
     fetchData();
   }, [selectedTypes, selectedRestrictions]);
 
-  const fetchItemImage = async (itemName) => {
+  const fetchItemImage = async (itemName, itemType) => {
     const apiKey = PEXELS_API_KEY;
     const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(
-      itemName
+      itemName + " " + itemType
     )}&per_page=1`;
     const response = await fetch(searchUrl, {
       headers: {
