@@ -31,7 +31,6 @@ function Profile() {
   useEffect(() => {
     fetchUserData();
   }, []);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -41,12 +40,15 @@ function Profile() {
       return;
     }
 
-    const updatedAccount = {
+    let updatedAccount = {
       first_name: firstName,
       last_name: lastName,
       email: email,
-      password: password,
     };
+
+    if (password && confirmPassword) {
+      updatedAccount.password = password;
+    }
 
     const url = "http://localhost:8000/api/accounts/me";
     const config = {
@@ -159,6 +161,7 @@ function Profile() {
                   placeholder="New Password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
+                  required
                 />
               </div>
 
@@ -174,6 +177,7 @@ function Profile() {
                   placeholder="Confirm New Password"
                   value={confirmPassword}
                   onChange={(event) => setConfirmPassword(event.target.value)}
+                  required
                 />
               </div>
 

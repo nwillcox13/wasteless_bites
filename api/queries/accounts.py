@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from queries.pool import pool
-from typing import List, Union, Any
+from typing import List, Union, Any, Optional
 
 authenticator: Any = None
 
@@ -16,7 +16,7 @@ class AccountIn(BaseModel):
     first_name: str
     last_name: str
     email: str
-    password: str
+    password: Optional[str] = None
 
 
 class AccountOut(BaseModel):
@@ -40,9 +40,7 @@ class Error(BaseModel):
 
 class AccountRepository:
     def create(
-        self,
-        account: AccountIn,
-        hashed_password: str
+        self, account: AccountIn, hashed_password: str
     ) -> AccountOutWithPassword:
         # connect to db
         with pool.connection() as conn:
@@ -63,17 +61,17 @@ class AccountRepository:
                         account.last_name,
                         account.email,
                         hashed_password,
-                    ]
+                    ],
                 )
                 id = result.fetchone()[0]
                 # old_account = account.dict()
                 return AccountOutWithPassword(
-                        id=id,
-                        first_name=account.first_name,
-                        last_name=account.last_name,
-                        email=account.email,
-                        hashed_password=account.password,
-                    )
+                    id=id,
+                    first_name=account.first_name,
+                    last_name=account.last_name,
+                    email=account.email,
+                    hashed_password=account.password,
+                )
 
     def get_all_accounts(self) -> List[Union[AccountOut, Error]]:
         try:
@@ -86,8 +84,9 @@ class AccountRepository:
                         ORDER BY id;
                         """
                     )
-                    return [self.record_to_account_out(record)
-                            for record in result]
+                    return [
+                        self.record_to_account_out(record) for record in result
+                    ]
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not list accounts")
@@ -106,40 +105,53 @@ class AccountRepository:
                         FROM account
                         WHERE email= %s
                         """,
-                        [email]
+                        [email],
                     )
                     record = result.fetchone()
                     return self.record_to_account(record)
         except Exception as e:
             print(f"Original error: {e}")
-            raise ValueError(
-                "Could not get account"
-                ) from e
+            raise ValueError("Could not get account") from e
 
     def update(
-            self,
-            email: str,
-            updated_info: AccountIn
-            ) -> AccountOutWithPassword:
+        self, email: str, updated_info: AccountIn
+    ) -> AccountOutWithPassword:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
-                        """
-                        UPDATE account
-                        SET first_name = %s, last_name = %s, password = %s
-                        WHERE email = %s
-                        RETURNING id, first_name, last_name, email, password
-                        """,
-                        [
-                            updated_info.first_name,
-                            updated_info.last_name,
-                            get_authenticator().hash_password(
-                                updated_info.password
-                            ),
-                            email
-                        ]
-                    )
+                    # Check if password is provided
+                    if updated_info.password:
+                        hashed_password = get_authenticator().hash_password(
+                            updated_info.password
+                        )
+                        result = db.execute(
+                            """
+                            UPDATE account
+                            SET first_name = %s, last_name = %s, password = %s
+                            WHERE email = %s
+                            RETURNING id, first_name, last_name, email, password
+                            """,
+                            [
+                                updated_info.first_name,
+                                updated_info.last_name,
+                                hashed_password,
+                                email,
+                            ],
+                        )
+                    else:
+                        result = db.execute(
+                            """
+                            UPDATE account
+                            SET first_name = %s, last_name = %s
+                            WHERE email = %s
+                            RETURNING id, first_name, last_name, email, password
+                            """,
+                            [
+                                updated_info.first_name,
+                                updated_info.last_name,
+                                email,
+                            ],
+                        )
                     record = result.fetchone()
                     return self.record_to_account(record)
         except Exception as e:
@@ -156,7 +168,7 @@ class AccountRepository:
                         WHERE email = %s
                         RETURNING id, first_name, last_name, email
                         """,
-                        [email]
+                        [email],
                     )
                     record = result.fetchone()
                     return self.record_to_account_out(record)
@@ -200,7 +212,7 @@ class AccountRepository:
                         WHERE email = %s
                         )
                         """,
-                        [email]
+                        [email],
                     )
                     return result.fetchone()[0]
         except Exception as e:
