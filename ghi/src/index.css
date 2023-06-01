@@ -1,22 +1,11 @@
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-
-body {
-  margin-bottom: 200px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   content: "";
@@ -26,11 +15,6 @@ body {
   height: 100%;
   width: 100%;
   background-color: #f5f0f0;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
 }
 
 footer {
@@ -50,8 +34,8 @@ hr.break {
 }
 
 .btn-secondary {
-  background-color: #91684d; /* Change to your desired color */
-  padding: 5px 25px; /* Adjust the padding as per your needs */
+  background-color: #91684d;
+  padding: 5px 25px;
   border-radius: 40px;
   color: #fdfdfd;
   font-size: 20px;
@@ -75,6 +59,7 @@ hr.break {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
+
 a.navbar-brand {
   font-family: Arial, Helvetica, sans-serif;
   font-size: larger;
@@ -106,48 +91,9 @@ a.navbar-brand {
   border-radius: 32px;
 }
 
-.splash {
-  cursor: pointer;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  height: 50%;
-  width: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgb(17, 95, 0);
-  transition: all linear 400ms;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  border-radius: 40px;
-}
-
 .hidden {
   transition: 0.5s;
   display: none;
-}
-
-.splash-header {
-  height: 90%;
-  color: white;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-size: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.splash-container {
-  background-color: white;
-  margin: 50px auto;
-  display: grid;
-  width: 70%;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  border-radius: 20px;
-  border: 4px solid #056e31;
-  color: #6ba304;
-  box-shadow: none;
-  padding: 30px;
 }
 
 .navbar-toggler {
@@ -174,8 +120,8 @@ div.card-shadow {
 }
 
 .button-accordion-button {
-  background-color: #91684d; /* Change to your desired color */
-  padding: 15px 25px; /* Adjust the padding as per your needs */
+  background-color: #91684d;
+  padding: 15px 25px;
   border-radius: 10px;
   color: #fafafa;
   font-size: 16px;
@@ -190,6 +136,7 @@ div.card-shadow {
   box-shadow: none;
   padding: 30px;
 }
+
 .modal-header {
   border: 4px solid #056e31;
   color: #6ba304;
@@ -199,8 +146,8 @@ div.card-shadow {
 
 .custom-button {
   background-color: #1e7016;
-  border-color: #1e7016; /* Change to your desired color */
-  padding: 15px 25px; /* Adjust the padding as per your needs */
+  border-color: #1e7016;
+  padding: 15px 25px;
   border-radius: 10px;
   color: #fafafa;
   font-size: 16px;
@@ -211,6 +158,7 @@ div.card-shadow {
 a.custom-button:hover {
   color: #080808;
 }
+
 a.custom-button:active {
   color: #ffffff;
 }
@@ -255,4 +203,22 @@ button:active {
 
 .nav-link:visited {
   color: none !important;
+}
+
+.table {
+  background-color: #fff;
+  border: 4px solid #056e31;
+}
+
+.new-item-button {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.item-filter {
+  border: 2px solid #056e31;
+  color: #6ba304;
+  box-shadow: none;
+  padding: 12px;
+  margin: 4px;
 }

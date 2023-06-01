@@ -35,35 +35,6 @@ function Profile() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const updatedAccount = {
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-    };
-
-    const url = "http://localhost:8000/api/accounts/me";
-    const config = {
-      method: "PUT",
-      body: JSON.stringify(updatedAccount),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    };
-
-    const response = await fetch(url, config);
-    if (response.ok) {
-      setUpdateSuccess(true);
-      setUpdateError("");
-    } else {
-      setUpdateError("Error updating profile");
-      setUpdateSuccess(false);
-    }
-  };
-
-  const handlePasswordUpdate = async (event) => {
-    event.preventDefault();
-
     if (password !== confirmPassword) {
       setUpdateError("Passwords do not match");
       setUpdateSuccess(false);
@@ -71,6 +42,9 @@ function Profile() {
     }
 
     const updatedAccount = {
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
       password: password,
     };
 
@@ -91,8 +65,25 @@ function Profile() {
       setPassword("");
       setConfirmPassword("");
     } else {
-      setUpdateError("Error updating password");
+      setUpdateError("Error updating profile");
       setUpdateSuccess(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    const url = "http://localhost:8000/api/accounts/me";
+    const config = {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    };
+
+    const response = await fetch(url, config);
+    if (response.ok) {
+      navigate("/login"); // Or where you want to redirect the user after successful account deletion
+    } else {
+      setUpdateError("Error deleting account");
     }
   };
 
@@ -119,13 +110,13 @@ function Profile() {
                   id="firstName"
                   name="firstName"
                   type="text"
-                  required
                   className="form-control"
-                  placeholder="First name"
+                  placeholder="First Name"
                   value={firstName}
                   onChange={(event) => setFirstName(event.target.value)}
                 />
               </div>
+
               <div className="mb-3">
                 <label htmlFor="lastName" className="form-label">
                   Last Name
@@ -134,41 +125,28 @@ function Profile() {
                   id="lastName"
                   name="lastName"
                   type="text"
-                  required
                   className="form-control"
-                  placeholder="Last name"
+                  placeholder="Last Name"
                   value={lastName}
                   onChange={(event) => setLastName(event.target.value)}
                 />
               </div>
+
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">
-                  Email Address
+                  Email
                 </label>
                 <input
                   id="email"
                   name="email"
                   type="email"
-                  required
                   className="form-control"
-                  placeholder="Email address"
+                  placeholder="Email"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                 />
               </div>
-              <div className="col-12">
-                <button
-                  type="submit"
-                  className="btn btn-primary custom-button"
-                  style={{ backgroundColor: "#1E7016", borderColor: "#1E7016" }}
-                >
-                  Update Profile
-                </button>
-              </div>
-            </form>
-            <hr />
-            <h2>Update Password</h2>
-            <form onSubmit={handlePasswordUpdate}>
+
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">
                   New Password
@@ -183,6 +161,7 @@ function Profile() {
                   onChange={(event) => setPassword(event.target.value)}
                 />
               </div>
+
               <div className="mb-3">
                 <label htmlFor="confirmPassword" className="form-label">
                   Confirm New Password
@@ -197,13 +176,22 @@ function Profile() {
                   onChange={(event) => setConfirmPassword(event.target.value)}
                 />
               </div>
+
               <div className="col-12">
                 <button
                   type="submit"
                   className="btn btn-primary custom-button"
                   style={{ backgroundColor: "#1E7016", borderColor: "#1E7016" }}
                 >
-                  Update Password
+                  Update Profile
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger custom-button"
+                  style={{ marginLeft: "10px" }}
+                  onClick={handleDelete}
+                >
+                  Delete Account
                 </button>
               </div>
             </form>

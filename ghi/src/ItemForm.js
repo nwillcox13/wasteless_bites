@@ -264,7 +264,7 @@ function ItemForm() {
                 <CondensedInput
                   onChange={handleFormChange}
                   value={formData.purchased_or_prepared}
-                  placeholder="Purchased or Prepared"
+                  placeholder="Purchased or Prepared on"
                   type="datetime-local"
                   name="purchased_or_prepared"
                   id="purchased_or_prepared"
