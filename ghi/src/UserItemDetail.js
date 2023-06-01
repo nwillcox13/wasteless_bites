@@ -199,9 +199,8 @@ function UserItemDetail() {
       },
       body: JSON.stringify(formData),
     };
-    console.log(formData)
-    console.log(fetchConfig)
-    const response = await fetch(updateItemUrl, fetchConfig);
+    console.log(formData);
+    const response = await fetch(url, options);
     if (response.ok) {
       const data = await response.json();
       setFormData(data);
