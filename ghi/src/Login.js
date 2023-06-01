@@ -58,7 +58,7 @@ function LoginForm() {
           setEmail("");
           setPassword("");
           const navigateTime = setTimeout(() => {
-            navigate("/");
+            navigate("/items/list");
           }, 1000);
           return () => {
             clearTimeout(navigateTime);
