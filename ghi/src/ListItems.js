@@ -83,79 +83,89 @@ export default function ListItems() {
           {authToken ? (
             <>
               <div className="mb-4">
-                <label htmlFor="sortOption">Sort By:</label>
-                <select
-                  id="sortOption"
-                  value={sortOption}
-                  onChange={handleSortOptionChange}
-                >
-                  <option value="time_of_post">Time of Post</option>
-                  <option value="expiration">Expiration</option>
-                </select>
-                <label htmlFor="sortOrder">Order:</label>
-                <select
-                  id="sortOrder"
-                  value={sortOrder}
-                  onChange={handleSortOrderChange}
-                >
-                  <option value="asc">Ascending</option>
-                  <option value="desc">Descending</option>
-                </select>
-              </div>
-              <div className="item-filter">
-                <label>Filter by Item Type:</label>
-                <br />
-                {[
-                  "Baked Goods",
-                  "Baby Food/Formula",
-                  "Coffee",
-                  "Dairy & Eggs",
-                  "Deli",
-                  "Frozen",
-                  "Meat",
-                  "Pantry",
-                  "Produce",
-                  "Ready-to-eat",
-                  "Seafood",
-                ].map((type) => (
-                  <label key={type}>
-                    <input
-                      type="checkbox"
-                      value={type}
-                      checked={selectedTypes.includes(type)}
-                      onChange={handleTypeChange}
-                    />
-                    {type}
-                  </label>
-                ))}
-              </div>
-              <div className="item-filter">
-                <label>Filter by Dietary Restrictions:</label>
-                <br />
-                {[
-                  "Gluten-Free",
-                  "Dairy-Free",
-                  "Vegetarian",
-                  "Vegan",
-                  "Organic",
-                  "Contains Egg",
-                  "Contains Nuts",
-                  "Contains Shellfish",
-                  "Contains Soy",
-                  "Contains Wheat",
-                  "Kosher",
-                  "Halal",
-                ].map((restriction) => (
-                  <label key={restriction}>
-                    <input
-                      type="checkbox"
-                      value={restriction}
-                      checked={selectedRestrictions.includes(restriction)}
-                      onChange={handleRestrictionChange}
-                    />
-                    {restriction}
-                  </label>
-                ))}
+                <div className="card shadow mt-4">
+                  <div className="card-body">
+                    <label htmlFor="sortOption" style={{ marginRight: "4px" }}>
+                      Sort By:{" "}
+                    </label>
+                    <select
+                      id="sortOption"
+                      value={sortOption}
+                      onChange={handleSortOptionChange}
+                      style={{ marginRight: "8px" }}
+                    >
+                      <option value="time_of_post">Time of Post</option>
+                      <option value="expiration">Expiration</option>
+                    </select>
+                    <label htmlFor="sortOrder" style={{ marginRight: "4px" }}>
+                      Order:{" "}
+                    </label>
+                    <select
+                      id="sortOrder"
+                      value={sortOrder}
+                      onChange={handleSortOrderChange}
+                      style={{ marginRight: "8px" }}
+                    >
+                      <option value="asc">Ascending</option>
+                      <option value="desc">Descending</option>
+                    </select>
+                    <div className="item-filter">
+                      <label>Filter by Item Type:</label>
+                      <br />
+                      {[
+                        "Baked Goods",
+                        "Baby Food/Formula",
+                        "Coffee",
+                        "Dairy & Eggs",
+                        "Deli",
+                        "Frozen",
+                        "Meat",
+                        "Pantry",
+                        "Produce",
+                        "Ready-to-eat",
+                        "Seafood",
+                      ].map((type) => (
+                        <label key={type}>
+                          <input
+                            type="checkbox"
+                            value={type}
+                            checked={selectedTypes.includes(type)}
+                            onChange={handleTypeChange}
+                          />
+                          {type}
+                        </label>
+                      ))}
+                    </div>
+                    <div className="item-filter">
+                      <label>Filter by Dietary Restrictions:</label>
+                      <br />
+                      {[
+                        "Gluten-Free",
+                        "Dairy-Free",
+                        "Vegetarian",
+                        "Vegan",
+                        "Organic",
+                        "Contains Egg",
+                        "Contains Nuts",
+                        "Contains Shellfish",
+                        "Contains Soy",
+                        "Contains Wheat",
+                        "Kosher",
+                        "Halal",
+                      ].map((restriction) => (
+                        <label key={restriction}>
+                          <input
+                            type="checkbox"
+                            value={restriction}
+                            checked={selectedRestrictions.includes(restriction)}
+                            onChange={handleRestrictionChange}
+                          />
+                          {restriction}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
               <button
                 className="btn btn-primary new-item-button"
