@@ -157,7 +157,7 @@ class ItemRepository:
                             item.time_of_post,
                             item.expiration,
                             item.location,
-                            item.dietary_restriction,
+                            json.dumps(item.dietary_restriction),
                             item.description,
                             item.pickup_instructions,
                             item_id,
