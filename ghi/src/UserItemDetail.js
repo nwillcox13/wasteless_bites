@@ -135,6 +135,7 @@ function UserItemDetail() {
     description: "",
     pickup_instructions: "",
   });
+
   const { itemId } = useParams();
 
   const fetchData = async () => {
@@ -191,14 +192,16 @@ function UserItemDetail() {
     const authToken = localStorage.getItem("authToken");
     const options = {
       method: "PUT",
+      body: JSON.stringify(formData),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
       body: JSON.stringify(formData),
     };
-
-    const response = await fetch(url, options);
+    console.log(formData)
+    console.log(fetchConfig)
+    const response = await fetch(updateItemUrl, fetchConfig);
     if (response.ok) {
       const data = await response.json();
       setFormData(data);
