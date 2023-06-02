@@ -128,7 +128,6 @@ function ItemForm() {
     quantity: "",
     purchased_or_prepared: "",
     expiration: "",
-    location: "",
     dietary_restriction: [],
     description: "",
     pickup_instructions: "",
@@ -169,7 +168,14 @@ function ItemForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const newItemUrl = "http://localhost:8000/items";
-    const itemData = { ...formData, time_of_post: new Date() };
+    const location = JSON.parse(
+      atob(localStorage.getItem("authToken").split(".")[1])
+    ).account.location;
+    const itemData = {
+      ...formData,
+      time_of_post: new Date(),
+      location: location,
+    };
     const access_token = localStorage.getItem("authToken");
     const fetchConfig = {
       method: "POST",
@@ -190,7 +196,6 @@ function ItemForm() {
         quantity: "",
         purchased_or_prepared: "",
         expiration: "",
-        location: "",
         dietary_restriction: [],
         description: "",
         pickup_instructions: "",
@@ -251,15 +256,6 @@ function ItemForm() {
                   name="quantity"
                   id="quantity"
                   label="Quantity"
-                />
-                <CondensedInput
-                  onChange={handleFormChange}
-                  value={formData.location}
-                  placeholder="Location"
-                  type="number"
-                  name="location"
-                  id="location"
-                  label="Location"
                 />
                 <CondensedInput
                   onChange={handleFormChange}
@@ -349,5 +345,5 @@ function ItemForm() {
   );
 }
 
-export { ItemForm, CondensedInput, CondensedCheckboxInput }
+export { ItemForm, CondensedInput, CondensedCheckboxInput };
 export default ItemForm;

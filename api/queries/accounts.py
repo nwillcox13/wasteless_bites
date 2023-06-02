@@ -17,6 +17,7 @@ class AccountIn(BaseModel):
     last_name: str
     email: str
     password: str
+    location: int
 
 
 class AccountOut(BaseModel):
@@ -24,6 +25,7 @@ class AccountOut(BaseModel):
     first_name: str
     last_name: str
     email: str
+    location: int
 
 
 class AccountOutWithPassword(AccountOut):
@@ -52,17 +54,24 @@ class AccountRepository:
                 result = db.execute(
                     """
                     INSERT INTO account
-                        (first_name, last_name, email,
-                        password)
+                        (first_name,
+                        last_name,
+                        email,
+                        password,
+                        location)
                         VALUES
-                        (%s, %s, %s, %s)
-                    RETURNING id, email, password;
+                        (%s, %s, %s, %s, %s)
+                    RETURNING id,
+                    email,
+                    location,
+                    password;
                     """,
                     [
                         account.first_name,
                         account.last_name,
                         account.email,
                         hashed_password,
+                        account.location,
                     ]
                 )
                 id = result.fetchone()[0]
@@ -73,6 +82,7 @@ class AccountRepository:
                         last_name=account.last_name,
                         email=account.email,
                         hashed_password=account.password,
+                        location=account.location,
                     )
 
     def get_all_accounts(self) -> List[Union[AccountOut, Error]]:
@@ -102,7 +112,8 @@ class AccountRepository:
                         first_name,
                         last_name,
                         email,
-                        password
+                        password,
+                        location
                         FROM account
                         WHERE email= %s
                         """,
@@ -117,29 +128,56 @@ class AccountRepository:
                 ) from e
 
     def update(
-            self,
-            email: str,
-            updated_info: AccountIn
-            ) -> AccountOutWithPassword:
+        self, email: str, updated_info: AccountIn
+    ) -> AccountOutWithPassword:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
-                        """
-                        UPDATE account
-                        SET first_name = %s, last_name = %s, password = %s
-                        WHERE email = %s
-                        RETURNING id, first_name, last_name, email, password
-                        """,
-                        [
-                            updated_info.first_name,
-                            updated_info.last_name,
-                            get_authenticator().hash_password(
-                                updated_info.password
-                            ),
-                            email
-                        ]
-                    )
+                    # Check if password is provided
+                    if updated_info.password:
+                        hashed_password = get_authenticator().hash_password(
+                            updated_info.password
+                        )
+                        result = db.execute(
+                            """
+                            UPDATE account
+                            SET first_name = %s, last_name = %s, password = %s, location = %s
+                            WHERE email = %s
+                            RETURNING id,
+                            first_name,
+                            last_name,
+                            email,
+                            location,
+                            password
+                            """,
+                            [
+                                updated_info.first_name,
+                                updated_info.last_name,
+                                hashed_password,
+                                updated_info.location,
+                                email
+                            ],
+                        )
+                    else:
+                        result = db.execute(
+                            """
+                            UPDATE account
+                            SET first_name = %s, last_name = %s, location = %s
+                            WHERE email = %s
+                            RETURNING id,
+                            first_name,
+                            last_name,
+                            email,
+                            location,
+                            password
+                            """,
+                            [
+                                updated_info.first_name,
+                                updated_info.last_name,
+                                updated_info.location,
+                                email
+                            ],
+                        )
                     record = result.fetchone()
                     return self.record_to_account(record)
         except Exception as e:
@@ -154,7 +192,11 @@ class AccountRepository:
                         """
                         DELETE FROM account
                         WHERE email = %s
-                        RETURNING id, first_name, last_name, email
+                        RETURNING id,
+                        first_name,
+                        last_name,
+                        email,
+                        location
                         """,
                         [email]
                     )
@@ -176,6 +218,7 @@ class AccountRepository:
             "last_name": record[2],
             "email": record[3],
             "password": record[4],
+            "location": record[5],
         }
         return account_dict
 
@@ -185,6 +228,7 @@ class AccountRepository:
             "first_name": record[1],
             "last_name": record[2],
             "email": record[3],
+            "location": record[4],
         }
         return AccountOut(**account_dict)
 

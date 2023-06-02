@@ -6,6 +6,7 @@ function Profile() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [location, setLocation] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [updateError, setUpdateError] = useState("");
@@ -23,6 +24,7 @@ function Profile() {
       setFirstName(data.first_name);
       setLastName(data.last_name);
       setEmail(data.email);
+      setLocation(data.location);
     } else {
       setUpdateError("Error fetching user data");
     }
@@ -46,6 +48,7 @@ function Profile() {
       last_name: lastName,
       email: email,
       password: password,
+      location: location,
     };
 
     const url = "http://localhost:8000/api/accounts/me";
@@ -144,6 +147,21 @@ function Profile() {
                   placeholder="Email"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="location" className="form-label">
+                  Location
+                </label>
+                <input
+                  id="location"
+                  name="location"
+                  type="int"
+                  className="form-control"
+                  placeholder="location"
+                  value={location}
+                  onChange={(event) => setLocation(event.target.value)}
                 />
               </div>
 
