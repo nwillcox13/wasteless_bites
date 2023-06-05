@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from queries.pool import pool
-from typing import List, Union, Any
+from typing import List, Union, Any, Optional
 
 authenticator: Any = None
 
@@ -16,7 +16,7 @@ class AccountIn(BaseModel):
     first_name: str
     last_name: str
     email: str
-    password: str
+    password: Optional[str] = None
     location: int
 
 
@@ -42,9 +42,7 @@ class Error(BaseModel):
 
 class AccountRepository:
     def create(
-        self,
-        account: AccountIn,
-        hashed_password: str
+        self, account: AccountIn, hashed_password: str
     ) -> AccountOutWithPassword:
         # connect to db
         with pool.connection() as conn:
@@ -72,18 +70,18 @@ class AccountRepository:
                         account.email,
                         hashed_password,
                         account.location,
-                    ]
+                    ],
                 )
                 id = result.fetchone()[0]
                 # old_account = account.dict()
                 return AccountOutWithPassword(
-                        id=id,
-                        first_name=account.first_name,
-                        last_name=account.last_name,
-                        email=account.email,
-                        hashed_password=account.password,
+                    id=id,
+                    first_name=account.first_name,
+                    last_name=account.last_name,
+                    email=account.email,
+                    hashed_password=account.password,
                         location=account.location,
-                    )
+                )
 
     def get_all_accounts(self) -> List[Union[AccountOut, Error]]:
         try:
@@ -96,8 +94,9 @@ class AccountRepository:
                         ORDER BY id;
                         """
                     )
-                    return [self.record_to_account_out(record)
-                            for record in result]
+                    return [
+                        self.record_to_account_out(record) for record in result
+                    ]
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not list accounts")
@@ -117,15 +116,13 @@ class AccountRepository:
                         FROM account
                         WHERE email= %s
                         """,
-                        [email]
+                        [email],
                     )
                     record = result.fetchone()
                     return self.record_to_account(record)
         except Exception as e:
             print(f"Original error: {e}")
-            raise ValueError(
-                "Could not get account"
-                ) from e
+            raise ValueError("Could not get account") from e
 
     def update(
         self, email: str, updated_info: AccountIn
@@ -198,7 +195,7 @@ class AccountRepository:
                         email,
                         location
                         """,
-                        [email]
+                        [email],
                     )
                     record = result.fetchone()
                     return self.record_to_account_out(record)
@@ -244,7 +241,7 @@ class AccountRepository:
                         WHERE email = %s
                         )
                         """,
-                        [email]
+                        [email],
                     )
                     return result.fetchone()[0]
         except Exception as e:
