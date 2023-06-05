@@ -15,6 +15,7 @@ import FAQPage from "./Faq";
 import UserListItems from "./UserListItems";
 import UserItemDetail from "./UserItemDetail";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
+import Chat from "./Chat";
 
 
 // import{ RequireToken } from "./Auth";
@@ -45,6 +46,7 @@ function App() {
             <Route path="/accounts" element={<AccountList />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/faq" element={<FAQPage />} />
+            <Route path="/chat" element={<Chat />} />
           </Routes>
         </div>
       </Router>

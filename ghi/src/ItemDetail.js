@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { json, useParams } from "react-router-dom";
 import { PEXELS_API_KEY } from "./keys";
 
 export default function ItemDetail() {
@@ -16,7 +16,6 @@ export default function ItemDetail() {
     });
     if (response.ok) {
       const data = await response.json();
-      console.log("Item data:", data);
       const imageUrl = await fetchItemImage(data.name, data.item_type);
       const itemWithImage = { ...data, imageUrl };
       setItem(itemWithImage);
@@ -51,6 +50,29 @@ export default function ItemDetail() {
   if (!item) {
     return <div>Loading...</div>;
   }
+
+  console.log(JSON.parse(atob(localStorage.getItem("authToken").split('.')[1])).account.first_name)
+  const history = []
+  const handleMessageOwner = () => {
+    const socket = new WebSocket("ws://localhost:8000/ws");
+
+    socket.onopen = () => {
+      const user = JSON.parse(atob(localStorage.getItem("authToken").split('.')[1]));
+      const owner = item.account_id
+
+      socket.send(JSON.stringify({user, owner}))
+    }
+
+    socket.onmessage = (event) => {
+      const message = event.data
+      history.push({message})
+    }
+
+    socket.onclose = () => {
+
+    }
+  }
+
 
   return (
     <div className="container my-4">
@@ -89,6 +111,7 @@ export default function ItemDetail() {
           <p className="card-text">
             <strong>Pick-up Instructions:</strong> {item.pickup_instructions}
           </p>
+          <button className="btn btn-primary" onClick={handleMessageOwner}>Message Owner</button>
         </div>
       </div>
     </div>
