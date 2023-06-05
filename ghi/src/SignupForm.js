@@ -6,6 +6,7 @@ function SignUpForm() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [location, setLocation] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
@@ -22,6 +23,7 @@ function SignUpForm() {
       last_name: lastName,
       email: email,
       password: password,
+      location: location,
     };
 
     const url = "http://localhost:8000/api/accounts";
@@ -54,7 +56,7 @@ function SignUpForm() {
       console.log("Authentication successful:", loginJson);
       const { access_token } = loginJson;
       localStorage.setItem("authToken", access_token);
-      navigate("/");
+      navigate("/items/list");
     } catch (error) {
       console.error("Error creating account or logging in:", error);
       alert("An account with this email already exists");
@@ -80,6 +82,11 @@ function SignUpForm() {
   const handleConfirmPassword = (event) => {
     setConfirmPassword(event.target.value);
   };
+
+  const handleLocation = (event) => {
+    setLocation(event.target.value);
+  };
+
   return (
     <div className="row">
       <div className="col-md-6 offset-md-3">
@@ -130,6 +137,21 @@ function SignUpForm() {
                   placeholder="Email address"
                   value={email}
                   onChange={handleEmail}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="location" className="form-label">
+                  Location (ZIP code)
+                </label>
+                <input
+                  id="location"
+                  name="location"
+                  type="int"
+                  required
+                  className="form-control"
+                  placeholder="location"
+                  value={location}
+                  onChange={handleLocation}
                 />
               </div>
               <div className="mb-3">

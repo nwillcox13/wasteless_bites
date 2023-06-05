@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { PEXELS_API_KEY } from "./keys";
 
 export default function UserListItems() {
   const [items, setItems] = useState([]);
@@ -18,7 +19,13 @@ export default function UserListItems() {
     const response = await fetch(url, options);
     if (response.ok) {
       const data = await response.json();
-      setItems(data);
+      const itemsWithImages = await Promise.all(
+        data.map(async (item) => {
+          const imageUrl = await fetchItemImage(item.name, item.item_type);
+          return { ...item, imageUrl };
+        })
+      );
+      setItems(itemsWithImages);
     }
   };
 
@@ -43,6 +50,25 @@ export default function UserListItems() {
     }
   };
 
+  const fetchItemImage = async (itemName, itemType) => {
+    const apiKey = PEXELS_API_KEY;
+    const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(
+      itemName + " " + itemType
+    )}&per_page=1`;
+    const response = await fetch(searchUrl, {
+      headers: {
+        Authorization: apiKey,
+      },
+    });
+    if (response.ok) {
+      const data = await response.json();
+      if (data.photos && data.photos.length > 0) {
+        return data.photos[0].src.medium;
+      }
+    }
+    return "";
+  };
+
   return (
     <div className="container my-4 d-flex justify-content-center align-items-center">
       <div className="row">
@@ -51,6 +77,7 @@ export default function UserListItems() {
           <table className="table table-dark table-striped table-bordered">
             <thead>
               <tr>
+                <th>Image</th>
                 <th>Item Name</th>
                 <th>Item Type</th>
                 <th>Quantity</th>
@@ -64,6 +91,15 @@ export default function UserListItems() {
               {items?.map((item) => {
                 return (
                   <tr key={item.id}>
+                    <td>
+                      {item.imageUrl && (
+                        <img
+                          src={item.imageUrl}
+                          alt={item.name}
+                          style={{ width: "50px" }}
+                        />
+                      )}
+                    </td>
                     <td>
                       <Link to={`/user/items/${item.id}`}>{item.name}</Link>
                     </td>

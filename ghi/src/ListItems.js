@@ -224,12 +224,12 @@ export default function ListItems() {
                 <th>Item Name</th>
                 <th>Item Type</th>
                 <th>Quantity</th>
-                <th>Purchased or Prepared</th>
+                {/* <th>Purchased or Prepared</th> */}
                 <th>Time of post</th>
                 <th>Expiration</th>
                 <th>Location</th>
-                <th>Dietary restriction</th>
-                {/* <th>Description</th>
+                {/* <th>Dietary restriction</th>
+                <th>Description</th>
                 <th>Pick-up instructions</th> */}
               </tr>
             </thead>
@@ -250,12 +250,12 @@ export default function ListItems() {
                   </td>
                   <td>{item.item_type}</td>
                   <td>{item.quantity}</td>
-                  <td>{item.purchased_or_prepared}</td>
+                  {/* <td>{item.purchased_or_prepared}</td> */}
                   <td>{item.time_of_post}</td>
                   <td>{item.expiration}</td>
                   <td>{item.location}</td>
-                  <td>{item.dietary_restriction.join(", ")}</td>
-                  {/* <td>{item.description}</td>
+                  {/* <td>{item.dietary_restriction.join(", ")}</td>
+                  <td>{item.description}</td>
                   <td>{item.pickup_instructions}</td> */}
                 </tr>
               ))}

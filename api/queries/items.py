@@ -41,9 +41,7 @@ class ItemOut(BaseModel):
     account_id: int
 
     class Config:
-        json_encoders = {
-            datetime: lambda dt: dt.strftime("%m/%d/%Y")
-        }
+        json_encoders = {datetime: lambda dt: dt.strftime("%m/%d/%Y")}
 
 
 class Message(BaseModel):

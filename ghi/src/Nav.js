@@ -83,6 +83,7 @@ function Nav() {
                     aria-current="page"
                     to="/items/new"
                     onClick={closeNav}
+                    style={{ color: "#1E7016" }}
                   >
                     New item
                   </NavLink>
@@ -93,6 +94,7 @@ function Nav() {
                     aria-current="page"
                     to="/items/list"
                     onClick={closeNav}
+                    style={{ color: "#1E7016" }}
                   >
                     List Items
                   </NavLink>
@@ -105,6 +107,7 @@ function Nav() {
                     role="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
+                    style={{ color: "#1E7016" }}
                   >
                     User
                   </a>
@@ -117,6 +120,7 @@ function Nav() {
                         className="dropdown-item"
                         to="/profile"
                         onClick={closeNav}
+                        style={{ color: "#1E7016" }}
                       >
                         Profile
                       </NavLink>
@@ -126,6 +130,7 @@ function Nav() {
                         className="dropdown-item"
                         to={`/user/items/${itemId}`}
                         onClick={closeNav}
+                        style={{ color: "#1E7016" }}
                       >
                         User Item Detail
                       </NavLink>
@@ -135,6 +140,7 @@ function Nav() {
                         className="dropdown-item"
                         to="/user/items/list"
                         onClick={closeNav}
+                        style={{ color: "#1E7016" }}
                       >
                         User List Items
                       </NavLink>
@@ -144,6 +150,7 @@ function Nav() {
                         className="dropdown-item"
                         to="/logout"
                         onClick={closeNav}
+                        style={{ color: "#1E7016" }}
                       >
                         Logout
                       </NavLink>
@@ -159,6 +166,7 @@ function Nav() {
                     aria-current="page"
                     to="/login"
                     onClick={closeNav}
+                    style={{ color: "#1E7016" }}
                   >
                     Login
                   </NavLink>
@@ -169,6 +177,7 @@ function Nav() {
                     aria-current="page"
                     to="/signup"
                     onClick={closeNav}
+                    style={{ color: "#1E7016" }}
                   >
                     Signup
                   </NavLink>
@@ -181,6 +190,7 @@ function Nav() {
                 aria-current="page"
                 to="/faq"
                 onClick={closeNav}
+                style={{ color: "#1E7016" }}
               >
                 FAQ
               </NavLink>
