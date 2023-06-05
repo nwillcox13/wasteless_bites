@@ -13,7 +13,6 @@ steps = [
         ###drop table
         """
         Drop Table account;
-        """
-
+        """,
     ]
 ]
