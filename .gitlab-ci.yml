@@ -27,7 +27,7 @@ api-unit-tests-job:
     - python -m pytest
   when: manual
   # !!!!!!^this stops it from running on its own until we have tests in place!!!!!!!
-  # !!!!!!NEED TO CREATE A PYTEST!!!!!!
+  # !!!!!!NEED TO CREATE UNIT TESTS!!!!!!
 # # Build the React/JavaScript front-end
 build-front-end-job:
   stage: build

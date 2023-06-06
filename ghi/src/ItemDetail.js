@@ -208,6 +208,11 @@ export default function ItemDetail() {
           </button>
         </div>
       </div>
+      <div className="text-block" style={{ textAlign: "center" }}>
+        {
+          "This image is generated from the Item name and type and may not be accurate. Users will soon be able to add their own pictures. Thanks for your patience while we work on this feature!"
+        }
+      </div>
     </div>
   );
 }
