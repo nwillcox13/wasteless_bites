@@ -63,7 +63,6 @@ function Profile() {
         Authorization: `Bearer ${authToken}`,
       },
     };
-
     const response = await fetch(url, config);
     if (response.ok) {
       setUpdateSuccess(true);
