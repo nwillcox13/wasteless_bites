@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { json, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { PEXELS_API_KEY, OPEN_WEATHER_API_KEY } from "./keys";
 
 export default function ItemDetail() {
   const [item, setItem] = useState(null);
+  const [userLocation, setUserLocation] = useState("");
+  const [itemLocation, setItemLocation] = useState("");
+  const [calculatedDistance, setCalculatedDistance] = useState("");
   const { itemId } = useParams();
 
   const fetchData = async () => {
@@ -18,19 +21,27 @@ export default function ItemDetail() {
       const data = await response.json();
       const imageUrl = await fetchItemImage(data.name, data.item_type);
       const itemWithImage = { ...data, imageUrl };
-
-      const locationCoords = await getCoords(data.location, "US");
-      itemWithImage.lat = locationCoords.lat;
-      itemWithImage.lon = locationCoords.lon;
-
-      console.log("Coordinates:", itemWithImage.lat, itemWithImage.lon);
-
-      const dist = distance(itemWithImage.lat, itemWithImage.lon);
-      console.log("Distance:", dist);
-
+      const itemLocationValue = data.location;
+      setItemLocation(itemLocationValue);
       setItem(itemWithImage);
     } else {
       console.error("Error fetching item:", await response.text());
+    }
+  };
+
+  const fetchUserData = async () => {
+    const url = "http://localhost:8000/api/accounts/me";
+    const authToken = localStorage.getItem("authToken");
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const userLocationValue = data.location;
+      setUserLocation(userLocationValue);
+    } else {
+      console.error("Error fetching user data");
     }
   };
 
@@ -53,46 +64,78 @@ export default function ItemDetail() {
     return "";
   };
 
-  const getCoords = async (itemLocation) => {
+  const getItemCoords = async (itemLocation) => {
     const apiKey = OPEN_WEATHER_API_KEY;
-    const zipCode = itemLocation;
-    const url = `http://api.openweathermap.org/geo/1.0/zip?zip=${zipCode},US&appid=${apiKey}`;
+    const itemZipCode = String(itemLocation).trim();
+    const url = `http://api.openweathermap.org/geo/1.0/zip?zip=${itemZipCode},US&appid=${apiKey}`;
     const response = await fetch(url);
+
     if (response.ok) {
       const data = await response.json();
-      return { lat: data.lat, lon: data.lon };
+      const itemLat = data.lat;
+      const itemLon = data.lon;
+      return { itemLat, itemLon };
     } else {
       console.error("Error fetching coordinates:", await response.text());
-      return { lat: null, lon: null };
+      return { itemLat: null, itemLon: null };
     }
   };
 
-  function distance(lat1, lon1) {
+  const getUserCoords = async (userLocation) => {
+    const apiKey = OPEN_WEATHER_API_KEY;
+    const userZipCode = String(userLocation).trim();
+    const url = `http://api.openweathermap.org/geo/1.0/zip?zip=${userZipCode},US&appid=${apiKey}`;
+    const response = await fetch(url);
+
+    if (response.ok) {
+      const data = await response.json();
+      const userLat = data.lat;
+      const userLon = data.lon;
+      return { userLat, userLon };
+    } else {
+      console.error("Error fetching coordinates:", await response.text());
+      return { userLat: null, userLon: null };
+    }
+  };
+
+  function userItemDistance(itemLat, itemLon, userLat, userLon) {
     const earthRadius = 6371;
 
     const degToRad = (deg) => {
       return deg * (Math.PI / 180);
     };
 
-    const dLat = degToRad(40.1486 - lat1);
-    const dLon = degToRad(-84.2531 - lon1);
+    const dLat = degToRad(userLat - itemLat);
+    const dLon = degToRad(userLon - itemLon);
 
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(degToRad(lat1)) *
-        Math.cos(degToRad(40.1486)) *
+      Math.cos(degToRad(itemLat)) *
+        Math.cos(degToRad(userLat)) *
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = (earthRadius * c).toFixed(2);
+    const calculatedDistance = (earthRadius * c).toFixed(2);
 
-    return distance;
+    return calculatedDistance;
   }
 
   useEffect(() => {
     fetchData();
+    fetchUserData();
   }, []);
+
+  useEffect(() => {
+    if (userLocation && itemLocation) {
+      (async () => {
+        const { itemLat, itemLon } = await getItemCoords(itemLocation);
+        const { userLat, userLon } = await getUserCoords(userLocation);
+        const distance = userItemDistance(itemLat, itemLon, userLat, userLon);
+        setCalculatedDistance(distance);
+      })();
+    }
+  }, [itemLocation, userLocation]);
 
   if (!item) {
     return <div>Loading...</div>;
@@ -148,7 +191,7 @@ export default function ItemDetail() {
             <strong>Expiration:</strong> {item.expiration}
           </p>
           <p className="card-text">
-            <strong>Location:</strong> {item.location}
+            <strong>Distance:</strong> {calculatedDistance} miles
           </p>
           <p className="card-text">
             <strong>Dietary Restriction:</strong>{" "}

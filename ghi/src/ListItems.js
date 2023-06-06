@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { PEXELS_API_KEY } from "./keys";
+import { PEXELS_API_KEY, OPEN_WEATHER_API_KEY } from "./keys";
 
 export default function ListItems() {
   const [items, setItems] = useState([]);
+  const [userLocation, setUserLocation] = useState("");
   const [sortOption, setSortOption] = useState("time_of_post");
   const [sortOrder, setSortOrder] = useState("asc");
   const [selectedTypes, setSelectedTypes] = useState([]);
@@ -16,6 +17,7 @@ export default function ListItems() {
         Authorization: `Bearer ${authToken}`,
       },
     });
+
     if (response.ok) {
       const data = await response.json();
       const filteredItemsByType = selectedTypes.length
@@ -26,13 +28,18 @@ export default function ListItems() {
           item.dietary_restriction.includes(restriction)
         )
       );
-      const itemsWithImages = await Promise.all(
+
+      const itemsWithDistances = await Promise.all(
         filteredItemsByRestriction.map(async (item) => {
           const imageUrl = await fetchItemImage(item.name, item.item_type);
-          return { ...item, imageUrl };
+          const { itemLat, itemLon } = await getItemCoords(item.location);
+          const { userLat, userLon } = await getUserCoords(userLocation);
+          const distance = userItemDistance(itemLat, itemLon, userLat, userLon);
+          return { ...item, imageUrl, distance };
         })
       );
-      setItems(itemsWithImages);
+
+      setItems(itemsWithDistances);
     } else {
       console.error("Failed to fetch items:", await response.text());
     }
@@ -40,7 +47,8 @@ export default function ListItems() {
 
   useEffect(() => {
     fetchData();
-  }, [selectedTypes, selectedRestrictions]);
+    fetchUserData();
+  }, [selectedTypes, selectedRestrictions, items.location, userLocation]);
 
   const fetchItemImage = async (itemName, itemType) => {
     const apiKey = PEXELS_API_KEY;
@@ -61,6 +69,100 @@ export default function ListItems() {
     return "";
   };
 
+  const getItemCoords = async (itemLocation) => {
+    const apiKey = OPEN_WEATHER_API_KEY;
+    const itemZipCode = String(itemLocation).trim();
+
+    if (!itemZipCode) {
+      console.error("Invalid itemLocation:", itemLocation);
+      return { itemLat: null, itemLon: null };
+    }
+
+    const url = `http://api.openweathermap.org/geo/1.0/zip?zip=${itemZipCode},US&appid=${apiKey}`;
+    const response = await fetch(url);
+
+    if (response.ok) {
+      const data = await response.json();
+      const itemLat = data.lat;
+      const itemLon = data.lon;
+      return { itemLat, itemLon };
+    } else {
+      console.error("Error fetching coordinates:", await response.text());
+      return { itemLat: null, itemLon: null };
+    }
+  };
+
+  const fetchUserData = async () => {
+    const url = "http://localhost:8000/api/accounts/me";
+    const authToken = localStorage.getItem("authToken");
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const userLocationValue = data.location;
+      setUserLocation(userLocationValue);
+      if (userLocationValue) {
+        await getUserCoords(userLocationValue);
+      } else {
+        console.error("Invalid user location:", userLocationValue);
+      }
+    } else {
+      console.error("Error fetching user data");
+    }
+  };
+
+  const getUserCoords = async (userLocation) => {
+    const apiKey = OPEN_WEATHER_API_KEY;
+    const userZipCode = String(userLocation).trim();
+
+    if (!userZipCode) {
+      return { userLat: null, userLon: null };
+    }
+
+    const url = `http://api.openweathermap.org/geo/1.0/zip?zip=${userZipCode},US&appid=${apiKey}`;
+    const response = await fetch(url);
+
+    if (response.ok) {
+      const data = await response.json();
+      const userLat = data.lat;
+      const userLon = data.lon;
+      return { userLat, userLon };
+    } else {
+      console.error("Error fetching coordinates:", await response.text());
+      return { userLat: null, userLon: null };
+    }
+  };
+
+  function userItemDistance(itemLat, itemLon, userLat, userLon) {
+    const earthRadius = 6371;
+
+    const degToRad = (deg) => {
+      return deg * (Math.PI / 180);
+    };
+
+    const dLat = degToRad(userLat - itemLat);
+    const dLon = degToRad(userLon - itemLon);
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(degToRad(itemLat)) *
+        Math.cos(degToRad(userLat)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const calculatedDistance = (earthRadius * c).toFixed(2);
+
+    return calculatedDistance;
+  }
+
+  useEffect(() => {
+    fetchData();
+    fetchUserData();
+  }, []);
+
   const handleSortOptionChange = (event) => {
     setSortOption(event.target.value);
   };
@@ -78,6 +180,7 @@ export default function ListItems() {
         prevSelectedTypes.filter((t) => t !== type)
       );
     }
+    fetchData();
   };
 
   const handleRestrictionChange = (event) => {
@@ -92,6 +195,7 @@ export default function ListItems() {
         prevSelectedRestrictions.filter((r) => r !== restriction)
       );
     }
+    fetchData();
   };
 
   const sortItems = (items) => {
@@ -107,6 +211,29 @@ export default function ListItems() {
     });
     return sortedItems;
   };
+
+  useEffect(() => {
+    if (userLocation && items.location) {
+      (async () => {
+        const sortedItems = sortItems(items, sortOption, sortOrder);
+        const itemsWithDistances = await Promise.all(
+          sortedItems.map(async (item) => {
+            const { itemLat, itemLon } = await getItemCoords(item.location);
+            const { userLat, userLon } = await getUserCoords(userLocation);
+            const distance = userItemDistance(
+              itemLat,
+              itemLon,
+              userLat,
+              userLon
+            );
+            return { ...item, distance };
+          })
+        );
+
+        setItems(itemsWithDistances);
+      })();
+    }
+  }, [items.location, userLocation, sortOption, sortOrder]);
 
   const sortedItems = sortItems(items);
   const authToken = localStorage.getItem("authToken");
@@ -224,41 +351,35 @@ export default function ListItems() {
                 <th>Item Name</th>
                 <th>Item Type</th>
                 <th>Quantity</th>
-                {/* <th>Purchased or Prepared</th> */}
                 <th>Time of post</th>
                 <th>Expiration</th>
-                <th>Location</th>
-                {/* <th>Dietary restriction</th>
-                <th>Description</th>
-                <th>Pick-up instructions</th> */}
+                <th>Distance</th>
               </tr>
             </thead>
             <tbody>
-              {sortedItems?.map((item) => (
-                <tr key={item.id}>
-                  <td>
-                    {item.imageUrl && (
-                      <img
-                        src={item.imageUrl}
-                        alt={item.name}
-                        style={{ width: "50px" }}
-                      />
-                    )}
-                  </td>
-                  <td>
-                    <a href={`/items/${item.id}`}>{item.name}</a>
-                  </td>
-                  <td>{item.item_type}</td>
-                  <td>{item.quantity}</td>
-                  {/* <td>{item.purchased_or_prepared}</td> */}
-                  <td>{item.time_of_post}</td>
-                  <td>{item.expiration}</td>
-                  <td>{item.location}</td>
-                  {/* <td>{item.dietary_restriction.join(", ")}</td>
-                  <td>{item.description}</td>
-                  <td>{item.pickup_instructions}</td> */}
-                </tr>
-              ))}
+              {sortedItems?.map((item) => {
+                return (
+                  <tr key={item.id}>
+                    <td>
+                      {item.imageUrl && (
+                        <img
+                          src={item.imageUrl}
+                          alt={item.name}
+                          style={{ width: "50px" }}
+                        />
+                      )}
+                    </td>
+                    <td>
+                      <a href={`/items/${item.id}`}>{item.name}</a>
+                    </td>
+                    <td>{item.item_type}</td>
+                    <td>{item.quantity}</td>
+                    <td>{item.time_of_post}</td>
+                    <td>{item.expiration}</td>
+                    <td>{item.distance} miles</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

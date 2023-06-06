@@ -87,7 +87,7 @@ function Profile() {
 
     const response = await fetch(url, config);
     if (response.ok) {
-      navigate("/login"); // Or where you want to redirect the user after successful account deletion
+      navigate("/login");
     } else {
       setUpdateError("Error deleting account");
     }
