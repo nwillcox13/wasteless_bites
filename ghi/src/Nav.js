@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink , useParams } from "react-router-dom";
+import { Nav, Navbar, NavDropdown} from "react-bootstrap";
 import logoImage from "./HiResTransparentLogo.png";
+import LoginButton from "./LoginButton";
+import LogoutForm from "./Logout";
 
-function Nav() {
+function CustomNav() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
   const { itemId } = useParams();
@@ -42,164 +45,96 @@ function Nav() {
   };
 
   return (
-    <nav className="navbar navbar-expand-md navbar fixed-top bg">
-      <div className="container-fluid">
-        <NavLink
-          className="navbar-brand"
-          aria-current="page"
-          to="/"
-          onClick={closeNav}
-        >
-          <img
-            src={logoImage}
-            alt="Logo"
-            width="90"
-            height="100"
-            className="d-inline-block align-top"
-          />
-        </NavLink>
-        <button
-          className={`navbar-toggler ${isNavOpen ? "" : "collapsed"}`}
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarCollapse"
-          aria-controls="navbarCollapse"
-          aria-expanded={isNavOpen ? "true" : "false"}
-          aria-label="Toggle navigation"
-          onClick={toggleNav}
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div
-          className={`collapse navbar-collapse ${isNavOpen ? "show" : ""}`}
-          id="navbarCollapse"
-        >
-          <ul className="navbar-nav me-auto mb-2 mb-md-0">
-            {authToken ? (
-              <>
-                <li className="nav-item">
-                  <NavLink
-                    className="nav-link active"
-                    aria-current="page"
-                    to="/items/new"
-                    onClick={closeNav}
-                    style={{ color: "#1E7016" }}
-                  >
-                    New item
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink
-                    className="nav-link"
-                    aria-current="page"
-                    to="/items/list"
-                    onClick={closeNav}
-                    style={{ color: "#1E7016" }}
-                  >
-                    List Items
-                  </NavLink>
-                </li>
-                <li className="nav-item dropdown">
-                  <a
-                    className="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    style={{ color: "#1E7016" }}
-                  >
-                    User
-                  </a>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="navbarDropdown"
-                  >
-                    <li>
-                      <NavLink
-                        className="dropdown-item"
-                        to="/profile"
-                        onClick={closeNav}
-                        style={{ color: "#1E7016" }}
-                      >
-                        Profile
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        className="dropdown-item"
-                        to={`/user/items/${itemId}`}
-                        onClick={closeNav}
-                        style={{ color: "#1E7016" }}
-                      >
-                        User Item Detail
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        className="dropdown-item"
-                        to="/user/items/list"
-                        onClick={closeNav}
-                        style={{ color: "#1E7016" }}
-                      >
-                        User List Items
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        className="dropdown-item"
-                        to="/logout"
-                        onClick={closeNav}
-                        style={{ color: "#1E7016" }}
-                      >
-                        Logout
-                      </NavLink>
-                    </li>
-                  </ul>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className="nav-item">
-                  <NavLink
-                    className="nav-link"
-                    aria-current="page"
-                    to="/login"
-                    onClick={closeNav}
-                    style={{ color: "#1E7016" }}
-                  >
-                    Login
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink
-                    className="nav-link"
-                    aria-current="page"
-                    to="/signup"
-                    onClick={closeNav}
-                    style={{ color: "#1E7016" }}
-                  >
-                    Signup
-                  </NavLink>
-                </li>
-              </>
-            )}
-            <li className="nav-item">
-              <NavLink
-                className="nav-link"
-                aria-current="page"
-                to="/faq"
+    <Navbar expand="md" fixed="top" bg="light">
+      <Navbar.Brand as={NavLink} to="/" onClick={closeNav}>
+        <img
+          src={logoImage}
+          alt="Logo"
+          width="90"
+          height="100"
+          className="d-inline-block align-top"
+        />
+      </Navbar.Brand>
+      <Navbar.Toggle onClick={toggleNav} />
+      <Navbar.Collapse
+        className={`justify-content-end ${isNavOpen ? "show" : ""}`}
+      >
+        <Nav>
+          {authToken && (
+            <>
+              <Nav.Link
+                as={NavLink}
+                to="/items/new"
                 onClick={closeNav}
                 style={{ color: "#1E7016" }}
               >
-                FAQ
-              </NavLink>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+                New item
+              </Nav.Link>
+              <Nav.Link
+                as={NavLink}
+                to="/items/list"
+                onClick={closeNav}
+                style={{ color: "#1E7016" }}
+              >
+                List Items
+              </Nav.Link>
+              <NavDropdown
+                title="User"
+                id="navbarDropdown"
+                style={{ color: "#1E7016", background: "none", border: "none" }}
+              >
+                <NavDropdown.Item
+                  as={NavLink}
+                  to="/profile"
+                  onClick={closeNav}
+                  style={{ color: "#1E7016" }}
+                >
+                  Profile
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  as={NavLink}
+                  to={`/user/items/${itemId}`}
+                  onClick={closeNav}
+                  style={{ color: "#1E7016" }}
+                >
+                  User Item Detail
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  as={NavLink}
+                  to="/user/items/list"
+                  onClick={closeNav}
+                  style={{ color: "#1E7016" }}
+                >
+                  User List Items
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item>
+                  <LogoutForm />
+                </NavDropdown.Item>
+              </NavDropdown>
+            </>
+          )}
+          {!authToken && <LoginButton />}
+          <Nav.Link
+            as={NavLink}
+            to="/faq"
+            onClick={closeNav}
+            style={{ color: "#1E7016" }}
+          >
+            FAQ
+          </Nav.Link>
+          <Nav.Link
+            as={NavLink}
+            to="/chat"
+            onClick={closeNav}
+            style={{ color: "#1E7016" }}
+          >
+            Chat
+          </Nav.Link>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
   );
 }
 
-export default Nav;
+export default CustomNav;
