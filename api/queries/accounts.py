@@ -80,7 +80,7 @@ class AccountRepository:
                     last_name=account.last_name,
                     email=account.email,
                     hashed_password=account.password,
-                        location=account.location,
+                    location=account.location,
                 )
 
     def get_all_accounts(self) -> List[Union[AccountOut, Error]]:
@@ -152,7 +152,7 @@ class AccountRepository:
                                 updated_info.last_name,
                                 hashed_password,
                                 updated_info.location,
-                                email
+                                email,
                             ],
                         )
                     else:
@@ -172,11 +172,11 @@ class AccountRepository:
                                 updated_info.first_name,
                                 updated_info.last_name,
                                 updated_info.location,
-                                email
+                                email,
                             ],
                         )
                     record = result.fetchone()
-                    return self.record_to_account(record)
+                    return self.record_to_account_out(record)
         except Exception as e:
             print(f"Original error: {e}")
             raise ValueError("Could not update account") from e
