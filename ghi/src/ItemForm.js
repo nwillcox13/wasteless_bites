@@ -171,9 +171,16 @@ function ItemForm() {
     const location = JSON.parse(
       atob(localStorage.getItem("authToken").split(".")[1])
     ).account.location;
+    const currentTime = new Date();
+    const year = currentTime.getFullYear();
+    const month = String(currentTime.getMonth() + 1).padStart(2, "0");
+    const day = String(currentTime.getDate()).padStart(2, "0");
+    const hours = String(currentTime.getHours()).padStart(2, "0");
+    const minutes = String(currentTime.getMinutes()).padStart(2, "0");
+    const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
     const itemData = {
       ...formData,
-      time_of_post: new Date(),
+      time_of_post: formattedDateTime,
       location: location,
     };
     const access_token = localStorage.getItem("authToken");
