@@ -94,7 +94,6 @@ async def logout_account(
             detail="Not authenticated",
         )
     else:
-        # Delete the token from client side (browser)
         response.delete_cookie(key=authenticator.cookie_name)
         return {"detail": "Logged out"}
 

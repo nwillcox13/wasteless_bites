@@ -21,10 +21,6 @@ class ItemIn(BaseModel):
     description: Optional[str]
     pickup_instructions: str
 
-    class Config:
-        json_encoders = {
-            datetime: lambda dt: dt.strftime("%m/%d/%Y")
-        }
 
 class ItemOut(BaseModel):
     id: int
@@ -136,7 +132,7 @@ class ItemRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    db.execute(
+                    result = db.execute(
                         """
                         UPDATE item
                         SET name = %s,
@@ -149,7 +145,19 @@ class ItemRepository:
                             dietary_restriction = %s,
                             description = %s,
                             pickup_instructions = %s
-                        WHERE id = %s;
+                        WHERE id = %s
+                        RETURNING id,
+                        name,
+                        item_type,
+                        quantity,
+                        purchased_or_prepared,
+                        time_of_post,
+                        expiration,
+                        location,
+                        dietary_restriction,
+                        description,
+                        pickup_instructions,
+                        account_id
                         """,
                         [
                             item.name,
@@ -165,7 +173,8 @@ class ItemRepository:
                             item_id,
                         ],
                     )
-                    return self.item_in_to_out(item_id, item, account_id)
+                    record = result.fetchone()
+                    return self.record_to_ItemOut(record, account_id)
         except Exception as e:
             print(f"Original error: {e}")
             return Error(message="Could not update item")
