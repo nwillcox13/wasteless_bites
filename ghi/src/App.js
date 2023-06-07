@@ -24,7 +24,7 @@ function App() {
   const basename = process.env.PUBLIC_URL.replace(domain, "");
   return (
     <AuthProvider>
-      <Router basename={basename}>
+      <Router basename={basename} basename={basename}>
         <CustomNav />
         <div className="container">
           <Routes>
