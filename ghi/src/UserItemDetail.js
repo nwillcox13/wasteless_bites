@@ -190,6 +190,17 @@ function UserItemDetail() {
     event.preventDefault();
     const url = `http://localhost:8000/items/${itemId}`;
     const authToken = localStorage.getItem("authToken");
+    const currentTime = new Date();
+    const year = currentTime.getFullYear();
+    const month = String(currentTime.getMonth() + 1).padStart(2, "0");
+    const day = String(currentTime.getDate()).padStart(2, "0");
+    const hours = String(currentTime.getHours()).padStart(2, "0");
+    const minutes = String(currentTime.getMinutes()).padStart(2, "0");
+    const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+    const itemData = {
+      ...formData,
+      time_of_post: formattedDateTime,
+    };
     const options = {
       method: "PUT",
       body: JSON.stringify(formData),
@@ -197,9 +208,10 @@ function UserItemDetail() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(itemData),
     };
     console.log(formData);
+    console.log(itemData);
     const response = await fetch(url, options);
     if (response.ok) {
       const data = await response.json();

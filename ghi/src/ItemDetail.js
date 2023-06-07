@@ -155,7 +155,11 @@ export default function ItemDetail() {
         <div className="card-body">
           <h5 className="card-title">{item.name}</h5>
           {item.imageUrl && (
-            <img src={item.imageUrl} alt={item.name} className="card-img-top" />
+            <img
+              src={item.imageUrl}
+              alt={item.name}
+              className="card-img-fluid"
+            />
           )}
           <p className="card-text">
             <strong>Item Type:</strong> {item.item_type}
@@ -188,7 +192,46 @@ export default function ItemDetail() {
           <button className="btn btn-primary" onClick={handleMessageOwner}>
             Message Owner
           </button>
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item">
+              <strong>Item Type:</strong> {item.item_type}
+            </li>
+            <li className="list-group-item">
+              <strong>Quantity:</strong> {item.quantity}
+            </li>
+            <li className="list-group-item">
+              <strong>Purchased or Prepared:</strong>{" "}
+              {item.purchased_or_prepared}
+            </li>
+            <li className="list-group-item">
+              <strong>Time of Post:</strong> {item.time_of_post}
+            </li>
+            <li className="list-group-item">
+              <strong>Expiration:</strong> {item.expiration}
+            </li>
+            <li className="list-group-item">
+              <strong>Location:</strong> {item.location}
+            </li>
+            <li className="list-group-item">
+              <strong>Dietary Restriction:</strong>{" "}
+              {item.dietary_restriction.join(", ")}
+            </li>
+            <li className="list-group-item">
+              <strong>Description:</strong> {item.description}
+            </li>
+            <li className="list-group-item">
+              <strong>Pick-up Instructions:</strong> {item.pickup_instructions}
+            </li>
+            <button className="btn btn-primary" onClick={handleMessageOwner}>
+              Message Owner
+            </button>
+          </ul>
         </div>
+      </div>
+      <div className="text-block" style={{ textAlign: "center" }}>
+        {
+          "This image is generated from the Item name and type and may not be accurate. Users will soon be able to add their own pictures. Thanks for your patience while we work on this feature!"
+        }
       </div>
     </div>
   );

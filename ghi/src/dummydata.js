@@ -1,0 +1,280 @@
+
+
+const dummyItems = [
+{
+    id: 1,
+    name: "Apple",
+    item_type: "Produce",
+    quantity: 5,
+    time_of_post: "06/07/2023",
+    expiration: "06/14/2023",
+    location: 12345,
+    dietary_restriction: ["Organic", "Vegan"],
+},
+
+{
+    id: 2,
+    name: "Chicken Breast",
+    item_type: "Meat",
+    quantity: 2,
+    time_of_post: "06/07/2023",
+    expiration: "06/09/2023",
+    location: 56789,
+    dietary_restriction: ["Gluten-Free", "Dairy-Free"],
+},
+
+{
+    id: 3,
+    name: "Baguette",
+    item_type: "Baked Goods",
+    quantity: 3,
+    time_of_post: "06/07/2023",
+    expiration: "06/09/2023",
+    location: 98765,
+    dietary_restriction: ["Dairy-Free", "Vegetarian"],
+},
+
+{
+    id: 4,
+    name: "Eggs",
+    item_type: "Dairy & Eggs",
+    quantity: 12,
+    time_of_post: "06/07/2023",
+    expiration: "06/13/2023",
+    location: 24680,
+    dietary_restriction: ["Organic", "Vegetarian"],
+},
+
+{
+    id: 5,
+    name: "Salmon",
+    item_type: "Seafood",
+    quantity: 1,
+    time_of_post: "06/07/2023",
+    expiration: "06/10/2023",
+    location: 13579,
+    dietary_restriction: ["Gluten-Free", "Dairy-Free"],
+},
+
+{
+    id: 6,
+    name: "Pasta",
+    item_type: "Pantry",
+    quantity: 4,
+    time_of_post: "06/07/2023",
+    expiration: "06/15/2023",
+    location: 86420,
+    dietary_restriction: ["Gluten-Free", "Vegetarian"],
+},
+
+{
+    id: 7,
+    name: "Blueberries",
+    item_type: "Produce",
+    quantity: 2,
+    time_of_post: "06/07/2023",
+    expiration: "06/09/2023",
+    location: 97531,
+    dietary_restriction: ["Organic", "Vegan"],
+},
+
+{
+    id: 8,
+    name: "Almond Milk",
+    item_type: "Dairy & Eggs",
+    quantity: 1,
+    time_of_post: "06/07/2023",
+    expiration: "06/12/2023",
+    location: 23456,
+    dietary_restriction: ["Dairy-Free", "Vegan"],
+},
+
+{
+    id: 9,
+    name: "Frozen Pizza",
+    item_type: "Frozen",
+    quantity: 3,
+    time_of_post: "06/07/2023",
+    expiration: "06/20/2023",
+    location: 78901,
+    dietary_restriction: ["Gluten-Free", "Vegetarian"],
+},
+
+{
+    id: 10,
+    name: "Organic Kale",
+    item_type: "Produce",
+    quantity: 1,
+    time_of_post: "06/07/2023",
+    expiration: "06/11/2023",
+    location: 11234,
+    dietary_restriction: ["Organic", "Vegan"],
+},
+
+{
+id: 11,
+name: "Croissant",
+item_type: "Baked Goods",
+quantity: 2,
+time_of_post: "06/07/2023",
+expiration: "06/09/2023",
+location: 54321,
+dietary_restriction: ["Contains Wheat"],
+},
+
+{
+id: 12,
+name: "Baby Formula",
+item_type: "Baby Food/Formula",
+quantity: 1,
+time_of_post: "06/07/2023",
+expiration: "06/10/2023",
+location: 98765,
+dietary_restriction: [],
+},
+
+{
+id: 13,
+name: "Iced Coffee",
+item_type: "Coffee",
+quantity: 3,
+time_of_post: "06/07/2023",
+expiration: "06/09/2023",
+location: 12345,
+dietary_restriction: ["Contains Soy"],
+},
+
+{
+id: 14,
+name: "Greek Yogurt",
+item_type: "Dairy & Eggs",
+quantity: 6,
+time_of_post: "06/07/2023",
+expiration: "06/15/2023",
+location: 54321,
+dietary_restriction: ["Contains Nuts"],
+},
+
+{
+id: 15,
+name: "Chicken Salad",
+item_type: "Deli",
+quantity: 1,
+time_of_post: "06/07/2023",
+expiration: "06/08/2023",
+location: 98765,
+dietary_restriction: ["Contains Shellfish"],
+},
+
+{
+id: 16,
+name: "Frozen Blueberries",
+item_type: "Frozen",
+quantity: 2,
+time_of_post: "06/07/2023",
+expiration: "06/12/2023",
+location: 12345,
+dietary_restriction: ["Gluten-Free", "Vegan"],
+},
+
+{
+id: 17,
+name: "Beef Steak",
+item_type: "Meat",
+quantity: 1,
+time_of_post: "06/07/2023",
+expiration: "06/10/2023",
+location: 54321,
+dietary_restriction: [],
+},
+
+{
+id: 18,
+name: "Rice",
+item_type: "Pantry",
+quantity: 5,
+time_of_post: "06/07/2023",
+expiration: "06/15/2023",
+location: 98765,
+dietary_restriction: ["Gluten-Free", "Contains Soy"],
+},
+
+{
+id: 19,
+name: "Applesauce",
+item_type: "Baby Food/Formula",
+quantity: 3,
+time_of_post: "06/07/2023",
+expiration: "06/14/2023",
+location: 12345,
+dietary_restriction: ["Organic", "Vegan"],
+},
+
+{
+id: 20,
+name: "Shrimp",
+item_type: "Seafood",
+quantity: 2,
+time_of_post: "06/07/2023",
+expiration: "06/11/2023",
+location: 54321,
+dietary_restriction: ["Contains Shellfish"],
+},
+
+{
+id: 21,
+name: "Bagels",
+item_type: "Baked Goods",
+quantity: 6,
+time_of_post: "06/07/2023",
+expiration: "06/13/2023",
+location: 98765,
+dietary_restriction: ["Contains Wheat"],
+},
+
+{
+id: 22,
+name: "Hummus",
+item_type: "Ready-to-eat",
+quantity: 2,
+time_of_post: "06/07/2023",
+expiration: "06/10/2023",
+location: 12345,
+dietary_restriction: ["Dairy-Free", "Vegetarian"],
+},
+
+{
+id: 23,
+name: "Tofu",
+item_type: "Produce",
+quantity: 4,
+time_of_post: "06/07/2023",
+expiration: "06/16/2023",
+location: 54321,
+dietary_restriction: ["Vegan"],
+},
+
+{
+id: 24,
+name: "Frozen Pizza Rolls",
+item_type: "Frozen",
+quantity: 1,
+time_of_post: "06/07/2023",
+expiration: "06/11/2023",
+location: 98765,
+dietary_restriction: ["Contains Wheat"],
+},
+
+{
+id: 25,
+name: "Spinach",
+item_type: "Produce",
+quantity: 3,
+time_of_post: "06/07/2023",
+expiration: "06/13/2023",
+location: 12345,
+dietary_restriction: ["Organic", "Vegan"],
+},
+];
+
+export default dummyItems;

@@ -21,9 +21,6 @@ class ItemIn(BaseModel):
     description: Optional[str]
     pickup_instructions: str
 
-    class Config:
-        json_encoders = {datetime: lambda dt: dt.strftime("%m/%d/%Y")}
-
 
 class ItemOut(BaseModel):
     id: int

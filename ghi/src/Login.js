@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-function LoginForm() {
-  const [showLogin, setShowLogin] = useState(false);
+function LoginForm({ closeModal }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,21 +15,6 @@ function LoginForm() {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
-
-  // const handleLogin = (event) => {
-  //   event.preventDefault();
-  //   if (email.trim() === "" || password.trim() === "") {
-  //     setError("Please enter both email and password.");
-  //     return;
-  //   }
-  //   // Perform login logic here (e.g., API request to FastAPI backend)
-  //   // Handle authentication and update application state accordingly
-  //   // You can display error messages on failure or redirect on success
-  //   setEmail("");
-  //   setPassword("");
-  //   setError("");
-  //   // Close the login modal after successful login
-  // setShowLogin(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -76,19 +60,9 @@ function LoginForm() {
       console.log("Please fill in all the fields.");
     }
   };
-
   return (
     <>
-      <Button
-        variant="custom"
-        className="custom-button"
-        style={{ backgroundColor: "#1E7016", borderColor: "#1E7016" }}
-        onClick={() => setShowLogin(true)}
-      >
-        Login
-      </Button>
-
-      <Modal show={showLogin} onHide={() => setShowLogin(false)}>
+      <Modal show={true} onHide={closeModal}>
         <Modal.Header closeButton>
           <Modal.Title>Login</Modal.Title>
         </Modal.Header>
@@ -103,7 +77,6 @@ function LoginForm() {
                 onChange={handleEmailChange}
               />
             </Form.Group>
-
             <Form.Group controlId="formPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
@@ -113,9 +86,7 @@ function LoginForm() {
                 onChange={handlePasswordChange}
               />
             </Form.Group>
-
             {error && <div className="text-danger">{error}</div>}
-
             <Button variant="primary" type="submit">
               Login
             </Button>

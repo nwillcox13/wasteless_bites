@@ -10,7 +10,7 @@ import ListItems from "./ListItems";
 import ItemDetail from "./ItemDetail";
 import LoginForm from "./Login";
 import LogoutForm from "./Logout";
-import Nav from "./Nav";
+import CustomNav from "./Nav";
 import FAQPage from "./Faq";
 import UserListItems from "./UserListItems";
 import UserItemDetail from "./UserItemDetail";
@@ -24,8 +24,8 @@ function App() {
   const basename = process.env.PUBLIC_URL.replace(domain, "");
   return (
     <AuthProvider>
-      <Router basename={basename}>
-        <Nav />
+      <Router basename={basename} basename={basename}>
+        <CustomNav />
         <div className="container">
           <Routes>
             <Route path="/" element={<MainPage />} />

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Nav} from "react-bootstrap";
 
 function LogoutForm() {
   const navigate = useNavigate();
@@ -12,16 +12,7 @@ function LogoutForm() {
     navigate("/");
   };
 
-  return (
-    <Button
-      variant="custom"
-      className="custom-button"
-      style={{ backgroundColor: "#1E7016", borderColor: "#1E7016" }}
-      onClick={handleLogout}
-    >
-      Logout
-    </Button>
-  );
+  return <Nav.Link onClick={handleLogout}>Logout</Nav.Link>;
 }
 
 export default LogoutForm;

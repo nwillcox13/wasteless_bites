@@ -73,7 +73,6 @@ class AccountRepository:
                     ],
                 )
                 id = result.fetchone()[0]
-                # old_account = account.dict()
                 return AccountOutWithPassword(
                     id=id,
                     first_name=account.first_name,
@@ -138,7 +137,10 @@ class AccountRepository:
                         result = db.execute(
                             """
                             UPDATE account
-                            SET first_name = %s, last_name = %s, password = %s, location = %s
+                            SET first_name = %s,
+                            last_name = %s,
+                            password = %s,
+                            location = %s
                             WHERE email = %s
                             RETURNING id,
                             first_name,
@@ -159,7 +161,9 @@ class AccountRepository:
                         result = db.execute(
                             """
                             UPDATE account
-                            SET first_name = %s, last_name = %s, location = %s
+                            SET first_name = %s,
+                            last_name = %s,
+                            location = %s
                             WHERE email = %s
                             RETURNING id,
                             first_name,
