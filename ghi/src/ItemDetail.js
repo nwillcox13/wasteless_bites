@@ -130,39 +130,46 @@ export default function ItemDetail() {
         <div className="card-body">
           <h5 className="card-title">{item.name}</h5>
           {item.imageUrl && (
-            <img src={item.imageUrl} alt={item.name} className="card-img-top" />
+            <img
+              src={item.imageUrl}
+              alt={item.name}
+              className="card-img-fluid"
+            />
           )}
-          <p className="card-text">
-            <strong>Item Type:</strong> {item.item_type}
-          </p>
-          <p className="card-text">
-            <strong>Quantity:</strong> {item.quantity}
-          </p>
-          <p className="card-text">
-            <strong>Purchased or Prepared:</strong> {item.purchased_or_prepared}
-          </p>
-          <p className="card-text">
-            <strong>Time of Post:</strong> {item.time_of_post}
-          </p>
-          <p className="card-text">
-            <strong>Expiration:</strong> {item.expiration}
-          </p>
-          <p className="card-text">
-            <strong>Location:</strong> {item.location}
-          </p>
-          <p className="card-text">
-            <strong>Dietary Restriction:</strong>{" "}
-            {item.dietary_restriction.join(", ")}
-          </p>
-          <p className="card-text">
-            <strong>Description:</strong> {item.description}
-          </p>
-          <p className="card-text">
-            <strong>Pick-up Instructions:</strong> {item.pickup_instructions}
-          </p>
-          <button className="btn btn-primary" onClick={handleMessageOwner}>
-            Message Owner
-          </button>
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item">
+              <strong>Item Type:</strong> {item.item_type}
+            </li>
+            <li className="list-group-item">
+              <strong>Quantity:</strong> {item.quantity}
+            </li>
+            <li className="list-group-item">
+              <strong>Purchased or Prepared:</strong>{" "}
+              {item.purchased_or_prepared}
+            </li>
+            <li className="list-group-item">
+              <strong>Time of Post:</strong> {item.time_of_post}
+            </li>
+            <li className="list-group-item">
+              <strong>Expiration:</strong> {item.expiration}
+            </li>
+            <li className="list-group-item">
+              <strong>Location:</strong> {item.location}
+            </li>
+            <li className="list-group-item">
+              <strong>Dietary Restriction:</strong>{" "}
+              {item.dietary_restriction.join(", ")}
+            </li>
+            <li className="list-group-item">
+              <strong>Description:</strong> {item.description}
+            </li>
+            <li className="list-group-item">
+              <strong>Pick-up Instructions:</strong> {item.pickup_instructions}
+            </li>
+            <button className="btn btn-primary" onClick={handleMessageOwner}>
+              Message Owner
+            </button>
+          </ul>
         </div>
       </div>
     </div>

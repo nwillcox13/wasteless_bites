@@ -115,6 +115,16 @@ function CustomNav() {
             </>
           )}
           {!authToken && <LoginButton />}
+          {!authToken && (
+            <Nav.Link
+              as={NavLink}
+              to="/signup"
+              onClick={closeNav}
+              style={{ color: "#1E7016" }}
+            >
+              SignUp
+            </Nav.Link>
+          )}
           <Nav.Link
             as={NavLink}
             to="/faq"
