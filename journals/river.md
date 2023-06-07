@@ -40,4 +40,11 @@ I also made sure all the forms were working which I ran into an issue with the c
 
 ## 5-30-2023
 Today we had a bunch of things to work through with authentication, we also made sure to re-do our
-splash page with a faux-table with faux-data. I fully did this solo. 
+splash page with a faux-table with faux-data. I fully did this solo.
+
+## 5-31-2023
+Today I Went through an redid all of the date formats, and worked with Nick to get the PEXELS api
+working to where i generates a random image based on both the item type and the item name. We then had
+to get it into our table on the List Items page
+
+## 6-1-2023

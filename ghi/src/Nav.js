@@ -93,14 +93,6 @@ function CustomNav() {
                 </NavDropdown.Item>
                 <NavDropdown.Item
                   as={NavLink}
-                  to={`/user/items/${itemId}`}
-                  onClick={closeNav}
-                  style={{ color: "#1E7016" }}
-                >
-                  User Item Detail
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  as={NavLink}
                   to="/user/items/list"
                   onClick={closeNav}
                   style={{ color: "#1E7016" }}

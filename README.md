@@ -1,4 +1,4 @@
-# Module3 Project Gamma
+# Wasteless Bites
 
 ## Getting started
 
