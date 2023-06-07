@@ -5,7 +5,6 @@ stages:
 
 services:
   - docker:dind
-  # this also exists in build-back-end-job
 
 # Run flake8 to check for code quality
 lint-test-job:
@@ -40,7 +39,7 @@ build-front-end-job:
     # You need to substitute in your real values for
     # GROUP_NAME, PROJECT_NAME, & WEBSERVICE_NAME below.
     PUBLIC_URL: https://gitlab.com/nwillcox/module3-project-gamma
-    REACT_APP_SAMPLE_SERVICE_API_HOST: https://sample-service.WEBSERVICE_NAME.mod3projects.com
+    REACT_APP_SAMPLE_SERVICE_API_HOST: https://feb-23-et-10-wasteless-bites.mod3projects.com
     # !!!!! WHAT IS THIS^? IS THIS OUR APIS PEXELS/OPENWEATHER OR SOMETHING DIFFERENT?!!!!!!
   script:
     - cd ghi
@@ -65,32 +64,6 @@ pages:
   artifacts:
     paths:
       - public
-
-# # Build Sample Service:
-build-back-end-job:
-  image: docker:20-dind
-  stage: build
-  services:
-    - docker:20-dind
-  before_script:
-    - export DOCKER_REGISTRY_USER=$CI_REGISTRY_USER # built-in GitLab Registry User
-    - export DOCKER_REGISTRY_PASSWORD=$CI_REGISTRY_PASSWORD # built-in GitLab Registry Password
-    - export DOCKER_REGISTRY_URL=$CI_REGISTRY # built-in GitLab Registry URL
-    - export COMMIT_HASH=$CI_COMMIT_SHA # Your current commit sha
-    - export IMAGE_NAME_WITH_REGISTRY_PREFIX=$CI_REGISTRY_IMAGE # Your repository prefixed with GitLab Registry URL
-    - docker login -u "$DOCKER_REGISTRY_USER" -p "$DOCKER_REGISTRY_PASSWORD" $DOCKER_REGISTRY_URL # Instructs GitLab to login to its registry
-  script:
-    - cd api
-    - echo "Building... " # MAKE SURE NO SPACE ON EITHER SIDE OF = IN THE FOLLOWING LINE
-    - export CONTAINER_FULL_IMAGE_NAME_WITH_TAG=$IMAGE_NAME_WITH_REGISTRY_PREFIX/api_image:$COMMIT_HASH
-    - docker build -f ./Dockerfile --pull -t built-api .
-    - docker tag built-api "$CONTAINER_FULL_IMAGE_NAME_WITH_TAG"
-    - docker push "$CONTAINER_FULL_IMAGE_NAME_WITH_TAG"
-    - echo $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
-    - echo "Deploying on CapRover..."
-    - docker run caprover/cli-caprover caprover deploy --caproverUrl $CAPROVER_URL --caproverPassword $CAPROVER_PASSWORD --caproverApp $CAPROVER_APP --imageName $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
-  only:
-    - main
 
 build-user-service-image:
   stage: build
