@@ -223,3 +223,8 @@ button:active {
   padding: 12px;
   margin: 4px;
 }
+
+.img-resized {
+  width: 200px;
+  height: auto;
+}
