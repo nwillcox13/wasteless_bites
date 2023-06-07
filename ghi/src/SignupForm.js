@@ -150,7 +150,7 @@ function SignUpForm() {
                   type="int"
                   required
                   className="form-control"
-                  placeholder="location"
+                  placeholder="Location"
                   value={location}
                   onChange={handleLocation}
                 />
