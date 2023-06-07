@@ -17,14 +17,12 @@ import UserItemDetail from "./UserItemDetail";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import Chat from "./Chat";
 
-// import{ RequireToken } from "./Auth";
-
 function App() {
   const domain = /https:\/\/[^/]+/;
   const basename = process.env.PUBLIC_URL.replace(domain, "");
   return (
     <AuthProvider>
-      <Router basename={basename} basename={basename}>
+      <Router basename={basename}>
         <CustomNav />
         <div className="container">
           <Routes>
@@ -53,5 +51,6 @@ function App() {
     </AuthProvider>
   );
 }
+
 
 export default App;

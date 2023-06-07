@@ -60,6 +60,7 @@ function LoginForm({ closeModal }) {
       console.log("Please fill in all the fields.");
     }
   };
+
   return (
     <>
       <Modal show={true} onHide={closeModal}>

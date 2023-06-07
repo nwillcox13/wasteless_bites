@@ -121,7 +121,6 @@ function Profile() {
                   onChange={(event) => setFirstName(event.target.value)}
                 />
               </div>
-
               <div className="mb-3">
                 <label htmlFor="lastName" className="form-label">
                   Last Name
@@ -136,7 +135,6 @@ function Profile() {
                   onChange={(event) => setLastName(event.target.value)}
                 />
               </div>
-
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">
                   Email
@@ -151,7 +149,6 @@ function Profile() {
                   onChange={(event) => setEmail(event.target.value)}
                 />
               </div>
-
               <div className="mb-3">
                 <label htmlFor="location" className="form-label">
                   Location
@@ -166,7 +163,6 @@ function Profile() {
                   onChange={(event) => setLocation(event.target.value)}
                 />
               </div>
-
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">
                   New Password
@@ -182,7 +178,6 @@ function Profile() {
                   required
                 />
               </div>
-
               <div className="mb-3">
                 <label htmlFor="confirmPassword" className="form-label">
                   Confirm New Password
@@ -198,7 +193,6 @@ function Profile() {
                   required
                 />
               </div>
-
               <div className="col-12">
                 <button
                   type="submit"

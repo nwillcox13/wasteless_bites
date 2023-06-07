@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { PEXELS_API_KEY, OPEN_WEATHER_API_KEY } from "./keys";
 
 export default function ItemDetail() {
@@ -8,6 +8,7 @@ export default function ItemDetail() {
   const [itemLocation, setItemLocation] = useState("");
   const [calculatedDistance, setCalculatedDistance] = useState("");
   const { itemId } = useParams();
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     const url = `http://localhost:8000/items/${itemId}`;
@@ -122,49 +123,33 @@ export default function ItemDetail() {
   }
 
   useEffect(() => {
-    fetchData();
-    fetchUserData();
-  }, []);
+    const fetchDataAndUser = async () => {
+      await fetchData();
+      await fetchUserData();
+    };
 
-  useEffect(() => {
-    if (userLocation && itemLocation) {
-      (async () => {
+    const calculateDistance = async () => {
+      if (userLocation && itemLocation) {
         const { itemLat, itemLon } = await getItemCoords(itemLocation);
         const { userLat, userLon } = await getUserCoords(userLocation);
         const distance = userItemDistance(itemLat, itemLon, userLat, userLon);
         setCalculatedDistance(distance);
-      })();
-    }
+      }
+    };
+
+    fetchDataAndUser();
+    calculateDistance();
   }, [itemLocation, userLocation]);
 
   if (!item) {
     return <div>Loading...</div>;
   }
 
-  console.log(
-    JSON.parse(atob(localStorage.getItem("authToken").split(".")[1])).account
-      .first_name
-  );
-  const history = [];
+
   const handleMessageOwner = () => {
-    const socket = new WebSocket("ws://localhost:8000/ws");
-
-    socket.onopen = () => {
-      const user = JSON.parse(
-        atob(localStorage.getItem("authToken").split(".")[1])
-      );
-      const owner = item.account_id;
-
-      socket.send(JSON.stringify({ user, owner }));
-    };
-
-    socket.onmessage = (event) => {
-      const message = event.data;
-      history.push({ message });
-    };
-
-    socket.onclose = () => {};
+    navigate(`/chat`)
   };
+
 
   return (
     <div className="container my-4">

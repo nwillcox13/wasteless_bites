@@ -125,14 +125,6 @@ function CustomNav() {
           >
             FAQ
           </Nav.Link>
-          <Nav.Link
-            as={NavLink}
-            to="/chat"
-            onClick={closeNav}
-            style={{ color: "#1E7016" }}
-          >
-            Chat
-          </Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

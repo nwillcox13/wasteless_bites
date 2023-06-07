@@ -5,7 +5,7 @@ function MessageRow(props) {
   const when = new Date(props.message.timestamp);
   const isCurrentUser = props.message.client_id === props.currentClientId
   console.log(props.message)
-  const userName = isCurrentUser ? 'You' : props.userName;
+  const userName = isCurrentUser ? 'You' : props.message.client_id;
   return (
     <tr>
       <td>{userName}</td>
