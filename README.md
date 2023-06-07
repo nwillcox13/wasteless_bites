@@ -1,9 +1,9 @@
 # Wasteless Bites
 
--Chris "The Man" Roldan
--Harim "No, It's Pronounced Harim" Woo
--Nick Willcox, Billionaire Orphan
--River Walsh "The Flyin' Hawai'ian Iowan (from Alaska)"
+- Chris "The Man" Roldan
+- Harim "No, It's Pronounced Harim" Woo
+- Nick Willcox, Billionaire Orphan
+- River Walsh "The Flyin' Hawai'ian Iowan (from Alaska)"
 
 Wasteless Bites - a clever slogan
 
