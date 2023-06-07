@@ -33,3 +33,5 @@
 | description           | TEXT                                | no     | yes      |
 | pickup_instructions   | TEXT                                | no     | no       |
 | account_id            | SMALLINT REFERENCES account(id)     | no     | no       |
+
+This table represents every property of an item that is posted within the application.
