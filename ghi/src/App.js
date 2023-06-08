@@ -17,8 +17,6 @@ import UserItemDetail from "./UserItemDetail";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import Chat from "./Chat";
 
-// import{ RequireToken } from "./Auth";
-
 function App() {
   const domain = /https:\/\/[^/]+/;
   const basename = process.env.PUBLIC_URL.replace(domain, "");
