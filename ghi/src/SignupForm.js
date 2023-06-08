@@ -8,7 +8,6 @@ function SignUpForm() {
   const [password, setPassword] = useState("");
   const [location, setLocation] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showSignInModal, setShowSignInModal] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {

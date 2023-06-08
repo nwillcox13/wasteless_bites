@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import logoImage from "./HiResTransparentLogo.png";
 import LoginButton from "./LoginButton";
