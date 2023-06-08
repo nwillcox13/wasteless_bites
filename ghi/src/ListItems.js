@@ -12,6 +12,25 @@ export default function ListItems() {
   const [selectedRestrictions, setSelectedRestrictions] = useState([]);
 
   useEffect(() => {
+    const fetchItemImage = async (itemName, itemType) => {
+      const apiKey = PEXELS_API_KEY;
+      const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(
+        itemName + " " + itemType
+      )}&per_page=1`;
+      const response = await fetch(searchUrl, {
+        headers: {
+          Authorization: apiKey,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.photos && data.photos.length > 0) {
+          return data.photos[0].src.medium;
+        }
+      }
+      return "";
+    };
+
     const fetchData = async () => {
       const url = "http://localhost:8000/items";
       const authToken = localStorage.getItem("authToken");
@@ -76,26 +95,13 @@ export default function ListItems() {
 
     fetchData();
     fetchUserData();
-  }, [selectedTypes, selectedRestrictions, items.location, userLocation]);
-
-  const fetchItemImage = async (itemName, itemType) => {
-    const apiKey = PEXELS_API_KEY;
-    const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(
-      itemName + " " + itemType
-    )}&per_page=1`;
-    const response = await fetch(searchUrl, {
-      headers: {
-        Authorization: apiKey,
-      },
-    });
-    if (response.ok) {
-      const data = await response.json();
-      if (data.photos && data.photos.length > 0) {
-        return data.photos[0].src.medium;
-      }
-    }
-    return "";
-  };
+  }, [
+    selectedTypes,
+    selectedRestrictions,
+    items.location,
+    userLocation,
+    getUserCoords,
+  ]);
 
   const getItemCoords = async (itemLocation) => {
     const apiKey = OPEN_WEATHER_API_KEY;
@@ -206,7 +212,7 @@ export default function ListItems() {
       sortedItems.sort((a, b) => {
         const aValue = a[sortOption];
         const bValue = b[sortOption];
-      if (sortOption === "distance") {
+        if (sortOption === "distance") {
           if (sortOrder === "asc") {
             return aValue - bValue;
           } else {
@@ -214,13 +220,13 @@ export default function ListItems() {
           }
         } else {
           if (sortOrder === "asc") {
-              return aValue.localeCompare(bValue);
-            } else {
-              return bValue.localeCompare(aValue);
-            }
+            return aValue.localeCompare(bValue);
+          } else {
+            return bValue.localeCompare(aValue);
           }
+        }
       });
-        return sortedItems;
+      return sortedItems;
     },
     [sortOption, sortOrder]
   );
@@ -253,7 +259,15 @@ export default function ListItems() {
 
     fetchDataAndUser();
     calculateItemsWithDistances();
-  }, [items, items.location, userLocation, sortOption, sortOrder, sortItems]);
+  }, [
+    items,
+    items.location,
+    userLocation,
+    sortOption,
+    sortOrder,
+    sortItems,
+    getUserCoords,
+  ]);
   const sortedItems = sortItems(items);
   const authToken = localStorage.getItem("authToken");
 
