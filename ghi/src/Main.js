@@ -10,28 +10,48 @@ export default function MainPage() {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedRestrictions, setSelectedRestrictions] = useState([]);
 
-  const fetchData = async () => {
-    const filteredItemsByType = selectedTypes.length
-      ? dummyItems.filter((item) => selectedTypes.includes(item.item_type))
-      : dummyItems;
+  // const fetchData = async () => {
+  //   const filteredItemsByType = selectedTypes.length
+  //     ? dummyItems.filter((item) => selectedTypes.includes(item.item_type))
+  //     : dummyItems;
 
-    const filteredItemsByRestriction = filteredItemsByType.filter((item) =>
-      selectedRestrictions.every((restriction) =>
-        item.dietary_restriction.includes(restriction)
-      )
-    );
+  //   const filteredItemsByRestriction = filteredItemsByType.filter((item) =>
+  //     selectedRestrictions.every((restriction) =>
+  //       item.dietary_restriction.includes(restriction)
+  //     )
+  //   );
 
-    const itemsWithImages = await Promise.all(
-      filteredItemsByRestriction.map(async (item) => {
-        const imageUrl = await fetchItemImage(item.name, item.item_type);
-        return { ...item, imageUrl };
-      })
-    );
+  //   const itemsWithImages = await Promise.all(
+  //     filteredItemsByRestriction.map(async (item) => {
+  //       const imageUrl = await fetchItemImage(item.name, item.item_type);
+  //       return { ...item, imageUrl };
+  //     })
+  //   );
 
-    setItemsWithImages(itemsWithImages);
-  };
+  //   setItemsWithImages(itemsWithImages);
+  // };
 
   useEffect(() => {
+    const fetchData = async () => {
+      const filteredItemsByType = selectedTypes.length
+        ? dummyItems.filter((item) => selectedTypes.includes(item.item_type))
+        : dummyItems;
+
+      const filteredItemsByRestriction = filteredItemsByType.filter((item) =>
+        selectedRestrictions.every((restriction) =>
+          item.dietary_restriction.includes(restriction)
+        )
+      );
+
+      const itemsWithImages = await Promise.all(
+        filteredItemsByRestriction.map(async (item) => {
+          const imageUrl = await fetchItemImage(item.name, item.item_type);
+          return { ...item, imageUrl };
+        })
+      );
+
+      setItemsWithImages(itemsWithImages);
+    };
     fetchData();
   }, [selectedTypes, selectedRestrictions]);
 

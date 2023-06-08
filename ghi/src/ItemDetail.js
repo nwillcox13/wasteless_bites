@@ -12,41 +12,41 @@ export default function ItemDetail() {
   const { itemId } = useParams();
   const navigate = useNavigate();
 
-  const fetchData = async () => {
-    const url = `http://localhost:8000/items/${itemId}`;
-    const authToken = localStorage.getItem("authToken");
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
-    if (response.ok) {
-      const data = await response.json();
-      const imageUrl = await fetchItemImage(data.name, data.item_type);
-      const itemWithImage = { ...data, imageUrl };
-      const itemLocationValue = data.location;
-      setItemLocation(itemLocationValue);
-      setItem(itemWithImage);
-    } else {
-      console.error("Error fetching item:", await response.text());
-    }
-  };
+  // const fetchData = async () => {
+  //   const url = `http://localhost:8000/items/${itemId}`;
+  //   const authToken = localStorage.getItem("authToken");
+  //   const response = await fetch(url, {
+  //     headers: {
+  //       Authorization: `Bearer ${authToken}`,
+  //     },
+  //   });
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     const imageUrl = await fetchItemImage(data.name, data.item_type);
+  //     const itemWithImage = { ...data, imageUrl };
+  //     const itemLocationValue = data.location;
+  //     setItemLocation(itemLocationValue);
+  //     setItem(itemWithImage);
+  //   } else {
+  //     console.error("Error fetching item:", await response.text());
+  //   }
+  // };
 
-  const fetchUserData = async () => {
-    const url = "http://localhost:8000/api/accounts/me";
-    const authToken = localStorage.getItem("authToken");
-    const response = await fetch(url, {
-      headers: { Authorization: `Bearer ${authToken}` },
-    });
+  // const fetchUserData = async () => {
+  //   const url = "http://localhost:8000/api/accounts/me";
+  //   const authToken = localStorage.getItem("authToken");
+  //   const response = await fetch(url, {
+  //     headers: { Authorization: `Bearer ${authToken}` },
+  //   });
 
-    if (response.ok) {
-      const data = await response.json();
-      const userLocationValue = data.location;
-      setUserLocation(userLocationValue);
-    } else {
-      console.error("Error fetching user data");
-    }
-  };
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     const userLocationValue = data.location;
+  //     setUserLocation(userLocationValue);
+  //   } else {
+  //     console.error("Error fetching user data");
+  //   }
+  // };
 
   const fetchItemImage = async (itemName, itemType) => {
     const apiKey = PEXELS_API_KEY;
@@ -125,19 +125,57 @@ export default function ItemDetail() {
   }
 
   useEffect(() => {
-    fetchData();
-    fetchUserData();
-  }, []);
+    const fetchData = async () => {
+      const url = `http://localhost:8000/items/${itemId}`;
+      const authToken = localStorage.getItem("authToken");
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const imageUrl = await fetchItemImage(data.name, data.item_type);
+        const itemWithImage = { ...data, imageUrl };
+        const itemLocationValue = data.location;
+        setItemLocation(itemLocationValue);
+        setItem(itemWithImage);
+      } else {
+        console.error("Error fetching item:", await response.text());
+      }
+    };
 
-  useEffect(() => {
-    if (userLocation && itemLocation) {
-      (async () => {
+    const fetchUserData = async () => {
+      const url = "http://localhost:8000/api/accounts/me";
+      const authToken = localStorage.getItem("authToken");
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const userLocationValue = data.location;
+        setUserLocation(userLocationValue);
+      } else {
+        console.error("Error fetching user data");
+      }
+    };
+    const fetchDataAndUser = async () => {
+      await fetchData();
+      await fetchUserData();
+    };
+
+    const calculateDistance = async () => {
+      if (userLocation && itemLocation) {
         const { itemLat, itemLon } = await getItemCoords(itemLocation);
         const { userLat, userLon } = await getUserCoords(userLocation);
         const distance = userItemDistance(itemLat, itemLon, userLat, userLon);
         setCalculatedDistance(distance);
-      })();
-    }
+      }
+    };
+
+    fetchDataAndUser();
+    calculateDistance();
   }, [itemLocation, userLocation]);
 
   if (!item) {

@@ -138,19 +138,30 @@ function UserItemDetail() {
 
   const { itemId } = useParams();
 
-  const fetchData = async () => {
-    const url = `http://localhost:8000/items/${itemId}`;
-    const authToken = localStorage.getItem("authToken");
-    const response = await fetch(url, {
-      headers: { Authorization: `Bearer ${authToken}` },
-    });
-    if (response.ok) {
-      const data = await response.json();
-      setFormData(data);
-    }
-  };
+  // const fetchData = async () => {
+  //   const url = `http://localhost:8000/items/${itemId}`;
+  //   const authToken = localStorage.getItem("authToken");
+  //   const response = await fetch(url, {
+  //     headers: { Authorization: `Bearer ${authToken}` },
+  //   });
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     setFormData(data);
+  //   }
+  // };
 
   useEffect(() => {
+    const fetchData = async () => {
+      const url = `http://localhost:8000/items/${itemId}`;
+      const authToken = localStorage.getItem("authToken");
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setFormData(data);
+      }
+    };
     fetchData();
   }, []);
 

@@ -6,31 +6,55 @@ const PEXELS_API_KEY = `${process.env.PEXELS_API_KEY}`;
 export default function UserListItems() {
   const [items, setItems] = useState([]);
 
-  const fetchData = async () => {
-    const url = "http://localhost:8000/user-items";
-    const authToken = localStorage.getItem("authToken");
+  // const fetchData = async () => {
+  //   const url = "http://localhost:8000/user-items";
+  //   const authToken = localStorage.getItem("authToken");
 
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    };
+  //   const options = {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${authToken}`,
+  //     },
+  //   };
 
-    const response = await fetch(url, options);
-    if (response.ok) {
-      const data = await response.json();
-      const itemsWithImages = await Promise.all(
-        data.map(async (item) => {
-          const imageUrl = await fetchItemImage(item.name, item.item_type);
-          return { ...item, imageUrl };
-        })
-      );
-      setItems(itemsWithImages);
-    }
-  };
+  //   const response = await fetch(url, options);
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     const itemsWithImages = await Promise.all(
+  //       data.map(async (item) => {
+  //         const imageUrl = await fetchItemImage(item.name, item.item_type);
+  //         return { ...item, imageUrl };
+  //       })
+  //     );
+  //     setItems(itemsWithImages);
+  //   }
+  // };
 
   useEffect(() => {
+    const fetchData = async () => {
+      const url = "http://localhost:8000/user-items";
+      const authToken = localStorage.getItem("authToken");
+
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      };
+
+      const response = await fetch(url, options);
+      if (response.ok) {
+        const data = await response.json();
+        const itemsWithImages = await Promise.all(
+          data.map(async (item) => {
+            const imageUrl = await fetchItemImage(item.name, item.item_type);
+            return { ...item, imageUrl };
+          })
+        );
+        setItems(itemsWithImages);
+      }
+    };
+
     fetchData();
   }, []);
 
