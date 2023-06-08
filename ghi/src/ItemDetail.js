@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
 const OPEN_WEATHER_API_KEY = `${process.env.OPEN_WEATHER_API_KEY}`;
 const PEXELS_API_KEY = `${process.env.PEXELS_API_KEY}`;
 import Map from "./Map";
@@ -15,41 +14,41 @@ export default function ItemDetail() {
   const [itemWeather, setItemWeather] = useState(null);
   const navigate = useNavigate();
 
-  // const fetchData = async () => {
-  //   const url = `http://localhost:8000/items/${itemId}`;
-  //   const authToken = localStorage.getItem("authToken");
-  //   const response = await fetch(url, {
-  //     headers: {
-  //       Authorization: `Bearer ${authToken}`,
-  //     },
-  //   });
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     const imageUrl = await fetchItemImage(data.name, data.item_type);
-  //     const itemWithImage = { ...data, imageUrl };
-  //     const itemLocationValue = data.location;
-  //     setItemLocation(itemLocationValue);
-  //     setItem(itemWithImage);
-  //   } else {
-  //     console.error("Error fetching item:", await response.text());
-  //   }
-  // };
+  const fetchData = async () => {
+    const url = `http://localhost:8000/items/${itemId}`;
+    const authToken = localStorage.getItem("authToken");
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    if (response.ok) {
+      const data = await response.json();
+      const imageUrl = await fetchItemImage(data.name, data.item_type);
+      const itemWithImage = { ...data, imageUrl };
+      const itemLocationValue = data.location;
+      setItemLocation(itemLocationValue);
+      setItem(itemWithImage);
+    } else {
+      console.error("Error fetching item:", await response.text());
+    }
+  };
 
-  // const fetchUserData = async () => {
-  //   const url = "http://localhost:8000/api/accounts/me";
-  //   const authToken = localStorage.getItem("authToken");
-  //   const response = await fetch(url, {
-  //     headers: { Authorization: `Bearer ${authToken}` },
-  //   });
+  const fetchUserData = async () => {
+    const url = "http://localhost:8000/api/accounts/me";
+    const authToken = localStorage.getItem("authToken");
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
 
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     const userLocationValue = data.location;
-  //     setUserLocation(userLocationValue);
-  //   } else {
-  //     console.error("Error fetching user data");
-  //   }
-  // };
+    if (response.ok) {
+      const data = await response.json();
+      const userLocationValue = data.location;
+      setUserLocation(userLocationValue);
+    } else {
+      console.error("Error fetching user data");
+    }
+  };
 
   const fetchItemWeather = async (lat, lon) => {
     const apiKey = OPEN_WEATHER_API_KEY;
