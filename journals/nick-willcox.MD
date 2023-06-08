@@ -55,3 +55,7 @@ Reading up on deployment to start the day. Full implementation of distance funct
 ## 7 JUN 2023
 
 Got to work with Andrew on our gitlab-ci.yml and get our project to begin building and pipelines functioning. Everyone is polishing off their own preferred aspect of the project so that we can finish deployment as a team. Starting to check off boxes as we get closer to submission deadline and I put some effort in on formatting/indentation as well as getting the readme.md spun up.
+
+## 8 JUN 2023
+
+Worked on deployment all morning. Finally got green checks on all pipelines after much effort and sadness.
