@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { PEXELS_API_KEY, OPEN_WEATHER_API_KEY } from "./keys";
+import Map from "./Map";
+import "./Map.css";
+
+const OPEN_WEATHER_API_KEY = `${process.env.OPEN_WEATHER_API_KEY}`;
+const PEXELS_API_KEY = `${process.env.PEXELS_API_KEY}`;
 
 export default function ItemDetail() {
   const [item, setItem] = useState(null);
@@ -8,41 +12,60 @@ export default function ItemDetail() {
   const [itemLocation, setItemLocation] = useState("");
   const [calculatedDistance, setCalculatedDistance] = useState("");
   const { itemId } = useParams();
+  const [itemWeather, setItemWeather] = useState(null);
   const navigate = useNavigate();
 
-  const fetchData = async () => {
-    const url = `http://localhost:8000/items/${itemId}`;
-    const authToken = localStorage.getItem("authToken");
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
+  useEffect(() => {
+    const fetchData = async () => {
+      const url = `http://localhost:8000/items/${itemId}`;
+      const authToken = localStorage.getItem("authToken");
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const imageUrl = await fetchItemImage(data.name, data.item_type);
+        const itemWithImage = { ...data, imageUrl };
+        const itemLocationValue = data.location;
+        setItemLocation(itemLocationValue);
+        setItem(itemWithImage);
+      } else {
+        console.error("Error fetching item:", await response.text());
+      }
+    };
+
+    const fetchUserData = async () => {
+      const url = "http://localhost:8000/api/accounts/me";
+      const authToken = localStorage.getItem("authToken");
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const userLocationValue = data.location;
+        setUserLocation(userLocationValue);
+      } else {
+        console.error("Error fetching user data");
+      }
+    };
+
+    fetchData();
+    fetchUserData();
+  }, [itemId]);
+
+  const fetchItemWeather = async (lat, lon) => {
+    const apiKey = OPEN_WEATHER_API_KEY;
+    const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
+    const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
-      const imageUrl = await fetchItemImage(data.name, data.item_type);
-      const itemWithImage = { ...data, imageUrl };
-      const itemLocationValue = data.location;
-      setItemLocation(itemLocationValue);
-      setItem(itemWithImage);
+      return data;
     } else {
-      console.error("Error fetching item:", await response.text());
-    }
-  };
-
-  const fetchUserData = async () => {
-    const url = "http://localhost:8000/api/accounts/me";
-    const authToken = localStorage.getItem("authToken");
-    const response = await fetch(url, {
-      headers: { Authorization: `Bearer ${authToken}` },
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      const userLocationValue = data.location;
-      setUserLocation(userLocationValue);
-    } else {
-      console.error("Error fetching user data");
+      console.error("Error fetching weather:", await response.text());
+      return null;
     }
   };
 
@@ -70,7 +93,6 @@ export default function ItemDetail() {
     const itemZipCode = String(itemLocation).trim();
     const url = `http://api.openweathermap.org/geo/1.0/zip?zip=${itemZipCode},US&appid=${apiKey}`;
     const response = await fetch(url);
-
     if (response.ok) {
       const data = await response.json();
       const itemLat = data.lat;
@@ -87,7 +109,6 @@ export default function ItemDetail() {
     const userZipCode = String(userLocation).trim();
     const url = `http://api.openweathermap.org/geo/1.0/zip?zip=${userZipCode},US&appid=${apiKey}`;
     const response = await fetch(url);
-
     if (response.ok) {
       const data = await response.json();
       const userLat = data.lat;
@@ -101,31 +122,26 @@ export default function ItemDetail() {
 
   function userItemDistance(itemLat, itemLon, userLat, userLon) {
     const earthRadius = 6371;
-
     const degToRad = (deg) => {
       return deg * (Math.PI / 180);
     };
-
     const dLat = degToRad(userLat - itemLat);
     const dLon = degToRad(userLon - itemLon);
-
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(degToRad(itemLat)) *
         Math.cos(degToRad(userLat)) *
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
-
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const calculatedDistance = (earthRadius * c).toFixed(2);
-
     return calculatedDistance;
   }
 
-  useEffect(() => {
-    fetchData();
-    fetchUserData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  //   fetchUserData();
+  // }, [fetchData, fetchUserData]);
 
   useEffect(() => {
     if (userLocation && itemLocation) {
@@ -138,15 +154,23 @@ export default function ItemDetail() {
     }
   }, [itemLocation, userLocation]);
 
+  useEffect(() => {
+    if (itemLocation) {
+      (async () => {
+        const { itemLat, itemLon } = await getItemCoords(itemLocation);
+        const weather = await fetchItemWeather(itemLat, itemLon);
+        setItemWeather(weather);
+      })();
+    }
+  }, [itemLocation]);
+
   if (!item) {
     return <div>Loading...</div>;
   }
 
-
   const handleMessageOwner = () => {
-    navigate(`/chat`)
+    navigate(`/chat`);
   };
-
 
   return (
     <div className="container my-4">
@@ -158,68 +182,40 @@ export default function ItemDetail() {
             <img
               src={item.imageUrl}
               alt={item.name}
-              className="card-img-fluid"
+              className="card-img-fluid item-detail"
             />
           )}
-          <p className="card-text">
-            <strong>Item Type:</strong> {item.item_type}
-          </p>
-          <p className="card-text">
-            <strong>Quantity:</strong> {item.quantity}
-          </p>
-          <p className="card-text">
-            <strong>Purchased or Prepared:</strong> {item.purchased_or_prepared}
-          </p>
-          <p className="card-text">
-            <strong>Time of Post:</strong> {item.time_of_post}
-          </p>
-          <p className="card-text">
-            <strong>Expiration:</strong> {item.expiration}
-          </p>
-          <p className="card-text">
-            <strong>Distance:</strong> {calculatedDistance} miles
-          </p>
-          <p className="card-text">
-            <strong>Dietary Restriction:</strong>{" "}
-            {item.dietary_restriction.join(", ")}
-          </p>
-          <p className="card-text">
-            <strong>Description:</strong> {item.description}
-          </p>
-          <p className="card-text">
-            <strong>Pick-up Instructions:</strong> {item.pickup_instructions}
-          </p>
-          <button className="btn btn-primary" onClick={handleMessageOwner}>
-            Message Owner
-          </button>
           <ul className="list-group list-group-flush">
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Item Type:</strong> {item.item_type}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Quantity:</strong> {item.quantity}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Purchased or Prepared:</strong>{" "}
               {item.purchased_or_prepared}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Time of Post:</strong> {item.time_of_post}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Expiration:</strong> {item.expiration}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
+              <strong>Distance:</strong> {calculatedDistance} miles
+            </li>
+            <li className="list-group-item item-detail">
               <strong>Location:</strong> {item.location}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Dietary Restriction:</strong>{" "}
               {item.dietary_restriction.join(", ")}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Description:</strong> {item.description}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Pick-up Instructions:</strong> {item.pickup_instructions}
             </li>
             <button className="btn btn-primary" onClick={handleMessageOwner}>
@@ -228,10 +224,28 @@ export default function ItemDetail() {
           </ul>
         </div>
       </div>
-      <div className="text-block" style={{ textAlign: "center" }}>
-        {
-          "This image is generated from the Item name and type and may not be accurate. Users will soon be able to add their own pictures. Thanks for your patience while we work on this feature!"
-        }
+      {itemWeather && (
+        <div>
+          <h2>Weather at Item's Location:</h2>
+          <p>{`Weather: ${itemWeather.weather[0].main}`}</p>
+          <p>{`Temperature: ${itemWeather.main.temp} °F`}</p>
+          <p>{`Humidity: ${itemWeather.main.humidity} %`}</p>
+          <p>{`Wind Speed: ${itemWeather.wind.speed} m/s`}</p>
+        </div>
+      )}
+
+      {itemWeather && (
+        <div className="map-container">
+          <h2>Approximate Item Location:</h2>
+          <Map weatherData={itemWeather} />
+        </div>
+      )}
+      <div className="footer">
+        <p>
+          "The images generating the Item name and type on this page may not be
+          accurate. Users will soon be able to add their own pictures. Thanks
+          for your patience while we work on this feature!"
+        </p>
       </div>
     </div>
   );

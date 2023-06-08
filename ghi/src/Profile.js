@@ -13,26 +13,44 @@ function Profile() {
   const navigate = useNavigate();
   const authToken = localStorage.getItem("authToken");
 
-  const fetchUserData = async () => {
-    const url = "http://localhost:8000/api/accounts/me";
-    const response = await fetch(url, {
-      headers: { Authorization: `Bearer ${authToken}` },
-    });
+  // const fetchUserData = async () => {
+  //   const url = "http://localhost:8000/api/accounts/me";
+  //   const response = await fetch(url, {
+  //     headers: { Authorization: `Bearer ${authToken}` },
+  //   });
 
-    if (response.ok) {
-      const data = await response.json();
-      setFirstName(data.first_name);
-      setLastName(data.last_name);
-      setEmail(data.email);
-      setLocation(data.location);
-    } else {
-      setUpdateError("Error fetching user data");
-    }
-  };
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     setFirstName(data.first_name);
+  //     setLastName(data.last_name);
+  //     setEmail(data.email);
+  //     setLocation(data.location);
+  //   } else {
+  //     setUpdateError("Error fetching user data");
+  //   }
+  // };
 
   useEffect(() => {
+    const fetchUserData = async () => {
+      const url = "http://localhost:8000/api/accounts/me";
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setFirstName(data.first_name);
+        setLastName(data.last_name);
+        setEmail(data.email);
+        setLocation(data.location);
+      } else {
+        setUpdateError("Error fetching user data");
+      }
+    };
+
     fetchUserData();
-  }, []);
+  }, [authToken]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -121,7 +139,6 @@ function Profile() {
                   onChange={(event) => setFirstName(event.target.value)}
                 />
               </div>
-
               <div className="mb-3">
                 <label htmlFor="lastName" className="form-label">
                   Last Name
@@ -136,7 +153,6 @@ function Profile() {
                   onChange={(event) => setLastName(event.target.value)}
                 />
               </div>
-
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">
                   Email
@@ -151,7 +167,6 @@ function Profile() {
                   onChange={(event) => setEmail(event.target.value)}
                 />
               </div>
-
               <div className="mb-3">
                 <label htmlFor="location" className="form-label">
                   Location
@@ -166,7 +181,6 @@ function Profile() {
                   onChange={(event) => setLocation(event.target.value)}
                 />
               </div>
-
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">
                   New Password
@@ -182,7 +196,6 @@ function Profile() {
                   required
                 />
               </div>
-
               <div className="mb-3">
                 <label htmlFor="confirmPassword" className="form-label">
                   Confirm New Password
@@ -198,7 +211,6 @@ function Profile() {
                   required
                 />
               </div>
-
               <div className="col-12">
                 <button
                   type="submit"

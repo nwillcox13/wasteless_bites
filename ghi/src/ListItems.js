@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { PEXELS_API_KEY, OPEN_WEATHER_API_KEY } from "./keys";
+import React, { useState, useEffect, useCallback } from "react";
+
+const OPEN_WEATHER_API_KEY = `${process.env.OPEN_WEATHER_API_KEY}`;
+const PEXELS_API_KEY = `${process.env.PEXELS_API_KEY}`;
 
 export default function ListItems() {
   const [items, setItems] = useState([]);
@@ -9,43 +11,69 @@ export default function ListItems() {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedRestrictions, setSelectedRestrictions] = useState([]);
 
-  const fetchData = async () => {
-    const url = "http://localhost:8000/items";
-    const authToken = localStorage.getItem("authToken");
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      const filteredItemsByType = selectedTypes.length
-        ? data.filter((item) => selectedTypes.includes(item.item_type))
-        : data;
-      const filteredItemsByRestriction = filteredItemsByType.filter((item) =>
-        selectedRestrictions.every((restriction) =>
-          item.dietary_restriction.includes(restriction)
-        )
-      );
-
-      const itemsWithDistances = await Promise.all(
-        filteredItemsByRestriction.map(async (item) => {
-          const imageUrl = await fetchItemImage(item.name, item.item_type);
-          const { itemLat, itemLon } = await getItemCoords(item.location);
-          const { userLat, userLon } = await getUserCoords(userLocation);
-          const distance = userItemDistance(itemLat, itemLon, userLat, userLon);
-          return { ...item, imageUrl, distance };
-        })
-      );
-
-      setItems(itemsWithDistances);
-    } else {
-      console.error("Failed to fetch items:", await response.text());
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      const url = "http://localhost:8000/items";
+      const authToken = localStorage.getItem("authToken");
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const filteredItemsByType = selectedTypes.length
+          ? data.filter((item) => selectedTypes.includes(item.item_type))
+          : data;
+        const filteredItemsByRestriction = filteredItemsByType.filter((item) =>
+          selectedRestrictions.every((restriction) =>
+            item.dietary_restriction.includes(restriction)
+          )
+        );
+
+        const itemsWithDistances = await Promise.all(
+          filteredItemsByRestriction.map(async (item) => {
+            const imageUrl = await fetchItemImage(item.name, item.item_type);
+            const { itemLat, itemLon } = await getItemCoords(item.location);
+            const { userLat, userLon } = await getUserCoords(userLocation);
+            const distance = userItemDistance(
+              itemLat,
+              itemLon,
+              userLat,
+              userLon
+            );
+            return { ...item, imageUrl, distance };
+          })
+        );
+
+        setItems(itemsWithDistances);
+      } else {
+        console.error("Failed to fetch items:", await response.text());
+      }
+    };
+
+    const fetchUserData = async () => {
+      const url = "http://localhost:8000/api/accounts/me";
+      const authToken = localStorage.getItem("authToken");
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const userLocationValue = data.location;
+        setUserLocation(userLocationValue);
+        if (userLocationValue) {
+          await getUserCoords(userLocationValue);
+        } else {
+          console.error("Invalid user location:", userLocationValue);
+        }
+      } else {
+        console.error("Error fetching user data");
+      }
+    };
+
     fetchData();
     fetchUserData();
   }, [selectedTypes, selectedRestrictions, items.location, userLocation]);
@@ -89,27 +117,6 @@ export default function ListItems() {
     } else {
       console.error("Error fetching coordinates:", await response.text());
       return { itemLat: null, itemLon: null };
-    }
-  };
-
-  const fetchUserData = async () => {
-    const url = "http://localhost:8000/api/accounts/me";
-    const authToken = localStorage.getItem("authToken");
-    const response = await fetch(url, {
-      headers: { Authorization: `Bearer ${authToken}` },
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      const userLocationValue = data.location;
-      setUserLocation(userLocationValue);
-      if (userLocationValue) {
-        await getUserCoords(userLocationValue);
-      } else {
-        console.error("Invalid user location:", userLocationValue);
-      }
-    } else {
-      console.error("Error fetching user data");
     }
   };
 
@@ -158,11 +165,6 @@ export default function ListItems() {
     return calculatedDistance;
   }
 
-  useEffect(() => {
-    fetchData();
-    fetchUserData();
-  }, []);
-
   const handleSortOptionChange = (event) => {
     setSortOption(event.target.value);
   };
@@ -180,7 +182,7 @@ export default function ListItems() {
         prevSelectedTypes.filter((t) => t !== type)
       );
     }
-    fetchData();
+    // fetchData();
   };
 
   const handleRestrictionChange = (event) => {
@@ -195,15 +197,16 @@ export default function ListItems() {
         prevSelectedRestrictions.filter((r) => r !== restriction)
       );
     }
-    fetchData();
+    // fetchData();
   };
 
-  const sortItems = (items) => {
-    const sortedItems = [...items];
-    sortedItems.sort((a, b) => {
-      const aValue = a[sortOption];
-      const bValue = b[sortOption];
-    if (sortOption === "distance") {
+  const sortItems = useCallback(
+    (items) => {
+      const sortedItems = [...items];
+      sortedItems.sort((a, b) => {
+        const aValue = a[sortOption];
+        const bValue = b[sortOption];
+      if (sortOption === "distance") {
           if (sortOrder === "asc") {
             return aValue - bValue;
           } else {
@@ -211,19 +214,26 @@ export default function ListItems() {
           }
         } else {
           if (sortOrder === "asc") {
-            return aValue.localeCompare(bValue);
-          } else {
-            return bValue.localeCompare(aValue);
+              return aValue.localeCompare(bValue);
+            } else {
+              return bValue.localeCompare(aValue);
+            }
           }
-        }
       });
-      return sortedItems;
-  };
+        return sortedItems;
+    },
+    [sortOption, sortOrder]
+  );
 
   useEffect(() => {
-    if (userLocation && items.location) {
-      (async () => {
-        const sortedItems = sortItems(items, sortOption, sortOrder);
+    const fetchDataAndUser = async () => {
+      // await fetchData();
+      // await fetchUserData();
+    };
+
+    const calculateItemsWithDistances = async () => {
+      if (userLocation && items.location) {
+        const sortedItems = sortItems(items);
         const itemsWithDistances = await Promise.all(
           sortedItems.map(async (item) => {
             const { itemLat, itemLon } = await getItemCoords(item.location);
@@ -237,12 +247,13 @@ export default function ListItems() {
             return { ...item, distance };
           })
         );
-
         setItems(itemsWithDistances);
-      })();
-    }
-  }, [items.location, userLocation, sortOption, sortOrder]);
+      }
+    };
 
+    fetchDataAndUser();
+    calculateItemsWithDistances();
+  }, [items, items.location, userLocation, sortOption, sortOrder, sortItems]);
   const sortedItems = sortItems(items);
   const authToken = localStorage.getItem("authToken");
 

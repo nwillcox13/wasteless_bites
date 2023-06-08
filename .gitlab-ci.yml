@@ -6,26 +6,28 @@ stages:
 services:
   - docker:dind
 
-# Run flake8 to check for code quality
 lint-test-job:
   image: python:3-bullseye
   stage: test
   script:
     - pip install flake8
     - flake8 api
-  when: manual
-#
-# # Run the unit tests
+
 api-unit-tests-job:
   image: python:3-bullseye
   stage: test
   needs:
     - lint-test-job
+  variables:
+    OPEN_WEATHER_API_KEY: ${OPEN_WEATHER_API_KEY}
+    PEXELS_API_KEY: ${PEXELS_API_KEY}
+    DATABASE_URL: fake
+    SIGNING_KEY: fake2
   script:
     - cd api
     - pip install -r requirements.txt
     - python -m pytest
-# # !!!!!!^this stops it from running on its own until we have tests in place!!!!!!!
+
 # # Build the React/JavaScript front-end
 build-front-end-job:
   stage: build

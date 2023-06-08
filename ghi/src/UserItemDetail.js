@@ -138,21 +138,32 @@ function UserItemDetail() {
 
   const { itemId } = useParams();
 
-  const fetchData = async () => {
-    const url = `http://localhost:8000/items/${itemId}`;
-    const authToken = localStorage.getItem("authToken");
-    const response = await fetch(url, {
-      headers: { Authorization: `Bearer ${authToken}` },
-    });
-    if (response.ok) {
-      const data = await response.json();
-      setFormData(data);
-    }
-  };
+  // const fetchData = async () => {
+  //   const url = `http://localhost:8000/items/${itemId}`;
+  //   const authToken = localStorage.getItem("authToken");
+  //   const response = await fetch(url, {
+  //     headers: { Authorization: `Bearer ${authToken}` },
+  //   });
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     setFormData(data);
+  //   }
+  // };
 
   useEffect(() => {
+    const fetchData = async () => {
+      const url = `http://localhost:8000/items/${itemId}`;
+      const authToken = localStorage.getItem("authToken");
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setFormData(data);
+      }
+    };
     fetchData();
-  }, []);
+  }, [itemId]);
 
   const handleFormChange = (event) => {
     const { value, name } = event.target;
@@ -203,12 +214,12 @@ function UserItemDetail() {
     };
     const options = {
       method: "PUT",
-      body: JSON.stringify(formData),
+      body: JSON.stringify(itemData),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
-      body: JSON.stringify(itemData),
+      // body: JSON.stringify(itemData),
     };
     console.log(formData);
     console.log(itemData);
