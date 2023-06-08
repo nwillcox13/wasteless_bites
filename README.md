@@ -24,7 +24,7 @@ Wasteless Bites - yet another clever slogan
 
 Anyone looking to reduce food waste by making extra, unneeded food available to the community
 
---
+---
 
 ## Functionality
 

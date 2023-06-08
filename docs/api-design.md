@@ -2,7 +2,7 @@
 
 ---
 
-## - - Accounts - -
+## Accounts
 
 ### Create Account
 
@@ -46,7 +46,7 @@
 
 ---
 
-## - - Items - -
+## Items
 
 ### Create Item
 
