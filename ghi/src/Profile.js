@@ -47,8 +47,10 @@ function Profile() {
         setUpdateError("Error fetching user data");
       }
     };
+
     fetchUserData();
-  }, []);
+  }, [authToken]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 

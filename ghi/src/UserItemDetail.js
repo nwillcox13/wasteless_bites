@@ -163,7 +163,7 @@ function UserItemDetail() {
       }
     };
     fetchData();
-  }, []);
+  }, [itemId]);
 
   const handleFormChange = (event) => {
     const { value, name } = event.target;

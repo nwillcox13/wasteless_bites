@@ -18,7 +18,7 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 export default function Map({ weatherData }) {
   const position = [weatherData.coord.lat, weatherData.coord.lon];
-  const markerText = `Weather at item location: ${weatherData.weather[0].main}, Temperature: ${weatherData.main.temp} °F`;
+  // const markerText = `Weather at item location: ${weatherData.weather[0].main}, Temperature: ${weatherData.main.temp} °F`;
 
   return (
     <div className="map-container">
