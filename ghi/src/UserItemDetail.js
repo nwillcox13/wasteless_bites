@@ -214,12 +214,12 @@ function UserItemDetail() {
     };
     const options = {
       method: "PUT",
-      body: JSON.stringify(formData),
+      body: JSON.stringify(itemData),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
-      body: JSON.stringify(itemData),
+      // body: JSON.stringify(itemData),
     };
     console.log(formData);
     console.log(itemData);
