@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import os
+import os from "os";
 
-
-OPEN_WEATHER_API_KEY = os.environ["OPEN_WEATHER_API_KEY"]
-PEXELS_API_KEY = os.environ[PEXELS_API_KEY]
+const OPEN_WEATHER_API_KEY = os.environ["OPEN_WEATHER_API_KEY"];
+const PEXELS_API_KEY = os.environ[PEXELS_API_KEY];
 
 export default function ItemDetail() {
   const [item, setItem] = useState(null);
@@ -149,11 +148,9 @@ export default function ItemDetail() {
     return <div>Loading...</div>;
   }
 
-
   const handleMessageOwner = () => {
-    navigate(`/chat`)
+    navigate(`/chat`);
   };
-
 
   return (
     <div className="container my-4">

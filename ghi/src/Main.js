@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import os
+import os from "os";
 import dummyItems from "./dummydata";
 
-OPEN_WEATHER_API_KEY = os.environ["OPEN_WEATHER_API_KEY"]
-PEXELS_API_KEY = os.environ[PEXELS_API_KEY]
+OPEN_WEATHER_API_KEY = os.environ["OPEN_WEATHER_API_KEY"];
+PEXELS_API_KEY = os.environ[PEXELS_API_KEY];
 
 export default function MainPage() {
   const [itemsWithImages, setItemsWithImages] = useState([]);
