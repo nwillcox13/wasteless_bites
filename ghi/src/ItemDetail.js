@@ -193,68 +193,40 @@ export default function ItemDetail() {
             <img
               src={item.imageUrl}
               alt={item.name}
-              className="card-img-fluid"
+              className="card-img-fluid item-detail"
             />
           )}
-          <p className="card-text">
-            <strong>Item Type:</strong> {item.item_type}
-          </p>
-          <p className="card-text">
-            <strong>Quantity:</strong> {item.quantity}
-          </p>
-          <p className="card-text">
-            <strong>Purchased or Prepared:</strong> {item.purchased_or_prepared}
-          </p>
-          <p className="card-text">
-            <strong>Time of Post:</strong> {item.time_of_post}
-          </p>
-          <p className="card-text">
-            <strong>Expiration:</strong> {item.expiration}
-          </p>
-          <p className="card-text">
-            <strong>Distance:</strong> {calculatedDistance} miles
-          </p>
-          <p className="card-text">
-            <strong>Dietary Restriction:</strong>{" "}
-            {item.dietary_restriction.join(", ")}
-          </p>
-          <p className="card-text">
-            <strong>Description:</strong> {item.description}
-          </p>
-          <p className="card-text">
-            <strong>Pick-up Instructions:</strong> {item.pickup_instructions}
-          </p>
-          <button className="btn btn-primary" onClick={handleMessageOwner}>
-            Message Owner
-          </button>
           <ul className="list-group list-group-flush">
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Item Type:</strong> {item.item_type}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Quantity:</strong> {item.quantity}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Purchased or Prepared:</strong>{" "}
               {item.purchased_or_prepared}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Time of Post:</strong> {item.time_of_post}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Expiration:</strong> {item.expiration}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
+              <strong>Distance:</strong> {calculatedDistance} miles
+            </li>
+            <li className="list-group-item item-detail">
               <strong>Location:</strong> {item.location}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Dietary Restriction:</strong>{" "}
               {item.dietary_restriction.join(", ")}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Description:</strong> {item.description}
             </li>
-            <li className="list-group-item">
+            <li className="list-group-item item-detail">
               <strong>Pick-up Instructions:</strong> {item.pickup_instructions}
             </li>
             <button className="btn btn-primary" onClick={handleMessageOwner}>
