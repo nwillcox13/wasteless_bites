@@ -3,6 +3,7 @@
   height: 300px;
   width: 100%;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .map {
@@ -63,4 +64,14 @@
 
 .leaflet-container a.leaflet-popup-close-button {
   color: #c3c3c3;
+}
+.text-block {
+  margin-top: 20px; /* Adjust this value to create as much separation as needed */
+  text-align: center;
+}
+.footer {
+  margin-top: 40px; /* Adjust this value to create as much separation as needed */
+  padding-bottom: 20px;
+  text-align: center;
+  /* More styles as needed, e.g. background color, padding, etc. */
 }

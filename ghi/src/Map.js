@@ -6,8 +6,15 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 
 import L from "leaflet";
 import "leaflet-defaulticon-compatibility";
+import icon from "leaflet/dist/images/marker-icon.png";
+import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
-// Rest of your code...
+let DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 export default function Map({ weatherData }) {
   const position = [weatherData.coord.lat, weatherData.coord.lon];
@@ -26,7 +33,9 @@ export default function Map({ weatherData }) {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         <Marker position={position}>
-          <Popup>{markerText}</Popup>
+          <Popup>
+            {`${weatherData.weather[0].main}, Temp: ${weatherData.main.temp} °F, Humidity: ${weatherData.main.humidity} %, Wind Speed: ${weatherData.wind.speed} m/s`}
+          </Popup>
         </Marker>
       </MapContainer>
     </div>

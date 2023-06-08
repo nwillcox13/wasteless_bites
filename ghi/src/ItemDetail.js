@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { PEXELS_API_KEY, OPEN_WEATHER_API_KEY } from "./keys";
 import Map from "./Map";
+import "./Map.css";
+
 export default function ItemDetail() {
   const [item, setItem] = useState(null);
   const [userLocation, setUserLocation] = useState("");
@@ -250,15 +252,27 @@ export default function ItemDetail() {
         </div>
       </div>
       {itemWeather && (
+        <div>
+          <h2>Weather at Item's Location:</h2>
+          <p>{`Weather: ${itemWeather.weather[0].main}`}</p>
+          <p>{`Temperature: ${itemWeather.main.temp} °F`}</p>
+          <p>{`Humidity: ${itemWeather.main.humidity} %`}</p>
+          <p>{`Wind Speed: ${itemWeather.wind.speed} m/s`}</p>
+        </div>
+      )}
+
+      {itemWeather && (
         <div className="map-container">
           <h2>Approximate Item Location:</h2>
           <Map weatherData={itemWeather} />
         </div>
       )}
-      <div className="text-block" style={{ textAlign: "center" }}>
-        {
-          "This image is generated from the Item name and type and may not be accurate. Users will soon be able to add their own pictures. Thanks for your patience while we work on this feature!"
-        }
+      <div className="footer">
+        <p>
+          "The images generating the Item name and type on this page may not be
+          accurate. Users will soon be able to add their own pictures. Thanks
+          for your patience while we work on this feature!"
+        </p>
       </div>
     </div>
   );
