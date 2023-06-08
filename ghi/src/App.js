@@ -10,7 +10,7 @@ import ListItems from "./ListItems";
 import ItemDetail from "./ItemDetail";
 import LoginForm from "./Login";
 import LogoutForm from "./Logout";
-import Nav from "./Nav";
+import CustomNav from "./Nav";
 import FAQPage from "./Faq";
 import UserListItems from "./UserListItems";
 import UserItemDetail from "./UserItemDetail";
@@ -23,7 +23,7 @@ function App() {
   return (
     <AuthProvider>
       <Router basename={basename}>
-        <Nav />
+        <CustomNav />
         <div className="container">
           <Routes>
             <Route path="/" element={<MainPage />} />
@@ -51,5 +51,6 @@ function App() {
     </AuthProvider>
   );
 }
+
 
 export default App;

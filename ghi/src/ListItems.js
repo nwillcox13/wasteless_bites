@@ -158,11 +158,6 @@ export default function ListItems() {
     return calculatedDistance;
   }
 
-  useEffect(() => {
-    fetchData();
-    fetchUserData();
-  }, []);
-
   const handleSortOptionChange = (event) => {
     setSortOption(event.target.value);
   };
@@ -213,8 +208,13 @@ export default function ListItems() {
   };
 
   useEffect(() => {
-    if (userLocation && items.location) {
-      (async () => {
+    const fetchDataAndUser = async () => {
+      await fetchData();
+      await fetchUserData();
+    };
+
+    const calculateItemsWithDistances = async () => {
+      if (userLocation && items.location) {
         const sortedItems = sortItems(items, sortOption, sortOrder);
         const itemsWithDistances = await Promise.all(
           sortedItems.map(async (item) => {
@@ -229,10 +229,12 @@ export default function ListItems() {
             return { ...item, distance };
           })
         );
-
         setItems(itemsWithDistances);
-      })();
-    }
+      }
+    };
+
+    fetchDataAndUser();
+    calculateItemsWithDistances();
   }, [items.location, userLocation, sortOption, sortOrder]);
 
   const sortedItems = sortItems(items);

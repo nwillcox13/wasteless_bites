@@ -1,177 +1,250 @@
 import React, { useState, useEffect } from "react";
+import { PEXELS_API_KEY } from "./keys";
+import dummyItems from "./dummydata";
 
 export default function MainPage() {
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: "Organic Apples",
-      item_type: "Fruit",
-      quantity: 5,
-      purchased_or_prepared: "Purchased",
-      time_of_post: "2023-05-30 10:00 AM",
-      expiration: "2023-06-05",
-      location: "Supermarket",
-      dietary_restriction: ["Gluten-free", "Vegan"],
-      description: "Fresh and juicy organic apples",
-      pickup_instructions: "Please bring your own bag",
-    },
-    {
-      id: 2,
-      name: "Homemade Chocolate Chip Cookies",
-      item_type: "Bakery",
-      quantity: 12,
-      purchased_or_prepared: "Prepared",
-      time_of_post: "2023-05-30 12:30 PM",
-      expiration: "2023-06-01",
-      location: "Home",
-      dietary_restriction: ["Vegetarian"],
-      description: "Delicious homemade chocolate chip cookies",
-      pickup_instructions: "Handle with care",
-    },
-    {
-      id: 3,
-      name: "Grass-fed Ground Beef",
-      item_type: "Meat",
-      quantity: 2,
-      purchased_or_prepared: "Purchased",
-      time_of_post: "2023-05-30 2:45 PM",
-      expiration: "2023-06-03",
-      location: "Butcher Shop",
-      dietary_restriction: ["Paleo"],
-      description: "Premium quality grass-fed ground beef",
-      pickup_instructions: "Keep refrigerated",
-    },
-    {
-      id: 4,
-      name: "Organic Kale",
-      item_type: "Vegetable",
-      quantity: 1,
-      purchased_or_prepared: "Purchased",
-      time_of_post: "2023-05-30 4:20 PM",
-      expiration: "2023-06-02",
-      location: "Farmers Market",
-      dietary_restriction: ["Gluten-free", "Vegan"],
-      description: "Fresh and nutritious organic kale",
-      pickup_instructions: "Handle with gloves",
-    },
-    {
-      id: 5,
-      name: "Artisanal Sourdough Bread",
-      item_type: "Bakery",
-      quantity: 1,
-      purchased_or_prepared: "Purchased",
-      time_of_post: "2023-05-30 6:15 PM",
-      expiration: "2023-06-04",
-      location: "Artisan Bakery",
-      dietary_restriction: ["Vegetarian"],
-      description: "Handcrafted sourdough bread with a crispy crust",
-      pickup_instructions: "Best when consumed within 2 days",
-    },
-    {
-      id: 6,
-      name: "Fresh Salmon Fillets",
-      item_type: "Seafood",
-      quantity: 3,
-      purchased_or_prepared: "Purchased",
-      time_of_post: "2023-05-30 8:00 PM",
-      expiration: "2023-06-01",
-      location: "Fish Market",
-      dietary_restriction: [],
-      description: "Premium quality fresh salmon fillets",
-      pickup_instructions: "Keep refrigerated",
-    },
-    {
-      id: 7,
-      name: "Gluten-free Pasta",
-      item_type: "Pasta",
-      quantity: 2,
-      purchased_or_prepared: "Purchased",
-      time_of_post: "2023-05-30 9:30 PM",
-      expiration: "2023-06-05",
-      location: "Supermarket",
-      dietary_restriction: ["Gluten-free"],
-      description: "Delicious gluten-free pasta for a healthy meal",
-      pickup_instructions: "Cook according to package instructions",
-    },
-    {
-      id: 8,
-      name: "Organic Blueberries",
-      item_type: "Fruit",
-      quantity: 1,
-      purchased_or_prepared: "Purchased",
-      time_of_post: "2023-05-30 11:45 PM",
-      expiration: "2023-06-03",
-      location: "Farmers Market",
-      dietary_restriction: ["Vegan"],
-      description: "Sweet and juicy organic blueberries",
-      pickup_instructions: "Handle with care",
-    },
-    {
-      id: 9,
-      name: "Free-range Eggs",
-      item_type: "Dairy",
-      quantity: 6,
-      purchased_or_prepared: "Purchased",
-      time_of_post: "2023-05-31 9:00 AM",
-      expiration: "2023-06-06",
-      location: "Local Farm",
-      dietary_restriction: [],
-      description: "Fresh free-range eggs from happy hens",
-      pickup_instructions: "Keep refrigerated",
-    },
-    {
-      id: 10,
-      name: "Quinoa Salad",
-      item_type: "Salad",
-      quantity: 1,
-      purchased_or_prepared: "Prepared",
-      time_of_post: "2023-05-31 11:30 AM",
-      expiration: "2023-06-01",
-      location: "Catering Company",
-      dietary_restriction: ["Vegetarian", "Gluten-free", "Vegan"],
-      description: "Healthy quinoa salad with fresh vegetables",
-      pickup_instructions: "Serve chilled",
-    },
-  ]);
+  const [itemsWithImages, setItemsWithImages] = useState([]);
+  const [sortOption, setSortOption] = useState("time_of_post");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [selectedRestrictions, setSelectedRestrictions] = useState([]);
+
+  const fetchData = async () => {
+    const filteredItemsByType = selectedTypes.length
+      ? dummyItems.filter((item) => selectedTypes.includes(item.item_type))
+      : dummyItems;
+
+    const filteredItemsByRestriction = filteredItemsByType.filter((item) =>
+      selectedRestrictions.every((restriction) =>
+        item.dietary_restriction.includes(restriction)
+      )
+    );
+
+    const itemsWithImages = await Promise.all(
+      filteredItemsByRestriction.map(async (item) => {
+        const imageUrl = await fetchItemImage(item.name, item.item_type);
+        return { ...item, imageUrl };
+      })
+    );
+
+    setItemsWithImages(itemsWithImages);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [selectedTypes, selectedRestrictions]);
+
+  const fetchItemImage = async (itemName, itemType) => {
+    const apiKey = PEXELS_API_KEY;
+    const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(
+      itemName + " " + itemType
+    )}&per_page=1`;
+    const response = await fetch(searchUrl, {
+      headers: {
+        Authorization: apiKey,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      if (data.photos && data.photos.length > 0) {
+        return data.photos[0].src.medium;
+      }
+    }
+
+    return "";
+  };
+
+  const handleSortOptionChange = (event) => {
+    setSortOption(event.target.value);
+  };
+
+  const handleSortOrderChange = (event) => {
+    setSortOrder(event.target.value);
+  };
+
+  const handleTypeChange = (event) => {
+    const type = event.target.value;
+    if (event.target.checked) {
+      setSelectedTypes((prevSelectedTypes) => [...prevSelectedTypes, type]);
+    } else {
+      setSelectedTypes((prevSelectedTypes) =>
+        prevSelectedTypes.filter((t) => t !== type)
+      );
+    }
+  };
+
+  const handleRestrictionChange = (event) => {
+    const restriction = event.target.value;
+    if (event.target.checked) {
+      setSelectedRestrictions((prevSelectedRestrictions) => [
+        ...prevSelectedRestrictions,
+        restriction,
+      ]);
+    } else {
+      setSelectedRestrictions((prevSelectedRestrictions) =>
+        prevSelectedRestrictions.filter((r) => r !== restriction)
+      );
+    }
+  };
+
+  const sortItems = (items) => {
+    const sortedItems = [...items];
+
+    sortedItems.sort((a, b) => {
+      if (sortOption === "time_of_post") {
+        const dateA = new Date(a.time_of_post);
+        const dateB = new Date(b.time_of_post);
+
+        return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+      } else if (sortOption === "expiration") {
+        const dateA = new Date(a.expiration);
+        const dateB = new Date(b.expiration);
+
+        return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+      }
+
+      return 0;
+    });
+
+    return sortedItems;
+  };
+
+  const sortedItems = sortItems(itemsWithImages);
 
   return (
-  <div className="container-fluid justify-content-center align-items-center">
-    <h1 className="text-center my-4">Food Near You!</h1>
-    <div className="table-responsive">
-      <table className="table table-hover table-striped-columns table-bordered">
-        <thead>
-          <tr>
-            <th>Item Name</th>
-            <th>Item Type</th>
-            <th>Quantity</th>
-            <th>Purchased or Prepared on</th>
-            <th>Expiration</th>
-            <th>Location</th>
-            <th>Dietary Restrictions</th>
-            <th>Description</th>
-            <th>Pickup Instructions</th>
-          </tr>
-        </thead>
-        <tbody className="table-group-divider">
-          {items.map((item) => (
-            <tr key={item.id}>
-              <td>{item.name}</td>
-              <td>{item.item_type}</td>
-              <td>{item.quantity}</td>
-              <td>{item.purchased_or_prepared}</td>
-              <td>{item.expiration}</td>
-              <td>{item.location}</td>
-              <td>
-                {item.dietary_restriction.join(", ") ||
-                  "No dietary restrictions"}
-              </td>
-              <td>{item.description}</td>
-              <td>{item.pickup_instructions}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="container my-4 d-flex justify-content-center align-items-center">
+      <div className="row">
+        <div className="col-12">
+          <h1 className="text-center mb-4">
+            Welcome! Here's Some Food Near You
+          </h1>
+          <div className="mb-4">
+            <div className="card shadow mt-4">
+              <div className="card-body">
+                <label htmlFor="sortOption" style={{ marginRight: "4px" }}>
+                  Sort By:{" "}
+                </label>
+                <select
+                  id="sortOption"
+                  value={sortOption}
+                  onChange={handleSortOptionChange}
+                  style={{ marginRight: "8px" }}
+                >
+                  <option value="time_of_post">Time of Post</option>
+                  <option value="expiration">Expiration</option>
+                </select>
+                <label htmlFor="sortOrder" style={{ marginRight: "4px" }}>
+                  Order:{" "}
+                </label>
+                <select
+                  id="sortOrder"
+                  value={sortOrder}
+                  onChange={handleSortOrderChange}
+                  style={{ marginRight: "8px" }}
+                >
+                  <option value="asc">Ascending</option>
+                  <option value="desc">Descending</option>
+                </select>
+                <div className="item-filter">
+                  <label>Filter by Item Type:</label>
+                  <br />
+                  {[
+                    "Baked Goods",
+                    "Baby Food/Formula",
+                    "Coffee",
+                    "Dairy & Eggs",
+                    "Deli",
+                    "Frozen",
+                    "Meat",
+                    "Pantry",
+                    "Produce",
+                    "Ready-to-eat",
+                    "Seafood",
+                  ].map((type) => (
+                    <label key={type}>
+                      <input
+                        type="checkbox"
+                        value={type}
+                        checked={selectedTypes.includes(type)}
+                        onChange={handleTypeChange}
+                      />
+                      {type}
+                    </label>
+                  ))}
+                </div>
+                <div className="item-filter">
+                  <label>Filter by Dietary Restrictions:</label>
+                  <br />
+                  {[
+                    "Gluten-Free",
+                    "Dairy-Free",
+                    "Vegetarian",
+                    "Vegan",
+                    "Organic",
+                    "Contains Egg",
+                    "Contains Nuts",
+                    "Contains Shellfish",
+                    "Contains Soy",
+                    "Contains Wheat",
+                    "Kosher",
+                    "Halal",
+                  ].map((restriction) => (
+                    <label key={restriction}>
+                      <input
+                        type="checkbox"
+                        value={restriction}
+                        checked={selectedRestrictions.includes(restriction)}
+                        onChange={handleRestrictionChange}
+                      />
+                      {restriction}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          <table className="table table-hover table-striped-columns table-bordered">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Item Name</th>
+                <th>Item Type</th>
+                <th>Quantity</th>
+                <th>Time of Post</th>
+                <th>Expiration</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedItems?.map((item) => (
+                <tr key={item.id}>
+                  <td>
+                    {item.imageUrl && (
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        style={{ width: "50px" }}
+                      />
+                    )}
+                  </td>
+                  <td>
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                      {item.name}
+                    </a>
+                  </td>
+                  <td>{item.item_type}</td>
+                  <td>{item.quantity}</td>
+                  <td>{item.time_of_post}</td>
+                  <td>{item.expiration}</td>
+                  <td>{item.location}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { PEXELS_API_KEY, OPEN_WEATHER_API_KEY } from "./keys";
 import Map from "./Map";
 import "./Map.css";
@@ -11,6 +11,7 @@ export default function ItemDetail() {
   const [calculatedDistance, setCalculatedDistance] = useState("");
   const { itemId } = useParams();
   const [itemWeather, setItemWeather] = useState(null);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     const url = `http://localhost:8000/items/${itemId}`;
@@ -129,14 +130,27 @@ export default function ItemDetail() {
   }, []);
   useEffect(() => {
     if (userLocation && itemLocation) {
-      (async () => {
+      async () => {
         const { itemLat, itemLon } = await getItemCoords(itemLocation);
         const { userLat, userLon } = await getUserCoords(userLocation);
         const distance = userItemDistance(itemLat, itemLon, userLat, userLon);
         setCalculatedDistance(distance);
+      };
+    }
+
+    fetchDataAndUser();
+    calculateDistance();
+  }, [itemLocation, userLocation]);
+
+  useEffect(() => {
+    if (itemLocation) {
+      (async () => {
+        const { itemLat, itemLon } = await getItemCoords(itemLocation);
+        const weather = await fetchItemWeather(itemLat, itemLon);
+        setItemWeather(weather);
       })();
     }
-  }, [itemLocation, userLocation]);
+  }, [itemLocation]);
 
   useEffect(() => {
     if (itemLocation) {
