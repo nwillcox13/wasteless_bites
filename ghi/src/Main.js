@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import dummyItems from "./dummydata";
 
-const OPEN_WEATHER_API_KEY = `${process.env.OPEN_WEATHER_API_KEY}`;
 const PEXELS_API_KEY = `${process.env.PEXELS_API_KEY}`;
 
 export default function MainPage() {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { NavLink , useParams } from "react-router-dom";
-import { Nav, Navbar, NavDropdown} from "react-bootstrap";
+import { NavLink, useParams } from "react-router-dom";
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import logoImage from "./HiResTransparentLogo.png";
 import LoginButton from "./LoginButton";
 import LogoutForm from "./Logout";
@@ -8,7 +8,6 @@ import LogoutForm from "./Logout";
 function CustomNav() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
-  const { itemId } = useParams();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
