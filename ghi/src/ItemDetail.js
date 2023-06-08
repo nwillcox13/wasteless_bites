@@ -124,8 +124,6 @@ export default function ItemDetail() {
     return calculatedDistance;
   }
 
-  // const itemIdRef = useRef(itemId);
-
   useEffect(() => {
     const fetchData = async () => {
       const url = `http://localhost:8000/items/${itemId}`;
@@ -178,7 +176,7 @@ export default function ItemDetail() {
 
     fetchDataAndUser();
     calculateDistance();
-  }, [itemLocation, userLocation, itemId]);
+  }, [itemLocation, userLocation]);
 
   if (!item) {
     return <div>Loading...</div>;
