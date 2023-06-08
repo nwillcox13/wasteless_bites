@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { PEXELS_API_KEY, OPEN_WEATHER_API_KEY } from "./keys";
+
+const OPEN_WEATHER_API_KEY = `${process.env.OPEN_WEATHER_API_KEY}`;
+const PEXELS_API_KEY = `${process.env.PEXELS_API_KEY}`;
 
 export default function ListItems() {
   const [items, setItems] = useState([]);
