@@ -60,6 +60,8 @@ hr.break {
   justify-content: space-between;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  padding-left: 20px;
+  padding-right:20px;
 }
 
 a.navbar-brand {
@@ -228,3 +230,32 @@ button:active {
   width: 200px;
   height: auto;
 }
+
+.Nav {
+  padding: 20px;
+}
+
+a:hover {
+  color: red;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #6ba304;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+.item-detail strong {
+  font-weight: bold;
+  color: #6ba304;
+}
+
+.item-detail img {
+  max-width: 100%;
+  height: auto;
+}
+

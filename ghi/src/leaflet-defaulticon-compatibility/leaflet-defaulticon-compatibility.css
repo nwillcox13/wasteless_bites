@@ -1,0 +1,17 @@
+/* leaflet-defaulticon-compatibility.css */
+
+/* Leaflet Default Icon Compatibility CSS */
+.leaflet-default-icon-compatibility-marker {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='25'%20height='41'%20viewBox='0%200%2025%2041'%3E%3Cg%20fill='none'%20fill-rule='evenodd'%3E%3Cpath%20fill='%23FFF'%20d='M12.497.21C5.755.21.21%205.756.21%2012.498c0%203.173%201.284%206.08%203.375%208.18L12.5%2040.29l8.915-8.615c2.09-2.1%203.374-5.008%203.374-8.18%200-6.742-5.545-12.288-12.287-12.288zm0%2019.84c-3.01%200-5.45-2.44-5.45-5.45%200-3.01%202.44-5.45%205.45-5.45%203.01%200%205.45%202.44%205.45%205.45%200%203.01-2.44%205.45-5.45%205.45z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  width: 25px;
+  height: 41px;
+  margin: -20.5px 0 0 -12.5px;
+}
+
+.leaflet-default-icon-compatibility-shadow {
+  box-shadow: 0 1px 7px rgba(0, 0, 0, 0.65);
+  border-radius: 50%;
+}

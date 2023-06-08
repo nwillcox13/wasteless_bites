@@ -169,7 +169,9 @@ export default function MainPage() {
                   <option value="desc">Descending</option>
                 </select>
                 <div className="item-filter">
-                  <label>Filter by Item Type:</label>
+                  <label style={{ fontWeight: "bold", fontSize: "1.1rem" }}>
+                    Filter by Item Type:
+                  </label>
                   <br />
                   {[
                     "Baked Goods",
@@ -184,7 +186,7 @@ export default function MainPage() {
                     "Ready-to-eat",
                     "Seafood",
                   ].map((type) => (
-                    <label key={type}>
+                    <label key={type} style={{ marginRight: "8px" }}>
                       <input
                         type="checkbox"
                         value={type}
@@ -196,7 +198,9 @@ export default function MainPage() {
                   ))}
                 </div>
                 <div className="item-filter">
-                  <label>Filter by Dietary Restrictions:</label>
+                  <label style={{ fontWeight: "bold", fontSize: "1.1rem" }}>
+                    Filter by Dietary Restrictions:
+                  </label>
                   <br />
                   {[
                     "Gluten-Free",
@@ -212,7 +216,7 @@ export default function MainPage() {
                     "Kosher",
                     "Halal",
                   ].map((restriction) => (
-                    <label key={restriction}>
+                    <label key={restriction} style={{ marginRight: "8px" }}>
                       <input
                         type="checkbox"
                         value={restriction}
@@ -264,6 +268,11 @@ export default function MainPage() {
               ))}
             </tbody>
           </table>
+          <div className="text-block" style={{ textAlign: "center" }}>
+            {
+              "This image is generated from the Item name and type and may not be accurate. Users will soon be able to add their own pictures. Thanks for your patience while we work on this feature!"
+            }
+          </div>
         </div>
       </div>
     </div>

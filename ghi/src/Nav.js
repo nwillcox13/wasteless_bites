@@ -78,9 +78,13 @@ function CustomNav() {
                 List Items
               </Nav.Link>
               <NavDropdown
-                title="User"
+                title={
+                  <span className="user-title" style={{ color: "#1E7016" }}>
+                    User
+                  </span>
+                }
                 id="navbarDropdown"
-                style={{ color: "#1E7016", background: "none", border: "none" }}
+                style={{ background: "none", border: "none" }}
               >
                 <NavDropdown.Item
                   as={NavLink}

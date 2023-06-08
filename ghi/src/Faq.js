@@ -1,19 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
+import ChrisRoldanImage from "./images/Chris Roldan.jpg";
+import HarimWooImage from "./images/Harim Woo.png";
+import NickWillcoxImage from "./images/Nick Willcox.jpg";
+import RiverWalshImage from "./images/River Walsh.jpg";
+import "./Faq.css";
+
+// Define the team members and their details
+const teamMembers = [
+  {
+    name: "Chris Roldan",
+    image: ChrisRoldanImage,
+    description:
+      "Chris is a highly creative software engineer with a knack for problem-solving. His background in digital design fuels his passion for coding visually stunning and user-friendly applications.",
+  },
+  {
+    name: "Harim Woo",
+    image: HarimWooImage,
+    description:
+      "Harim brings a unique perspective to the team with his background in computer science and mathematics. He's known for his detail-oriented approach and exceptional ability to crack complex algorithms.",
+  },
+  {
+    name: "Nick Willcox",
+    image: NickWillcoxImage,
+    description:
+      "Nick is a versatile software engineer who loves a good challenge. His broad skill set ranges from front-end development to data analysis, making him a valuable asset to any team.",
+  },
+  {
+    name: "River Walsh",
+    image: RiverWalshImage,
+    description:
+      "River is a software engineer with a passion for clean, efficient code. He is always on the cutting edge of technology and is an advocate for open source and collaborative coding.",
+  },
+];
 
 const FAQPage = () => {
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const handleAccordionClick = (index) => {
+    setActiveIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
+
   return (
     <div className="container py-4">
       <h1 className="mb-4">Frequently Asked Questions</h1>
 
       <div className="accordion" id="faqAccordion">
         <div className="accordion-item">
-          <h2 className="accordion-header" id="faqHeading1">
+          <h2
+            className="accordion-header"
+            id="faqHeading1"
+            onClick={() => handleAccordionClick(0)}
+          >
             <button
-              className="accordion-button collapsed"
+              className={`accordion-button ${
+                activeIndex === 0 ? "" : "collapsed"
+              }`}
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#faqCollapse1"
-              aria-expanded="false"
+              aria-expanded={activeIndex === 0 ? "true" : "false"}
               aria-controls="faqCollapse1"
             >
               What is Waste-less Bytes?
@@ -21,7 +66,9 @@ const FAQPage = () => {
           </h2>
           <div
             id="faqCollapse1"
-            className="accordion-collapse collapse"
+            className={`accordion-collapse collapse ${
+              activeIndex === 0 ? "show" : ""
+            }`}
             aria-labelledby="faqHeading1"
             data-bs-parent="#faqAccordion"
           >
@@ -41,13 +88,19 @@ const FAQPage = () => {
         </div>
 
         <div className="accordion-item">
-          <h2 className="accordion-header" id="faqHeading2">
+          <h2
+            className="accordion-header"
+            id="faqHeading2"
+            onClick={() => handleAccordionClick(1)}
+          >
             <button
-              className="accordion-button collapsed"
+              className={`accordion-button ${
+                activeIndex === 1 ? "" : "collapsed"
+              }`}
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#faqCollapse2"
-              aria-expanded="false"
+              aria-expanded={activeIndex === 1 ? "true" : "false"}
               aria-controls="faqCollapse2"
             >
               How can individuals and restaurants share surplus food?
@@ -55,7 +108,9 @@ const FAQPage = () => {
           </h2>
           <div
             id="faqCollapse2"
-            className="accordion-collapse collapse"
+            className={`accordion-collapse collapse ${
+              activeIndex === 1 ? "show" : ""
+            }`}
             aria-labelledby="faqHeading2"
             data-bs-parent="#faqAccordion"
           >
@@ -73,13 +128,19 @@ const FAQPage = () => {
         </div>
 
         <div className="accordion-item">
-          <h2 className="accordion-header" id="faqHeading3">
+          <h2
+            className="accordion-header"
+            id="faqHeading3"
+            onClick={() => handleAccordionClick(2)}
+          >
             <button
-              className="accordion-button collapsed"
+              className={`accordion-button ${
+                activeIndex === 2 ? "" : "collapsed"
+              }`}
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#faqCollapse3"
-              aria-expanded="false"
+              aria-expanded={activeIndex === 2 ? "true" : "false"}
               aria-controls="faqCollapse3"
             >
               Can charities request food donations?
@@ -87,7 +148,9 @@ const FAQPage = () => {
           </h2>
           <div
             id="faqCollapse3"
-            className="accordion-collapse collapse"
+            className={`accordion-collapse collapse ${
+              activeIndex === 2 ? "show" : ""
+            }`}
             aria-labelledby="faqHeading3"
             data-bs-parent="#faqAccordion"
           >
@@ -105,13 +168,19 @@ const FAQPage = () => {
         </div>
 
         <div className="accordion-item">
-          <h2 className="accordion-header" id="faqHeading4">
+          <h2
+            className="accordion-header"
+            id="faqHeading4"
+            onClick={() => handleAccordionClick(3)}
+          >
             <button
-              className="accordion-button collapsed"
+              className={`accordion-button ${
+                activeIndex === 3 ? "" : "collapsed"
+              }`}
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#faqCollapse4"
-              aria-expanded="false"
+              aria-expanded={activeIndex === 3 ? "true" : "false"}
               aria-controls="faqCollapse4"
             >
               What precautions should I take when meeting an unknown person from
@@ -120,7 +189,9 @@ const FAQPage = () => {
           </h2>
           <div
             id="faqCollapse4"
-            className="accordion-collapse collapse"
+            className={`accordion-collapse collapse ${
+              activeIndex === 3 ? "show" : ""
+            }`}
             aria-labelledby="faqHeading4"
             data-bs-parent="#faqAccordion"
           >
@@ -166,14 +237,21 @@ const FAQPage = () => {
             </div>
           </div>
         </div>
+
         <div className="accordion-item">
-          <h2 className="accordion-header" id="faqHeading5">
+          <h2
+            className="accordion-header"
+            id="faqHeading5"
+            onClick={() => handleAccordionClick(4)}
+          >
             <button
-              className="accordion-button collapsed"
+              className={`accordion-button ${
+                activeIndex === 4 ? "" : "collapsed"
+              }`}
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#faqCollapse5"
-              aria-expanded="false"
+              aria-expanded={activeIndex === 4 ? "true" : "false"}
               aria-controls="faqCollapse5"
             >
               Are the images shown on the site accurate?
@@ -181,7 +259,9 @@ const FAQPage = () => {
           </h2>
           <div
             id="faqCollapse5"
-            className="accordion-collapse collapse"
+            className={`accordion-collapse collapse ${
+              activeIndex === 4 ? "show" : ""
+            }`}
             aria-labelledby="faqHeading5"
             data-bs-parent="#faqAccordion"
           >
@@ -193,14 +273,21 @@ const FAQPage = () => {
             </div>
           </div>
         </div>
+
         <div className="accordion-item">
-          <h2 className="accordion-header" id="faqHeading6">
+          <h2
+            className="accordion-header"
+            id="faqHeading6"
+            onClick={() => handleAccordionClick(5)}
+          >
             <button
-              className="accordion-button collapsed"
+              className={`accordion-button ${
+                activeIndex === 5 ? "" : "collapsed"
+              }`}
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#faqCollapse6"
-              aria-expanded="false"
+              aria-expanded={activeIndex === 5 ? "true" : "false"}
               aria-controls="faqCollapse6"
             >
               Who are we?
@@ -208,12 +295,29 @@ const FAQPage = () => {
           </h2>
           <div
             id="faqCollapse6"
-            className="accordion-collapse collapse"
+            className={`accordion-collapse collapse ${
+              activeIndex === 5 ? "show" : ""
+            }`}
             aria-labelledby="faqHeading6"
             data-bs-parent="#faqAccordion"
           >
             <div className="accordion-body">
               Just 4 handsome guys with great hair.
+              <div className="team-members">
+                {teamMembers.map((member, index) => (
+                  <div key={index} className="team-member">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="team-member-image"
+                    />
+                    <div className="team-member-info">
+                      <h3>{member.name}</h3>
+                      <p>{member.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
