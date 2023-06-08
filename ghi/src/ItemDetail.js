@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Map from "./Map";
 import "./Map.css";
-
 const OPEN_WEATHER_API_KEY = `${process.env.OPEN_WEATHER_API_KEY}`;
 const PEXELS_API_KEY = `${process.env.PEXELS_API_KEY}`;
 

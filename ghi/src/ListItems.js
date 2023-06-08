@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-const OPEN_WEATHER_API_KEY = `${process.env.OPEN_WEATHER_API_KEY}`;
-const PEXELS_API_KEY = `${process.env.PEXELS_API_KEY}`;
-
 export default function ListItems() {
   const [items, setItems] = useState([]);
   const [userLocation, setUserLocation] = useState("");
@@ -10,6 +7,11 @@ export default function ListItems() {
   const [sortOrder, setSortOrder] = useState("asc");
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedRestrictions, setSelectedRestrictions] = useState([]);
+  const OPEN_WEATHER_API_KEY = `${process.env.OPEN_WEATHER_API_KEY}`;
+  console.log("weather: ", OPEN_WEATHER_API_KEY);
+  const PEXELS_API_KEY = `${process.env.PEXELS_API_KEY}`;
+  console.log("pexels: ", PEXELS_API_KEY);
+  console.log(process.env);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -206,7 +208,7 @@ export default function ListItems() {
       sortedItems.sort((a, b) => {
         const aValue = a[sortOption];
         const bValue = b[sortOption];
-      if (sortOption === "distance") {
+        if (sortOption === "distance") {
           if (sortOrder === "asc") {
             return aValue - bValue;
           } else {
@@ -214,13 +216,13 @@ export default function ListItems() {
           }
         } else {
           if (sortOrder === "asc") {
-              return aValue.localeCompare(bValue);
-            } else {
-              return bValue.localeCompare(aValue);
-            }
+            return aValue.localeCompare(bValue);
+          } else {
+            return bValue.localeCompare(aValue);
           }
+        }
       });
-        return sortedItems;
+      return sortedItems;
     },
     [sortOption, sortOrder]
   );
