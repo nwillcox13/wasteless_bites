@@ -159,22 +159,6 @@ export default function ItemDetail() {
     }
   }, [itemLocation]);
 
-  const handleMessageOwner = () => {
-    const socket = new WebSocket("ws://localhost:8000/ws");
-    socket.onopen = () => {
-      const user = JSON.parse(
-        atob(localStorage.getItem("authToken").split(".")[1])
-      );
-      const owner = item.account_id;
-      socket.send(JSON.stringify({ user, owner }));
-    };
-    socket.onmessage = (event) => {
-      const message = event.data;
-      history.push({ message });
-    };
-    socket.onclose = () => {};
-  };
-
   if (!item) {
     return <div>Loading...</div>;
   }
