@@ -203,13 +203,21 @@ export default function ListItems() {
     sortedItems.sort((a, b) => {
       const aValue = a[sortOption];
       const bValue = b[sortOption];
-      if (sortOrder === "asc") {
-        return aValue.localeCompare(bValue);
-      } else {
-        return bValue.localeCompare(aValue);
-      }
-    });
-    return sortedItems;
+    if (sortOption === "distance") {
+          if (sortOrder === "asc") {
+            return aValue - bValue;
+          } else {
+            return bValue - aValue;
+          }
+        } else {
+          if (sortOrder === "asc") {
+            return aValue.localeCompare(bValue);
+          } else {
+            return bValue.localeCompare(aValue);
+          }
+        }
+      });
+      return sortedItems;
   };
 
   useEffect(() => {
@@ -259,6 +267,7 @@ export default function ListItems() {
                     >
                       <option value="time_of_post">Time of Post</option>
                       <option value="expiration">Expiration</option>
+                      <option value="distance">Distance</option>
                     </select>
                     <label htmlFor="sortOrder" style={{ marginRight: "4px" }}>
                       Order:{" "}
