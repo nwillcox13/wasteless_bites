@@ -21,7 +21,7 @@ function LoginForm({ closeModal }) {
     if (email && password) {
       try {
         const response = await fetch(
-          "http://localhost:8000/api/accounts/login",
+          `${process.env.REACT_APP_API_HOST}/api/accounts/login`,
           {
             method: "POST",
             headers: {

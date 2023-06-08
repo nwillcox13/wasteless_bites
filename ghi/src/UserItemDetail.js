@@ -138,21 +138,9 @@ function UserItemDetail() {
 
   const { itemId } = useParams();
 
-  // const fetchData = async () => {
-  //   const url = `http://localhost:8000/items/${itemId}`;
-  //   const authToken = localStorage.getItem("authToken");
-  //   const response = await fetch(url, {
-  //     headers: { Authorization: `Bearer ${authToken}` },
-  //   });
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     setFormData(data);
-  //   }
-  // };
-
   useEffect(() => {
     const fetchData = async () => {
-      const url = `http://localhost:8000/items/${itemId}`;
+      const url = `${process.env.REACT_APP_API_HOST}/items/${itemId}`;
       const authToken = localStorage.getItem("authToken");
       const response = await fetch(url, {
         headers: { Authorization: `Bearer ${authToken}` },
@@ -199,7 +187,7 @@ function UserItemDetail() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const url = `http://localhost:8000/items/${itemId}`;
+    const url = `${process.env.REACT_APP_API_HOST}/items/${itemId}`;
     const authToken = localStorage.getItem("authToken");
     const currentTime = new Date();
     const year = currentTime.getFullYear();

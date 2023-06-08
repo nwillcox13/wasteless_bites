@@ -6,33 +6,9 @@ const PEXELS_API_KEY = `${process.env.PEXELS_API_KEY}`;
 export default function UserListItems() {
   const [items, setItems] = useState([]);
 
-  // const fetchData = async () => {
-  //   const url = "http://localhost:8000/user-items";
-  //   const authToken = localStorage.getItem("authToken");
-
-  //   const options = {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${authToken}`,
-  //     },
-  //   };
-
-  //   const response = await fetch(url, options);
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     const itemsWithImages = await Promise.all(
-  //       data.map(async (item) => {
-  //         const imageUrl = await fetchItemImage(item.name, item.item_type);
-  //         return { ...item, imageUrl };
-  //       })
-  //     );
-  //     setItems(itemsWithImages);
-  //   }
-  // };
-
   useEffect(() => {
     const fetchData = async () => {
-      const url = "http://localhost:8000/user-items";
+      const url = `${process.env.REACT_APP_API_HOST}/user-items`;
       const authToken = localStorage.getItem("authToken");
 
       const options = {
@@ -59,7 +35,7 @@ export default function UserListItems() {
   }, []);
 
   const deleteItem = async (id) => {
-    const url = `http://localhost:8000/items/${id}`;
+    const url = `${process.env.REACT_APP_API_HOST}/items/${id}`;
     const authToken = localStorage.getItem("authToken");
 
     const response = await fetch(url, {

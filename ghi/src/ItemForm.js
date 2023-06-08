@@ -167,7 +167,7 @@ function ItemForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const newItemUrl = "http://localhost:8000/items";
+    const newItemUrl = `${process.env.REACT_APP_API_HOST}/items`;
     const location = JSON.parse(
       atob(localStorage.getItem("authToken").split(".")[1])
     ).account.location;

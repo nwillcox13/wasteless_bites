@@ -13,26 +13,9 @@ function Profile() {
   const navigate = useNavigate();
   const authToken = localStorage.getItem("authToken");
 
-  // const fetchUserData = async () => {
-  //   const url = "http://localhost:8000/api/accounts/me";
-  //   const response = await fetch(url, {
-  //     headers: { Authorization: `Bearer ${authToken}` },
-  //   });
-
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     setFirstName(data.first_name);
-  //     setLastName(data.last_name);
-  //     setEmail(data.email);
-  //     setLocation(data.location);
-  //   } else {
-  //     setUpdateError("Error fetching user data");
-  //   }
-  // };
-
   useEffect(() => {
     const fetchUserData = async () => {
-      const url = "http://localhost:8000/api/accounts/me";
+      const url = `${process.env.REACT_APP_API_HOST}/api/accounts/me`;
       const response = await fetch(url, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
@@ -72,7 +55,7 @@ function Profile() {
       updatedAccount.password = password;
     }
 
-    const url = "http://localhost:8000/api/accounts/me";
+    const url = `${process.env.REACT_APP_API_HOST}/api/accounts/me`;
     const config = {
       method: "PUT",
       body: JSON.stringify(updatedAccount),
@@ -94,7 +77,7 @@ function Profile() {
   };
 
   const handleDelete = async () => {
-    const url = "http://localhost:8000/api/accounts/me";
+    const url = `${process.env.REACT_APP_API_HOST}/api/accounts/me`;
     const config = {
       method: "DELETE",
       headers: {

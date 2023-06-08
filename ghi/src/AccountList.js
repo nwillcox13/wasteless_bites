@@ -4,7 +4,7 @@ function AccountList() {
   const [accounts, setAccount] = useState([]);
 
   useEffect(() => {
-    const fetchURL = "http://localhost:8000/account";
+    const fetchURL = `${process.env.REACT_APP_API_HOST}/account`;
     fetch(fetchURL)
       .then((response) => response.json())
       .then((data) => {

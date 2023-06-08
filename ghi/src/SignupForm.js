@@ -26,7 +26,7 @@ function SignUpForm() {
       location: location,
     };
 
-    const url = "http://localhost:8000/api/accounts";
+    const url = `${process.env.REACT_APP_API_HOST}/api/accounts/`;
     const config = {
       method: "post",
       body: JSON.stringify(newAccount),
@@ -44,7 +44,7 @@ function SignUpForm() {
         password: password,
       };
 
-      const loginUrl = "http://localhost:8000/api/accounts/login";
+      const loginUrl = `${process.env.REACT_APP_API_HOST}/api/accounts/login`;
       const loginConfig = {
         method: "post",
         body: JSON.stringify(loginData),

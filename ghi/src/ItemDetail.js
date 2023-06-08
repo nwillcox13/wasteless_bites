@@ -16,7 +16,7 @@ export default function ItemDetail() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const url = `http://localhost:8000/items/${itemId}`;
+      const url = `${process.env.REACT_APP_API_HOST}/items/${itemId}`;
       const authToken = localStorage.getItem("authToken");
       const response = await fetch(url, {
         headers: {
@@ -36,7 +36,7 @@ export default function ItemDetail() {
     };
 
     const fetchUserData = async () => {
-      const url = "http://localhost:8000/api/accounts/me";
+      const url = `${process.env.REACT_APP_API_HOST}/api/accounts/me`;
       const authToken = localStorage.getItem("authToken");
       const response = await fetch(url, {
         headers: { Authorization: `Bearer ${authToken}` },

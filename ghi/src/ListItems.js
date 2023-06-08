@@ -54,7 +54,7 @@ export default function ListItems() {
     };
 
     const fetchData = async () => {
-      const url = "http://localhost:8000/items";
+      const url = `${process.env.REACT_APP_API_HOST}/items`;
       const authToken = localStorage.getItem("authToken");
       const response = await fetch(url, {
         headers: {
@@ -95,7 +95,7 @@ export default function ListItems() {
     };
 
     const fetchUserData = async () => {
-      const url = "http://localhost:8000/api/accounts/me";
+      const url = `${process.env.REACT_APP_API_HOST}/api/accounts/me`;
       const authToken = localStorage.getItem("authToken");
       const response = await fetch(url, {
         headers: { Authorization: `Bearer ${authToken}` },
@@ -372,7 +372,7 @@ export default function ListItems() {
               <button
                 className="btn btn-primary new-item-button"
                 onClick={() =>
-                  (window.location.href = "http://localhost:3000/items/new")
+                  (window.location.href = `${process.env.PUBLIC_URL}/items/new`)
                 }
               >
                 Create New Item
