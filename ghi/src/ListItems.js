@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-const OPEN_WEATHER_API_KEY = `${process.env.OPEN_WEATHER_API_KEY}`;
-const PEXELS_API_KEY = `${process.env.PEXELS_API_KEY}`;
-
 export default function ListItems() {
   const [items, setItems] = useState([]);
   const [userLocation, setUserLocation] = useState("");
@@ -10,28 +7,6 @@ export default function ListItems() {
   const [sortOrder, setSortOrder] = useState("asc");
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedRestrictions, setSelectedRestrictions] = useState([]);
-
-  const getUserCoords = useCallback(async (userLocation) => {
-    const apiKey = OPEN_WEATHER_API_KEY;
-    const userZipCode = String(userLocation).trim();
-
-    if (!userZipCode) {
-      return { userLat: null, userLon: null };
-    }
-
-    const url = `http://api.openweathermap.org/geo/1.0/zip?zip=${userZipCode},US&appid=${apiKey}`;
-    const response = await fetch(url);
-
-    if (response.ok) {
-      const data = await response.json();
-      const userLat = data.lat;
-      const userLon = data.lon;
-      return { userLat, userLon };
-    } else {
-      console.error("Error fetching coordinates:", await response.text());
-      return { userLat: null, userLon: null };
-    }
-  }, []);
 
   useEffect(() => {
     const fetchItemImage = async (itemName, itemType) => {
@@ -234,10 +209,18 @@ export default function ListItems() {
       sortedItems.sort((a, b) => {
         const aValue = a[sortOption];
         const bValue = b[sortOption];
-        if (sortOrder === "asc") {
-          return aValue.localeCompare(bValue);
+        if (sortOption === "distance") {
+          if (sortOrder === "asc") {
+            return aValue - bValue;
+          } else {
+            return bValue - aValue;
+          }
         } else {
-          return bValue.localeCompare(aValue);
+          if (sortOrder === "asc") {
+            return aValue.localeCompare(bValue);
+          } else {
+            return bValue.localeCompare(aValue);
+          }
         }
       });
       return sortedItems;

@@ -41,5 +41,6 @@ services:
       HOST_OS: ${OS}
       NODE_ENV: development
       HOST: "0.0.0.0"
-      OPEN_WEATHER_API_KEY: ${OPEN_WEATHER_API_KEY}
+      OPEN_WEATHER_API_KEY: "2ecaa117c91e7d868889a2b9e3bdc462"
       PEXELS_API_KEY: ${PEXELS_API_KEY}
+      REACT_APP_API_HOST: ${REACT_APP_API_HOST}
