@@ -78,7 +78,13 @@ export default function ListItems() {
 
     fetchData();
     fetchUserData();
-  }, [selectedTypes, selectedRestrictions, items.location, userLocation]);
+  }, [
+    selectedTypes,
+    selectedRestrictions,
+    items.location,
+    userLocation,
+    fetchItemImage,
+  ]);
 
   const fetchItemImage = async (itemName, itemType) => {
     const apiKey = PEXELS_API_KEY;
@@ -255,7 +261,15 @@ export default function ListItems() {
 
     fetchDataAndUser();
     calculateItemsWithDistances();
-  }, [items, items.location, userLocation, sortOption, sortOrder, sortItems]);
+  }, [
+    items,
+    items.location,
+    userLocation,
+    sortOption,
+    sortOrder,
+    sortItems,
+    getItemCoords,
+  ]);
   const sortedItems = sortItems(items);
   const authToken = localStorage.getItem("authToken");
 
