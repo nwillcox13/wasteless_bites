@@ -43,8 +43,25 @@ Today we had a bunch of things to work through with authentication, we also made
 splash page with a faux-table with faux-data. I fully did this solo.
 
 ## 5-31-2023
-Today I Went through an redid all of the date formats, and worked with Nick to get the PEXELS api
+Today I Went through an redid all of the date formats, and worked to get the PEXELS api
 working to where i generates a random image based on both the item type and the item name. We then had
 to get it into our table on the List Items page
 
 ## 6-1-2023
+Got the PEXELS API finalized and working and got a lot of thew bugs worked out,
+spent most of the day doing this with Nick, and helped Chris with the profile functionality. Also spent a big chunk working on using tailwind. But by the end of the day decided that we would be better off using what was already being used and take a different approach next time
+
+## 6-2-2023
+SPent a lot of today working on the table in list items adding and removing what I felt we needed to show up
+also spent a good amount of time(too much to be honest) getting the images to show up as the appropriate size.
+
+## 6-5-2023
+
+Worked with Nick all dat getting the NAvigation aspect working with nick, he drove through most of it
+I provided A lot of guidance (where i could). We spent most of the day doing lectures so it wasn't the most productive of days.
+
+## 6-6-2023
+Spent all of today shifting everything on the nav to be REACT-BOOTSTRAP redid a lot of theming, a lot of it was not difficult but it was intersting to see just how the two different libraries did and didn't interact/
+
+## 6-7-2023
+Was a part of getting the gitlab-ci.yml file working, but nick was driving, so I was just following along. After that we all spent a good chunk of time getting random little tasks done and I worked on the READ.me 
