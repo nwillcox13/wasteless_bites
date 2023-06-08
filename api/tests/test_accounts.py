@@ -1,7 +1,5 @@
 from fastapi.testclient import TestClient
 from main import app
-from pydantic import BaseModel
-from jwtdown_fastapi.authentication import Token
 from queries.accounts import (
     AccountRepository,
     AccountOut,
@@ -26,14 +24,6 @@ class MyAuthenticator(MyAuthenticator):
 
     def get_hashed_password(self, account: AccountOut):
         return account.hashed_password
-
-
-class AccountIn(BaseModel):
-    first_name: str
-    last_name: str
-    email: str
-    password: str
-    location: int
 
 
 class EmptyAccountRepo:
@@ -61,7 +51,8 @@ class EmptyAccountRepo:
             first_name=account.first_name,
             last_name=account.last_name,
             email=account.email,
-            hashed_password=hashed_password,  # Set the hashed_password attribute correctly
+            hashed_password=hashed_password,
+            # Set the hashed_password attribute correctly
             location=account.location,
         )
 

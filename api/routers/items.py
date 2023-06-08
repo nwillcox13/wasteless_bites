@@ -1,10 +1,7 @@
 from fastapi import (
     Depends,
-    HTTPException,
-    status,
     Response,
-    APIRouter,
-    Request,
+    APIRouter
 )
 from datetime import datetime
 from pydantic import BaseModel
