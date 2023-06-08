@@ -32,6 +32,7 @@ export default function ItemDetail() {
       console.error("Error fetching item:", await response.text());
     }
   };
+
   const fetchUserData = async () => {
     const url = "http://localhost:8000/api/accounts/me";
     const authToken = localStorage.getItem("authToken");
@@ -46,6 +47,7 @@ export default function ItemDetail() {
       console.error("Error fetching user data");
     }
   };
+
   const fetchItemWeather = async (lat, lon) => {
     const apiKey = OPEN_WEATHER_API_KEY;
     const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
@@ -77,6 +79,7 @@ export default function ItemDetail() {
     }
     return "";
   };
+
   const getItemCoords = async (itemLocation) => {
     const apiKey = OPEN_WEATHER_API_KEY;
     const itemZipCode = String(itemLocation).trim();
@@ -92,6 +95,7 @@ export default function ItemDetail() {
       return { itemLat: null, itemLon: null };
     }
   };
+
   const getUserCoords = async (userLocation) => {
     const apiKey = OPEN_WEATHER_API_KEY;
     const userZipCode = String(userLocation).trim();
@@ -107,6 +111,7 @@ export default function ItemDetail() {
       return { userLat: null, userLon: null };
     }
   };
+
   function userItemDistance(itemLat, itemLon, userLat, userLon) {
     const earthRadius = 6371;
     const degToRad = (deg) => {
@@ -124,22 +129,21 @@ export default function ItemDetail() {
     const calculatedDistance = (earthRadius * c).toFixed(2);
     return calculatedDistance;
   }
+
   useEffect(() => {
     fetchData();
     fetchUserData();
   }, []);
+
   useEffect(() => {
     if (userLocation && itemLocation) {
-      async () => {
+      (async () => {
         const { itemLat, itemLon } = await getItemCoords(itemLocation);
         const { userLat, userLon } = await getUserCoords(userLocation);
         const distance = userItemDistance(itemLat, itemLon, userLat, userLon);
         setCalculatedDistance(distance);
-      };
+      })();
     }
-
-    fetchDataAndUser();
-    calculateDistance();
   }, [itemLocation, userLocation]);
 
   useEffect(() => {
@@ -152,24 +156,6 @@ export default function ItemDetail() {
     }
   }, [itemLocation]);
 
-  useEffect(() => {
-    if (itemLocation) {
-      (async () => {
-        const { itemLat, itemLon } = await getItemCoords(itemLocation);
-        const weather = await fetchItemWeather(itemLat, itemLon);
-        setItemWeather(weather);
-      })();
-    }
-  }, [itemLocation]);
-
-  if (!item) {
-    return <div>Loading...</div>;
-  }
-  console.log(
-    JSON.parse(atob(localStorage.getItem("authToken").split(".")[1])).account
-      .first_name
-  );
-  const history = [];
   const handleMessageOwner = () => {
     const socket = new WebSocket("ws://localhost:8000/ws");
     socket.onopen = () => {
@@ -185,6 +171,18 @@ export default function ItemDetail() {
     };
     socket.onclose = () => {};
   };
+
+  if (!item) {
+    return <div>Loading...</div>;
+  }
+
+  console.log(
+    JSON.parse(atob(localStorage.getItem("authToken").split(".")[1])).account
+      .first_name
+  );
+
+  const history = [];
+
   return (
     <div className="container my-4">
       <h1 className="text-center mb-4">Item Detail</h1>
