@@ -125,22 +125,19 @@ export default function ItemDetail() {
   }
 
   useEffect(() => {
-    const fetchDataAndUser = async () => {
-      await fetchData();
-      await fetchUserData();
-    };
+    fetchData();
+    fetchUserData();
+  }, []);
 
-    const calculateDistance = async () => {
-      if (userLocation && itemLocation) {
+  useEffect(() => {
+    if (userLocation && itemLocation) {
+      (async () => {
         const { itemLat, itemLon } = await getItemCoords(itemLocation);
         const { userLat, userLon } = await getUserCoords(userLocation);
         const distance = userItemDistance(itemLat, itemLon, userLat, userLon);
         setCalculatedDistance(distance);
-      }
-    };
-
-    fetchDataAndUser();
-    calculateDistance();
+      })();
+    }
   }, [itemLocation, userLocation]);
 
   if (!item) {
